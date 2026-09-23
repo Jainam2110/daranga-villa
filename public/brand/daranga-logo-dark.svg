@@ -1,0 +1,51 @@
+<svg viewBox="0 0 500 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="goldGradFull" x1="50" y1="20" x2="450" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#ECC880" />
+      <stop offset="25%" stopColor="#C89B4A" />
+      <stop offset="50%" stopColor="#F5E4B8" />
+      <stop offset="75%" stopColor="#B5893A" />
+      <stop offset="100%" stopColor="#E2C288" />
+    </linearGradient>
+  </defs>
+  <!-- Centered Monogram Group -->
+  <g transform="translate(90, 10)" fill="url(#goldGradFull)">
+    <!-- D Stem & Serif -->
+    <path d="M 68 32 H 108 V 42 H 98 V 142 H 108 V 152 H 68 V 142 H 78 V 42 H 68 Z" />
+    <!-- D Bowl Arc -->
+    <path d="M 98 32 C 145 32 188 58 188 106 C 188 128 178 145 160 156 L 152 144 C 166 135 173 122 173 106 C 173 68 138 46 98 46 Z" />
+    <!-- Villa Roof -->
+    <path d="M 125 78 L 176 122 L 170 128 L 125 88 L 80 128 L 74 122 Z" />
+    <path d="M 125 94 L 160 125 L 155 129 L 125 102 L 95 129 L 90 125 Z" opacity="0.8" />
+    <!-- 4 Window Panes -->
+    <rect x="115" y="112" width="8" height="8" rx="0.5" />
+    <rect x="127" y="112" width="8" height="8" rx="0.5" />
+    <rect x="115" y="124" width="8" height="8" rx="0.5" />
+    <rect x="127" y="124" width="8" height="8" rx="0.5" />
+    <!-- V Downstroke -->
+    <path d="M 125 84 L 172 174 H 186 L 138 84 Z" />
+    <!-- V Upstroke & Flare -->
+    <path d="M 166 174 L 218 64 H 236 L 180 174 Z" />
+    <path d="M 214 64 H 242 V 72 H 234 L 218 106 Z" />
+    <!-- Palm Trunk -->
+    <path d="M 226 172 C 228 140 238 108 250 82 C 248 108 238 140 234 172 Z" />
+    <!-- Palm Fronds -->
+    <path d="M 250 82 C 254 62 268 46 284 38 C 274 50 266 66 252 82 Z" />
+    <path d="M 252 74 C 262 58 276 48 292 46 C 280 56 270 68 254 78 Z" />
+    <path d="M 250 82 C 240 64 224 54 204 52 C 220 58 234 68 248 82 Z" />
+    <path d="M 248 76 C 236 62 220 56 206 58 C 222 64 236 72 246 80 Z" />
+    <path d="M 250 82 C 266 74 286 74 304 82 C 288 84 272 84 252 84 Z" />
+    <path d="M 252 84 C 270 82 292 86 308 96 C 290 94 274 90 252 86 Z" />
+    <path d="M 250 82 C 264 92 278 106 286 124 C 276 112 264 100 250 86 Z" />
+    <path d="M 248 84 C 258 98 268 114 272 132 C 264 118 256 104 246 88 Z" />
+    <path d="M 250 82 C 238 88 226 98 218 112 C 228 102 240 94 250 84 Z" />
+    <!-- Sweeping Wave -->
+    <path d="M 44 172 C 86 150 142 152 186 178 C 222 198 268 194 302 170 C 266 186 220 184 186 166 C 142 142 86 142 44 172 Z" />
+    <path d="M 220 188 C 252 190 282 184 306 174 C 282 180 252 182 220 188 Z" opacity="0.85" />
+  </g>
+  <!-- Wordmark & Tagline -->
+  <text x="250" y="245" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="34" font-weight="300" letter-spacing="0.32em" fill="#F4EFE5">DARANGA VILLA</text>
+  <line x1="80" y1="272" x2="165" y2="272" stroke="#C89B4A" stroke-width="1" />
+  <text x="250" y="276" text-anchor="middle" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="10.5" font-weight="600" letter-spacing="0.35em" fill="#C89B4A">STAY BEYOND ORDINARY</text>
+  <line x1="335" y1="272" x2="420" y2="272" stroke="#C89B4A" stroke-width="1" />
+</svg>
