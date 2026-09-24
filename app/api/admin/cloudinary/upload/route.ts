@@ -40,6 +40,7 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
     const villaId = formData.get("villaId") as string | null;
+    const category = formData.get("category") as string | null;
 
     if (!file) {
       return NextResponse.json(
@@ -78,9 +79,12 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(arrayBuffer);
 
     // Target folder in Cloudinary
-    const folderPath = villaId
-      ? `daranga-villa/villas/${villaId.trim()}`
-      : "daranga-villa/villas";
+    let folderPath = "daranga-villa/villas";
+    if (category === "hero") {
+      folderPath = "daranga-villa/hero";
+    } else if (villaId) {
+      folderPath = `daranga-villa/villas/${villaId.trim()}`;
+    }
 
     // Upload to Cloudinary using upload_stream
     const result = await new Promise<{ secure_url: string; public_id: string }>(
@@ -108,6 +112,8 @@ export async function POST(request: Request) {
     return NextResponse.json(
       {
         success: true,
+        url: result.secure_url,
+        publicId: result.public_id,
         image: {
           url: result.secure_url,
           publicId: result.public_id,

@@ -85,6 +85,12 @@ export function AdminHeroManagementClient({
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 10 * 1024 * 1024) {
+      showFeedback("error", `File size exceeds 10MB limit (${(file.size / (1024 * 1024)).toFixed(1)}MB).`);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
     setUploadingImage(true);
     try {
       const uploadFormData = new FormData();
@@ -97,16 +103,23 @@ export function AdminHeroManagementClient({
       });
 
       const data = await res.json();
-      if (!res.ok) {
+      if (!res.ok || !data.success) {
         throw new Error(data.error || "Image upload failed");
+      }
+
+      const uploadedUrl = data.url || data.image?.url;
+      const uploadedPublicId = data.publicId || data.image?.publicId || "";
+
+      if (!uploadedUrl) {
+        throw new Error("No image URL returned from Cloudinary upload.");
       }
 
       setFormData((prev) => ({
         ...prev,
-        url: data.url,
-        publicId: data.publicId || "",
+        url: uploadedUrl,
+        publicId: uploadedPublicId,
       }));
-      showFeedback("success", "Hero image uploaded to Cloudinary!");
+      showFeedback("success", "Hero image uploaded to Cloudinary successfully!");
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Image upload failed";
       showFeedback("error", msg);
@@ -496,35 +509,69 @@ export function AdminHeroManagementClient({
                   </div>
                 )}
 
-                {/* Cloudinary File Upload Button */}
-                <div className="flex items-center gap-3">
+                {/* Cloudinary File Upload Dropzone / Button */}
+                <div className="space-y-2">
                   <input
                     type="file"
                     ref={fileInputRef}
                     onChange={handleFileUpload}
-                    accept="image/*"
+                    accept="image/png, image/jpeg, image/jpg, image/webp, image/avif, image/gif"
                     className="hidden"
                   />
-                  <button
-                    type="button"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={uploadingImage}
-                    className="w-full py-2.5 px-4 rounded-xl border border-dashed border-[#A8792E] dark:border-[#C89B4A] bg-[#A8792E]/5 dark:bg-[#C89B4A]/10 hover:bg-[#A8792E]/10 dark:hover:bg-[#C89B4A]/20 text-[#A8792E] dark:text-[#C89B4A] text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+                  <div
+                    onClick={() => !uploadingImage && fileInputRef.current?.click()}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      if (uploadingImage) return;
+                      const droppedFile = e.dataTransfer.files?.[0];
+                      if (droppedFile) {
+                        const fakeEvent = {
+                          target: { files: [droppedFile] },
+                        } as unknown as React.ChangeEvent<HTMLInputElement>;
+                        handleFileUpload(fakeEvent);
+                      }
+                    }}
+                    className={`cursor-pointer w-full py-5 px-4 rounded-xl border-2 border-dashed transition-all flex flex-col items-center justify-center gap-2 text-center ${
+                      uploadingImage
+                        ? "border-[#C89B4A] bg-[#C89B4A]/10 opacity-80 cursor-wait"
+                        : "border-[#DDD5C7] dark:border-[#302D28] hover:border-[#A8792E] dark:hover:border-[#C89B4A] bg-[#F5F2EC]/30 dark:bg-[#1C1A17]/40 hover:bg-[#A8792E]/5 dark:hover:bg-[#C89B4A]/10"
+                    }`}
                   >
-                    <UploadCloud className={`w-4 h-4 ${uploadingImage ? "animate-bounce" : ""}`} />
-                    <span>{uploadingImage ? "Uploading to Cloudinary..." : "Upload from Device"}</span>
-                  </button>
-                </div>
+                    <UploadCloud className={`w-6 h-6 text-[#A8792E] dark:text-[#C89B4A] ${uploadingImage ? "animate-bounce" : ""}`} />
+                    <div>
+                      <p className="text-xs font-bold text-[#171513] dark:text-[#F4EFE5]">
+                        {uploadingImage ? "Uploading to Cloudinary..." : "Click to select photo or Drag & Drop"}
+                      </p>
+                      <p className="text-[10px] text-stone-400 mt-0.5">
+                        High-resolution JPG, PNG, WEBP up to 10MB
+                      </p>
+                    </div>
+                  </div>
 
-                <div>
-                  <input
-                    type="url"
-                    value={formData.url}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, url: e.target.value }))}
-                    placeholder="Or enter public image URL (https://...)"
-                    required
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-[#F5F2EC]/40 dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs text-[#171513] dark:text-[#F4EFE5] placeholder-stone-400 focus:outline-none focus:border-[#C89B4A]"
-                  />
+                  {formData.publicId && (
+                    <div className="flex items-center gap-1.5 text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">
+                      <Check className="w-3 h-3" />
+                      <span>Cloudinary Asset: {formData.publicId}</span>
+                    </div>
+                  )}
+
+                  <div className="relative flex items-center gap-2 pt-1">
+                    <div className="flex-1 h-px bg-[#DDD5C7] dark:bg-[#302D28]" />
+                    <span className="text-[10px] uppercase tracking-wider text-stone-400 font-semibold px-1">or URL</span>
+                    <div className="flex-1 h-px bg-[#DDD5C7] dark:bg-[#302D28]" />
+                  </div>
+
+                  <div>
+                    <input
+                      type="url"
+                      value={formData.url}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, url: e.target.value, publicId: "" }))}
+                      placeholder="Paste public image URL (https://...)"
+                      required
+                      className="w-full px-3.5 py-2.5 rounded-xl bg-[#F5F2EC]/40 dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs text-[#171513] dark:text-[#F4EFE5] placeholder-stone-400 focus:outline-none focus:border-[#C89B4A]"
+                    />
+                  </div>
                 </div>
               </div>
 
