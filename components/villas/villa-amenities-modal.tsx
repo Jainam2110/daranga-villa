@@ -73,8 +73,8 @@ export function VillaAmenitiesModal({
                 key={idx}
                 className="flex items-center gap-3.5 p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] hover:border-[var(--accent)]/40 transition-colors"
               >
-                <div className="w-9 h-9 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-color)] flex items-center justify-center flex-shrink-0 text-[var(--accent)] shadow-xs">
-                  <AmenityIcon name={item} className="w-4 h-4 text-[var(--accent)]" />
+                <div className="w-9 h-9 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-color)] flex items-center justify-center flex-shrink-0 text-lg shadow-xs">
+                  <AmenityIcon name={item} className="text-lg" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <span className="text-xs font-semibold text-[var(--text-primary)] tracking-wide block truncate">

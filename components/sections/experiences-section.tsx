@@ -5,25 +5,25 @@ import { Container } from "@/components/ui/container";
 export function ExperiencesSection() {
   const experiences = [
     {
-      title: "PRIVATE MOMENTS & SUNSET HOURS",
-      subtitle: "Bespoke Culinary Journeys",
+      title: "Illuminated Pool & Private Lawn Evenings",
+      subtitle: "🌙 PRIVATE POOL & STARLIT NIGHTS",
       description:
-        "Enjoy candles lit along private pool terraces while our master chefs serve multi-course Indian and international menus prepared with locally sourced organic produce.",
-      image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2070&q=85",
+        "Enjoy tranquil evenings beside your private illuminated swimming pool and verdant garden lawn, complete with poolside dining and ambient villa lighting.",
+      image: "/images/experiences/poolside-night.jpg",
     },
     {
-      title: "SLOW MORNINGS & REVITALIZATION",
-      subtitle: "Mindful Revival",
+      title: "Serene Balcony & Mountain Overlook",
+      subtitle: "🌅 SCENIC BALCONY & VALLEY VIEWS",
       description:
-        "Begin your day with guided sunrise yoga, personalized spa therapies, and floating breakfast spreads served right in your private infinity pool.",
-      image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=2080&q=85",
+        "Begin your day with morning tea from plush pink velvet terrace seating, breathing in fresh mountain air with panoramic views of Udaipur's scenic hills.",
+      image: "/images/experiences/balcony-view.jpg",
     },
     {
-      title: "LOCAL EXPERIENCES & NATURE",
-      subtitle: "Curated Estate Excursions",
+      title: "Bespoke Master Bedrooms & Lounge",
+      subtitle: "🛏️ LUXURY MASTER SUITES & COMFORT",
       description:
-        "Explore private trails, secluded estate vantage points, and cultural landmarks accompanied by private estate guides.",
-      image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=2070&q=85",
+        "Unwind in spacious, soaring-ceiling master suites crafted with king-sized bedding, comfortable lounge seating, climate control, and artisanal finishes.",
+      image: "/images/experiences/bedroom-suite.jpg",
     },
   ];
 

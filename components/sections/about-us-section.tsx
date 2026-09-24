@@ -2,27 +2,27 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { Shield, Sparkles, Utensils, Compass, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export function AboutUsSection() {
   const highlights = [
     {
-      icon: Shield,
+      emoji: "🛡️",
       title: "Complete Seclusion",
       description: "Gated estate grounds ensuring absolute privacy and tranquility for your loved ones.",
     },
     {
-      icon: Sparkles,
+      emoji: "🛎️",
       title: "Bespoke Hospitality",
       description: "Dedicated 24/7 butler assistance and personalized concierge for every detail of your stay.",
     },
     {
-      icon: Utensils,
+      emoji: "🍽️",
       title: "Curated Private Dining",
       description: "Multi-course gourmet spreads crafted by master chefs using fresh, organic local produce.",
     },
     {
-      icon: Compass,
+      emoji: "🌄",
       title: "Exclusive Location",
       description: "Situated amidst Udaipur's peaceful natural valleys with breathtaking sunset vantage points.",
     },
@@ -52,25 +52,22 @@ export function AboutUsSection() {
 
             {/* 4 Feature Highlights */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-[var(--border-color)]">
-              {highlights.map((item, idx) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={idx}
-                    className="p-4 rounded-xl bg-[var(--bg-primary)]/60 border border-[var(--border-color)] hover:border-[var(--accent)]/50 transition-all duration-300 space-y-2 group"
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-[var(--accent)]/10 border border-[var(--accent)]/20 text-[var(--accent)] flex items-center justify-center group-hover:scale-105 transition-transform">
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <h3 className="font-serif text-base font-normal text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-[var(--text-secondary)] text-[11px] sm:text-xs leading-relaxed font-light">
-                      {item.description}
-                    </p>
+              {highlights.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-xl bg-[var(--bg-primary)]/60 border border-[var(--border-color)] hover:border-[var(--accent)]/50 transition-all duration-300 space-y-2 group"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-color)] flex items-center justify-center text-xl group-hover:scale-110 transition-transform shadow-xs">
+                    <span role="img" aria-label={item.title}>{item.emoji}</span>
                   </div>
-                );
-              })}
+                  <h3 className="font-serif text-base font-normal text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="text-[var(--text-secondary)] text-[11px] sm:text-xs leading-relaxed font-light">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
             </div>
 
             {/* CTA Button */}
