@@ -22,31 +22,32 @@ export default async function VillasListingPage() {
 
       <main className="flex-1">
         {/* Editorial Listing Header */}
-        <section className="bg-[var(--bg-secondary)] text-[var(--text-primary)] pt-28 pb-20 sm:pt-36 sm:pb-24 lg:pt-40 lg:pb-28 relative overflow-hidden border-b border-[var(--border-color)]">
+        <section className="bg-[var(--bg-secondary)] text-[var(--text-primary)] pt-20 pb-5 sm:pt-28 sm:pb-8 lg:pt-36 lg:pb-16 relative overflow-hidden border-b border-[var(--border-color)]">
           <Container className="relative z-10 text-center">
-            <div className="max-w-3xl mx-auto space-y-4">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[var(--accent)] block">
-                PORTFOLIO
-              </span>
-              <h1 className="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-[var(--text-primary)] leading-tight">
+            <div className="max-w-2xl mx-auto space-y-2 sm:space-y-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-[var(--accent)] text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.25em]">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+                EXCLUSIVE PORTFOLIO
+              </div>
+              <h1 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-normal tracking-tight text-[var(--text-primary)] leading-tight">
                 Our Private Villa Collection
               </h1>
-              <p className="text-[var(--text-secondary)] text-sm sm:text-base leading-relaxed font-light">
-                Discover bespoke oceanfront sanctuaries, private infinity pools, and serene architectural retreats.
+              <p className="text-[var(--text-secondary)] text-xs sm:text-sm font-light leading-relaxed max-w-md mx-auto">
+                Discover private pool sanctuaries, bespoke hospitality, and serene architectural retreats.
               </p>
             </div>
           </Container>
         </section>
 
         {/* Villas Grid Section */}
-        <section className="py-20 lg:py-28 bg-[var(--bg-primary)]">
+        <section className="pt-4 pb-12 sm:pt-6 sm:pb-16 lg:py-20 bg-[var(--bg-primary)]">
           <Container>
             {/* Results Counter Bar */}
-            <div className="flex items-center justify-between mb-12 pb-4 border-b border-[var(--border-color)] text-[var(--text-secondary)] text-xs uppercase tracking-wider font-medium">
+            <div className="flex items-center justify-between mb-4 sm:mb-8 pb-3 border-b border-[var(--border-color)] text-[var(--text-secondary)] text-[10px] sm:text-xs uppercase tracking-wider font-medium">
               <div>
-                Showing <strong className="text-[var(--accent)] font-serif font-bold text-sm">{villas.length}</strong> active estate residence{villas.length === 1 ? "" : "s"}
+                Showing <strong className="text-[var(--accent)] font-serif font-bold text-xs sm:text-sm">{villas.length}</strong> active estate residence{villas.length === 1 ? "" : "s"}
               </div>
-              <div className="text-[var(--accent)] font-semibold tracking-[0.2em]">
+              <div className="text-[var(--accent)] font-semibold tracking-[0.16em] hidden sm:block">
                 Guaranteed Privacy &amp; Concierge Hospitality
               </div>
             </div>
