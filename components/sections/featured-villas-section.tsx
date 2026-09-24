@@ -1,13 +1,12 @@
-"use client";
-
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Users, Bed, Bath, MapPin, ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { VillaCardsCarousel } from "@/components/ui/villa-cards-carousel";
 import { Villa } from "@/types/villa";
 import { getAllVillaImageUrls } from "@/lib/utils/image";
+import { getVillaAddress } from "@/lib/utils/villa-location";
 
 interface FeaturedVillasSectionProps {
   villas: Villa[];
@@ -24,16 +23,18 @@ function FeaturedVillaHeroCard({
   onSelectVilla?: (villaId: string) => void;
 }) {
   const [currentIdx, setCurrentIdx] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isTouched, setIsTouched] = useState(false);
 
-  const handlePrev = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handlePrev = (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     setCurrentIdx((prev) => (prev > 0 ? prev - 1 : images.length - 1));
   };
 
-  const handleNext = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleNext = (e?: React.MouseEvent) => {
+    e?.preventDefault();
+    e?.stopPropagation();
     setCurrentIdx((prev) => (prev < images.length - 1 ? prev + 1 : 0));
   };
 
@@ -43,32 +44,60 @@ function FeaturedVillaHeroCard({
     setCurrentIdx(idx);
   };
 
+  // Smooth auto-slide effect (4.2s duration, pauses on hover or touch)
+  useEffect(() => {
+    if (images.length <= 1 || isHovered || isTouched) return;
+
+    const timer = setTimeout(() => {
+      setCurrentIdx((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+    }, 4200);
+
+    return () => clearTimeout(timer);
+  }, [currentIdx, images.length, isHovered, isTouched]);
+
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
+  const touchResumeTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (touchResumeTimeout.current) clearTimeout(touchResumeTimeout.current);
+    setIsTouched(true);
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null || touchStartY.current === null) return;
-    const diffX = touchStartX.current - e.changedTouches[0].clientX;
-    const diffY = touchStartY.current - e.changedTouches[0].clientY;
+    if (touchStartX.current !== null && touchStartY.current !== null) {
+      const diffX = touchStartX.current - e.changedTouches[0].clientX;
+      const diffY = touchStartY.current - e.changedTouches[0].clientY;
 
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 30) {
-      if (diffX > 0) {
-        setCurrentIdx((prev) => (prev < images.length - 1 ? prev + 1 : 0));
-      } else {
-        setCurrentIdx((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 30) {
+        if (diffX > 0) {
+          handleNext();
+        } else {
+          handlePrev();
+        }
       }
     }
     touchStartX.current = null;
     touchStartY.current = null;
+    touchResumeTimeout.current = setTimeout(() => {
+      setIsTouched(false);
+    }, 2500);
   };
 
+  useEffect(() => {
+    return () => {
+      if (touchResumeTimeout.current) clearTimeout(touchResumeTimeout.current);
+    };
+  }, []);
+
   return (
-    <div className="group/hero relative bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-[8px] overflow-hidden grid grid-cols-12 shadow-2xl card-luxury-hover hover:border-[var(--accent)]/50 transition-all duration-700">
+    <div
+      className="group/hero relative bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-[8px] overflow-hidden grid grid-cols-12 shadow-2xl card-luxury-hover hover:border-[var(--accent)]/50 transition-all duration-700"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {/* 7-Col Image Gallery / Slider */}
       <div
         className="col-span-7 relative w-full min-h-[500px] bg-[var(--bg-primary)] overflow-hidden block select-none group/img"
@@ -84,7 +113,7 @@ function FeaturedVillaHeroCard({
           {images.map((imgUrl, idx) => (
             <div
               key={idx}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
                 idx === currentIdx ? "opacity-100 z-10" : "opacity-0 pointer-events-none z-0"
               }`}
             >
@@ -161,8 +190,9 @@ function FeaturedVillaHeroCard({
       {/* 5-Col Details Section */}
       <div className="col-span-5 p-10 xl:p-12 flex flex-col justify-between space-y-6">
         <div className="space-y-4">
-          <div className="text-[10px] uppercase tracking-[0.25em] text-[var(--accent)] font-semibold">
-            {villa.location || "Daranga Sanctuary Estate"}
+          <div className="text-[10px] uppercase tracking-[0.25em] text-[var(--accent)] font-semibold flex items-center gap-1.5">
+            <MapPin className="w-3.5 h-3.5" />
+            <span>{getVillaAddress(villa.location, "Daranga Sanctuary Estate")}</span>
           </div>
 
           <Link href={`/villas/${villa.slug || villa.id}`} onClick={() => onSelectVilla?.(villa.id)}>
@@ -171,16 +201,21 @@ function FeaturedVillaHeroCard({
             </h3>
           </Link>
 
-          <p className="text-[var(--text-secondary)] text-sm font-light leading-relaxed">
-            {villa.description || "An architectural masterpiece offering total privacy, expansive outdoor lounges, and panoramic views."}
-          </p>
-
           <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-[var(--text-secondary)] py-3 border-y border-[var(--border-color)]">
-            <span>{villa.maxGuests || 6} Guests</span>
+            <span className="flex items-center gap-1.5">
+              <Users className="w-3.5 h-3.5 text-[var(--accent)]" />
+              <span>{villa.maxGuests || 6} Guests</span>
+            </span>
             <span>•</span>
-            <span>{villa.bedrooms || 3} Bedrooms</span>
+            <span className="flex items-center gap-1.5">
+              <Bed className="w-3.5 h-3.5 text-[var(--accent)]" />
+              <span>{villa.bedrooms || 3} BHK</span>
+            </span>
             <span>•</span>
-            <span>{villa.bathrooms || 3} Bathrooms</span>
+            <span className="flex items-center gap-1.5">
+              <Bath className="w-3.5 h-3.5 text-[var(--accent)]" />
+              <span>{villa.bathrooms || 3} Baths</span>
+            </span>
           </div>
         </div>
 
@@ -198,9 +233,10 @@ function FeaturedVillaHeroCard({
           <Link
             href={`/villas/${villa.slug || villa.id}`}
             onClick={() => onSelectVilla?.(villa.id)}
-            className="btn-luxury-shimmer text-center px-6 py-3.5 bg-[var(--accent)] hover:bg-[#b5893a] text-[#0B0B0A] text-xs uppercase tracking-[0.2em] font-bold transition-all rounded-[6px] shadow-lg hover:scale-105 active:scale-95"
+            className="btn-luxury-shimmer text-center px-6 py-3.5 bg-[var(--accent)] hover:bg-[#b5893a] text-[#0B0B0A] text-xs uppercase tracking-[0.2em] font-bold transition-all rounded-[6px] shadow-lg hover:scale-105 active:scale-95 flex items-center gap-2"
           >
-            EXPLORE VILLA &rarr;
+            <span>EXPLORE VILLA</span>
+            <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
       </div>
@@ -216,10 +252,10 @@ export function FeaturedVillasSection({
   const supportingVillas = villas.slice(1);
 
   return (
-    <section id="villas" className="py-24 lg:py-36 bg-[var(--bg-primary)] text-[var(--text-primary)]">
+    <section id="villas" className="pt-4 sm:pt-6 lg:py-36 bg-[var(--bg-primary)] text-[var(--text-primary)]">
       <Container>
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-[var(--border-color)] pb-8">
+        {/* Section Header (Desktop only) */}
+        <div className="hidden lg:flex flex-col md:flex-row md:items-end justify-between mb-12 lg:mb-16 gap-6 border-b border-[var(--border-color)] pb-8">
           <div className="space-y-3">
             <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[var(--accent)] block">
               THE VILLAS
@@ -254,8 +290,22 @@ export function FeaturedVillasSection({
           </div>
         ) : (
           <div>
-            {/* Mobile View (< lg): All Villas in clean 1-by-1 slide carousel */}
-            <div className="block lg:hidden">
+            {/* Mobile View (< lg): Section Title & 1-by-1 Swipeable Villa Cards */}
+            <div className="block lg:hidden space-y-3.5 sm:space-y-4">
+              {/* Mobile Intro Header between Hero Images and Villa Cards */}
+              <div className="text-center space-y-1.5 px-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-[var(--accent)] text-[9px] font-semibold uppercase tracking-[0.25em]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+                  OUR PRIVATE SANCTUARIES
+                </div>
+                <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[var(--text-primary)] tracking-tight">
+                  Explore Luxury Villas
+                </h2>
+                <p className="text-[var(--text-secondary)] text-[11px] sm:text-xs font-light leading-relaxed max-w-sm mx-auto">
+                  Handcrafted private pool retreats with personalized hospitality and serene natural views.
+                </p>
+              </div>
+
               <VillaCardsCarousel
                 villas={villas}
                 onViewClick={onSelectVilla}

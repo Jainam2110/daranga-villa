@@ -115,7 +115,6 @@ export function Navbar({
     { label: "Philosophy", href: "/#experience" },
     { label: "Experiences", href: "/#experiences" },
     { label: "Gallery", href: "/#gallery" },
-    { label: "Location", href: "/#location" },
   ];
 
   return (

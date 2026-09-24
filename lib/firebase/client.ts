@@ -3,6 +3,12 @@ import { getAuth, GoogleAuthProvider, Auth } from "firebase/auth";
 
 const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY?.trim();
 
+if (typeof window !== "undefined" && !apiKey) {
+  console.warn(
+    "[Firebase Client] Warning: NEXT_PUBLIC_FIREBASE_API_KEY is missing from environment variables. Authentication requests will fail until this is configured."
+  );
+}
+
 const firebaseConfig = {
   apiKey: apiKey || "AIzaSyDummyKeyForBuildTimePrerender000",
   authDomain:

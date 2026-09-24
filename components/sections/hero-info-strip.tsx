@@ -1,13 +1,14 @@
 import React from "react";
 import { Container } from "@/components/ui/container";
 import { Villa } from "@/types/villa";
+import { getVillaAddress } from "@/lib/utils/villa-location";
 
 interface HeroInfoStripProps {
   villa?: Villa;
 }
 
 export function HeroInfoStrip({ villa }: HeroInfoStripProps) {
-  const location = villa?.location || "Daranga Estate Sanctuary";
+  const location = getVillaAddress(villa?.location, "Daranga Estate Sanctuary");
   const guests = villa?.maxGuests || 6;
   const bedrooms = villa?.bedrooms || 3;
   const bathrooms = villa?.bathrooms || 3;

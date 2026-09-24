@@ -203,7 +203,7 @@ export function generateCustomerConfirmationEmailHtml(
                       ${villaName}
                     </h2>
                     <span style="font-size:12px; color:#A9A39A; display:block; margin-top:2px;">
-                      📍 ${villaLocation}
+                      ${villaLocation}
                     </span>
                   </td>
                 </tr>
@@ -238,8 +238,8 @@ export function generateCustomerConfirmationEmailHtml(
                 <tr>
                   <td colspan="2" style="padding: 16px 0; border-bottom:1px solid #302D28;">
                     <span style="font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.18em; color:#A9A39A; display:block; margin-bottom:6px;">Primary Guest Credentials</span>
-                    <span style="font-size:13px; color:#F4EFE5; display:block;">👤 ${booking.guestName}</span>
-                    <span style="font-size:12px; color:#A9A39A; display:block; margin-top:2px;">✉️ ${booking.guestEmail} • 📞 ${booking.guestPhone}</span>
+                    <span style="font-size:13px; color:#F4EFE5; display:block; font-weight:500;">${booking.guestName}</span>
+                    <span style="font-size:12px; color:#A9A39A; display:block; margin-top:2px;">${booking.guestEmail} • ${booking.guestPhone}</span>
                   </td>
                 </tr>
 

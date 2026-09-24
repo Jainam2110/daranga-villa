@@ -32,6 +32,7 @@ export async function PUT(
       description,
       location,
       zone,
+      googleMapsUrl,
       latitude,
       longitude,
       mapX,
@@ -57,13 +58,81 @@ export async function PUT(
       );
     }
 
+    // Coordinate & Structured Location handling
+    let updatedLat: number = villa.latitude ?? 24.5854;
+    let updatedLng: number = villa.longitude ?? 73.7125;
+    let updatedAddress: string =
+      typeof villa.location === "object" && villa.location !== null
+        ? (villa.location as { address?: string })?.address || ""
+        : typeof villa.location === "string"
+        ? villa.location
+        : villa.zone || "";
+    let updatedPlaceId: string =
+      typeof villa.location === "object" && villa.location !== null
+        ? (villa.location as { placeId?: string })?.placeId || villa.placeId || ""
+        : villa.placeId || "";
+
+    if (location !== undefined) {
+      if (typeof location === "object" && location !== null) {
+        if (location.latitude !== undefined && !isNaN(Number(location.latitude))) {
+          updatedLat = Number(location.latitude);
+        }
+        if (location.longitude !== undefined && !isNaN(Number(location.longitude))) {
+          updatedLng = Number(location.longitude);
+        }
+        if (location.address !== undefined) {
+          updatedAddress = String(location.address).trim();
+        }
+        if (location.placeId !== undefined) {
+          updatedPlaceId = String(location.placeId).trim();
+        }
+      } else if (typeof location === "string") {
+        updatedAddress = location.trim();
+      }
+    }
+
+    if (latitude !== undefined && !isNaN(Number(latitude))) {
+      updatedLat = Number(latitude);
+    }
+    if (longitude !== undefined && !isNaN(Number(longitude))) {
+      updatedLng = Number(longitude);
+    }
+
+    if (isNaN(updatedLat) || updatedLat < -90 || updatedLat > 90) {
+      return NextResponse.json(
+        { success: false, error: "Latitude must be a valid number between -90 and 90." },
+        { status: 400 }
+      );
+    }
+
+    if (isNaN(updatedLng) || updatedLng < -180 || updatedLng > 180) {
+      return NextResponse.json(
+        { success: false, error: "Longitude must be a valid number between -180 and 180." },
+        { status: 400 }
+      );
+    }
+
     if (name) villa.name = name.trim();
     if (slug) villa.slug = slug.toLowerCase().trim();
     if (description !== undefined) villa.description = description;
-    if (location !== undefined) villa.location = location;
     if (zone !== undefined) villa.zone = zone;
-    if (latitude !== undefined) villa.latitude = Number(latitude);
-    if (longitude !== undefined) villa.longitude = Number(longitude);
+
+    villa.location = {
+      address: updatedAddress || zone || "Udaipur, Rajasthan",
+      latitude: updatedLat,
+      longitude: updatedLng,
+      placeId: updatedPlaceId,
+    };
+    villa.latitude = updatedLat;
+    villa.longitude = updatedLng;
+    villa.placeId = updatedPlaceId;
+
+    if (googleMapsUrl !== undefined && String(googleMapsUrl).trim()) {
+      villa.googleMapsUrl = String(googleMapsUrl).trim();
+    } else {
+      villa.googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${updatedLat},${updatedLng}`;
+    }
+
     if (mapX !== undefined) villa.mapX = Number(mapX);
     if (mapY !== undefined) villa.mapY = Number(mapY);
     if (Array.isArray(images)) villa.images = images;

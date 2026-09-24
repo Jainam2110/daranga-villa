@@ -26,6 +26,7 @@ import {
   MessageCircle,
   Lock,
   ArrowRight,
+  Users,
 } from "lucide-react";
 
 interface BookingItem {
@@ -527,10 +528,14 @@ export function AccountClient() {
                               <span className="font-mono font-bold text-[#A8792E] dark:text-[#C89B4A]">
                                 {bookingRef}
                               </span>
-                              <span>
-                                🗓 {checkInDate} &rarr; {checkOutDate} ({nights}n)
+                              <span className="inline-flex items-center gap-1">
+                                <Calendar className="w-3.5 h-3.5 text-[#A8792E] dark:text-[#C89B4A]" />
+                                <span>{checkInDate} &rarr; {checkOutDate} ({nights}n)</span>
                               </span>
-                              <span>👥 {booking.guests} Guests</span>
+                              <span className="inline-flex items-center gap-1">
+                                <Users className="w-3.5 h-3.5 text-[#A8792E] dark:text-[#C89B4A]" />
+                                <span>{booking.guests} Guests</span>
+                              </span>
                             </div>
                           </div>
                         </div>

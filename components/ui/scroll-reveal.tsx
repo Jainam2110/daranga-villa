@@ -17,42 +17,49 @@ export function ScrollReveal({
   className = "",
   delay = 0,
   direction = "up",
-  duration = 800,
-  threshold = 0.12,
+  duration = 600,
+  threshold = 0.01,
   once = true,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(() => {
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return true;
+    if (typeof window !== "undefined") {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || typeof IntersectionObserver === "undefined") {
+        return true;
+      }
     }
     return false;
   });
 
   useEffect(() => {
     const node = ref.current;
-    if (!node) return;
+    if (!node || isVisible) return;
 
-    if (isVisible) return;
+    // Safety fallback timer: guarantee visibility after 350ms so content is never stuck
+    const safetyTimer = setTimeout(() => {
+      setIsVisible(true);
+    }, 350);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+          clearTimeout(safetyTimer);
           if (once) observer.unobserve(node);
         } else if (!once) {
           setIsVisible(false);
         }
       },
       {
-        threshold,
-        rootMargin: "0px 0px -40px 0px",
+        threshold: 0,
+        rootMargin: "120px 0px 120px 0px",
       }
     );
 
     observer.observe(node);
 
     return () => {
+      clearTimeout(safetyTimer);
       observer.disconnect();
     };
   }, [threshold, once, isVisible]);

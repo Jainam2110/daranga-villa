@@ -48,6 +48,7 @@ export async function POST(request: Request) {
       description,
       location,
       zone,
+      googleMapsUrl,
       latitude,
       longitude,
       mapX,
@@ -113,14 +114,73 @@ export async function POST(request: Request) {
       );
     }
 
+    // Coordinate validation
+    const parsedLat =
+      typeof location === "object" && location?.latitude !== undefined
+        ? Number(location.latitude)
+        : latitude !== undefined
+        ? Number(latitude)
+        : NaN;
+
+    const parsedLng =
+      typeof location === "object" && location?.longitude !== undefined
+        ? Number(location.longitude)
+        : longitude !== undefined
+        ? Number(longitude)
+        : NaN;
+
+    if (
+      isNaN(parsedLat) ||
+      isNaN(parsedLng) ||
+      parsedLat < -90 ||
+      parsedLat > 90 ||
+      parsedLng < -180 ||
+      parsedLng > 180
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Valid Google Maps coordinates are required. Latitude must be between -90 and 90, and Longitude between -180 and 180.",
+        },
+        { status: 400 }
+      );
+    }
+
+    const placeAddress =
+      typeof location === "object" && location?.address
+        ? String(location.address).trim()
+        : typeof location === "string"
+        ? location.trim()
+        : zone || "Udaipur, Rajasthan";
+
+    const extractedPlaceId =
+      typeof location === "object" && location?.placeId
+        ? String(location.placeId).trim()
+        : "";
+
+    const canonicalLocationObj = {
+      address: placeAddress,
+      latitude: parsedLat,
+      longitude: parsedLng,
+      placeId: extractedPlaceId,
+    };
+
+    const canonicalGoogleMapsUrl =
+      googleMapsUrl && String(googleMapsUrl).trim()
+        ? String(googleMapsUrl).trim()
+        : `https://www.google.com/maps/search/?api=1&query=${parsedLat},${parsedLng}`;
+
     const newVilla = await Villa.create({
       name: name.trim(),
       slug: generatedSlug,
       description: description || "",
-      location: location || "",
-      zone: zone || "Udaipur, Rajasthan",
-      latitude: latitude !== undefined ? Number(latitude) : 24.5854,
-      longitude: longitude !== undefined ? Number(longitude) : 73.7125,
+      location: canonicalLocationObj,
+      zone: zone || placeAddress || "Udaipur, Rajasthan",
+      googleMapsUrl: canonicalGoogleMapsUrl,
+      latitude: parsedLat,
+      longitude: parsedLng,
+      placeId: extractedPlaceId,
       mapX: mapX !== undefined ? Number(mapX) : 50,
       mapY: mapY !== undefined ? Number(mapY) : 50,
       images: Array.isArray(images) ? images : [],

@@ -25,6 +25,7 @@ export default async function AdminVillasPage() {
     description: v.description || "",
     location: v.location || "",
     zone: v.zone || "Udaipur, Rajasthan",
+    googleMapsUrl: v.googleMapsUrl || "",
     latitude: v.latitude !== undefined ? v.latitude : 24.5854,
     longitude: v.longitude !== undefined ? v.longitude : 73.7125,
     mapX: v.mapX !== undefined ? v.mapX : 50,

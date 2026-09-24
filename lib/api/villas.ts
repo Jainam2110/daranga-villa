@@ -8,7 +8,9 @@ import { Villa } from "@/types/villa";
 import { DEFAULT_VILLA_IMAGE } from "@/lib/constants";
 
 import { normalizeVillaImage, getPrimaryVillaImageUrl } from "@/lib/utils/image";
-export { normalizeVillaImage, getPrimaryVillaImageUrl };
+import { normalizeVillaLocation, getVillaAddress } from "@/lib/utils/villa-location";
+
+export { normalizeVillaImage, getPrimaryVillaImageUrl, normalizeVillaLocation, getVillaAddress };
 
 /**
  * Serialize a raw Mongoose Villa document to a clean client-safe Villa type.
@@ -19,6 +21,21 @@ export function serializeVilla(doc: IVilla): Villa {
       ? doc.images.map(normalizeVillaImage)
       : [{ url: DEFAULT_VILLA_IMAGE, publicId: "" }];
 
+  const structuredLoc = normalizeVillaLocation(
+    doc.location,
+    doc.latitude,
+    doc.longitude,
+    doc.placeId
+  );
+
+  const lat = structuredLoc.latitude;
+  const lng = structuredLoc.longitude;
+  const addressText =
+    structuredLoc.address ||
+    (typeof doc.location === "string" ? doc.location : "") ||
+    doc.zone ||
+    "Daranga Estate, Udaipur";
+
   return {
     id: doc._id.toString(),
     _id: doc._id.toString(),
@@ -26,10 +43,13 @@ export function serializeVilla(doc: IVilla): Villa {
     slug: doc.slug,
     tagline: doc.description ? doc.description.slice(0, 100) + "..." : "Exclusive Villa Residence",
     description: doc.description || "",
-    location: doc.location || "Daranga Estate",
-    zone: doc.zone || doc.location || "Udaipur, Rajasthan",
-    latitude: doc.latitude !== undefined ? doc.latitude : 24.5854,
-    longitude: doc.longitude !== undefined ? doc.longitude : 73.7125,
+    location: structuredLoc,
+    zone: doc.zone || addressText || "Udaipur, Rajasthan",
+    googleMapsUrl:
+      doc.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+    latitude: lat,
+    longitude: lng,
+    placeId: structuredLoc.placeId || doc.placeId || "",
     mapX: doc.mapX !== undefined ? doc.mapX : 50,
     mapY: doc.mapY !== undefined ? doc.mapY : 50,
     images,

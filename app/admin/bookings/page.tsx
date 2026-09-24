@@ -10,6 +10,7 @@ import {
   SerializedBooking,
   VillaOption,
 } from "@/components/admin/admin-bookings-management-client";
+import { getVillaAddress } from "@/lib/utils/villa-location";
 
 export default async function AdminBookingsPage() {
   const admin = await getAuthenticatedAdmin();
@@ -36,7 +37,7 @@ export default async function AdminBookingsPage() {
     slug: v.slug,
     maxGuests: v.maxGuests || 6,
     pricePerNight: v.pricePerNight || 0,
-    location: v.location || "Kutch",
+    location: getVillaAddress(v.location, "Udaipur, Rajasthan"),
   }));
 
   const serializedBookings: SerializedBooking[] = bookingsRaw.map((b) => {

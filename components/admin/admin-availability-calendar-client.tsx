@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { formatCurrency } from "@/lib/utils/pricing";
-import { ChevronLeft, ChevronRight, Plus, X, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus, X, Trash2, Clock, User, Lock } from "lucide-react";
 
 interface VillaOption {
   id: string;
@@ -356,23 +356,29 @@ const [nowMs, setNowMs] = useState<number>(0);
                   {activeBooking && (
                     <button
                       onClick={() => setSelectedBooking(activeBooking)}
-                      className={`w-full text-left p-1 rounded text-white text-[10px] truncate transition-colors ${
+                      className={`w-full text-left p-1 rounded text-white text-[10px] truncate transition-colors flex items-center gap-1 ${
                         isPendingHold
                           ? "bg-amber-600 dark:bg-amber-800 hover:bg-amber-700"
                           : "bg-rose-700 dark:bg-rose-900 hover:bg-rose-800"
                       }`}
                       title={`${activeBooking.guestName} (${isPendingHold ? "PENDING HOLD" : activeBooking.status})`}
                     >
-                      {isPendingHold ? "⏳" : "👤"} {activeBooking.guestName}
+                      {isPendingHold ? (
+                        <Clock className="w-2.5 h-2.5 flex-shrink-0" />
+                      ) : (
+                        <User className="w-2.5 h-2.5 flex-shrink-0" />
+                      )}
+                      <span className="truncate">{activeBooking.guestName}</span>
                     </button>
                   )}
 
                   {activeBlock && (
                     <div
-                      className="p-1 rounded bg-stone-600 dark:bg-stone-700 text-white text-[10px] truncate"
+                      className="p-1 rounded bg-stone-600 dark:bg-stone-700 text-white text-[10px] truncate flex items-center gap-1"
                       title={`Blocked: ${activeBlock.reason || "Hold"}`}
                     >
-                      🔒 {activeBlock.reason || "Blocked"}
+                      <Lock className="w-2.5 h-2.5 flex-shrink-0" />
+                      <span className="truncate">{activeBlock.reason || "Blocked"}</span>
                     </div>
                   )}
                 </div>

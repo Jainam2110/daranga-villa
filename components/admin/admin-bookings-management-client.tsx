@@ -10,6 +10,7 @@ import {
   BookOpenCheck,
   Plus,
   AlertTriangle,
+  MapPin,
 } from "lucide-react";
 
 export interface SerializedBooking {
@@ -815,8 +816,9 @@ export function AdminBookingsManagementClient({
                     <span className="font-serif text-base font-bold text-[#171513] dark:text-[#F4EFE5] block">
                       {selectedBooking.villaName}
                     </span>
-                    <span className="text-[11px] text-[#6E685F] dark:text-[#A9A39A]">
-                      📍 {selectedBooking.villaLocation || "Kutch"}
+                    <span className="text-[11px] text-[#6E685F] dark:text-[#A9A39A] flex items-center gap-1">
+                      <MapPin className="w-3 h-3 text-[#C89B4A]" />
+                      <span>{selectedBooking.villaLocation || "Udaipur, Rajasthan"}</span>
                     </span>
                   </div>
                 </div>

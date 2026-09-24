@@ -670,8 +670,9 @@ export function VillaCalendar() {
     isPast,
     isDateBlocked,
     nights,
-    totalPrice,
     clearDates,
+    guests,
+    setGuests,
   } = useVillaBooking();
 
   const formatDateISO = (d: Date): string => {
@@ -883,30 +884,7 @@ export function VillaCalendar() {
   };
 
   return (
-    <div id="booking-widget" className="w-full min-w-0 bg-[var(--bg-secondary)] p-3.5 sm:p-6 md:p-8 border border-[var(--border-color)] rounded-[12px] shadow-xl text-[var(--text-primary)] space-y-6">
-      {/* Header Section */}
-      <div className="space-y-3 text-center pb-6 border-b border-[var(--border-color)]/60">
-        <div className="space-y-1">
-          <span className="text-[10px] uppercase font-semibold text-[var(--accent)] tracking-[0.25em] block">
-            AVAILABILITY &amp; RESERVATION
-          </span>
-          <h2 className="font-serif text-3xl sm:text-4xl font-light text-[var(--text-primary)]">
-            Select Your Stay Dates
-          </h2>
-        </div>
-
-        <div className="flex flex-wrap items-baseline justify-center gap-2 pt-2">
-          <span className="font-sans text-3xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight">
-            ₹{(nights > 0 ? totalPrice : villa.pricePerNight).toLocaleString("en-IN")}
-          </span>
-          <span className="font-sans text-lg sm:text-xl font-normal text-[var(--text-secondary)]">
-            {nights > 0
-              ? `for ${nights} ${nights === 1 ? "night" : "nights"}`
-              : "/ night"}
-          </span>
-        </div>
-      </div>
-
+    <div id="booking-widget" className="w-full min-w-0 bg-[var(--bg-secondary)] p-3.5 sm:p-6 md:p-8 border border-[var(--border-color)] rounded-[12px] shadow-xl text-[var(--text-primary)] space-y-5">
       {/* Calendar Grid */}
       <div className="space-y-4 w-full min-w-0">
         <div className="flex items-center justify-between px-1">
@@ -988,6 +966,42 @@ export function VillaCalendar() {
           </span>
         </div>
       </div>
+
+      {/* Number of Guests Selector */}
+      <div className="flex items-center justify-between p-4 sm:p-5 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-[8px]">
+        <div>
+          <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[var(--accent)] block">
+            NUMBER OF GUESTS
+          </span>
+          <span className="text-xs text-[var(--text-secondary)] font-light block mt-0.5">
+            Max occupancy: {villa.maxGuests || 4} guests
+          </span>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setGuests((g) => Math.max(1, g - 1))}
+            disabled={guests <= 1}
+            aria-label="Decrease guests"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--accent)] hover:text-[var(--accent-text)] disabled:opacity-25 disabled:pointer-events-none flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
+          >
+            -
+          </button>
+          <span className="font-serif text-base sm:text-lg font-bold text-[var(--text-primary)] w-6 text-center">
+            {guests}
+          </span>
+          <button
+            type="button"
+            onClick={() => setGuests((g) => Math.min(villa.maxGuests || 4, g + 1))}
+            disabled={guests >= (villa.maxGuests || 4)}
+            aria-label="Increase guests"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--accent)] hover:text-[var(--accent-text)] disabled:opacity-25 disabled:pointer-events-none flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
+          >
+            +
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -1001,7 +1015,6 @@ export function VillaBookingCard() {
     checkIn,
     checkOut,
     guests,
-    setGuests,
     currentStep,
     setCurrentStep,
     guestName,
@@ -1346,42 +1359,6 @@ export function VillaBookingCard() {
               <span className="font-medium text-[var(--text-primary)] block mt-0.5 truncate">
                 {checkOut ? formatDateDisplay(checkOut) : "Select date"}
               </span>
-            </div>
-          </div>
-
-          {/* Guest Selector Counter */}
-          <div className="py-3 border-y border-[var(--border-color)]/70 flex items-center justify-between">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)] block">
-                GUESTS
-              </span>
-              <span className="text-[10px] text-[var(--text-secondary)] font-light block mt-0.5">
-                Max capacity: {villa.maxGuests || 4} guests
-              </span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setGuests((g) => Math.max(1, g - 1))}
-                disabled={guests <= 1}
-                aria-label="Decrease guests"
-                className="w-8 h-8 rounded-full border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--accent)] hover:text-[var(--accent-text)] disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center font-bold text-sm transition-colors"
-              >
-                -
-              </button>
-              <span className="font-serif text-base font-bold text-[var(--text-primary)] w-4 text-center">
-                {guests}
-              </span>
-              <button
-                type="button"
-                onClick={() => setGuests((g) => Math.min(villa.maxGuests || 4, g + 1))}
-                disabled={guests >= (villa.maxGuests || 4)}
-                aria-label="Increase guests"
-                className="w-8 h-8 rounded-full border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--accent)] hover:text-[var(--accent-text)] disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center font-bold text-sm transition-colors"
-              >
-                +
-              </button>
             </div>
           </div>
 

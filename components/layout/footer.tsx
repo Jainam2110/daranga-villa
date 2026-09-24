@@ -47,11 +47,6 @@ export function Footer() {
                   Gallery
                 </Link>
               </li>
-              <li>
-                <Link href="/#location" className="hover:text-[var(--accent)] transition-colors">
-                  Location
-                </Link>
-              </li>
             </ul>
           </div>
 

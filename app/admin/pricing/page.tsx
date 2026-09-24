@@ -5,6 +5,7 @@ import { connectToDatabase } from "@/lib/mongodb";
 import Villa, { IVilla } from "@/models/Villa";
 import { AdminLayoutShell } from "@/components/admin/admin-layout-shell";
 import { AdminPricingClient, SerializedPricingVilla } from "@/components/admin/admin-pricing-client";
+import { getVillaAddress } from "@/lib/utils/villa-location";
 
 export default async function AdminPricingPage() {
   const admin = await getAuthenticatedAdmin();
@@ -23,7 +24,7 @@ export default async function AdminPricingPage() {
     _id: v._id.toString(),
     name: v.name,
     slug: v.slug,
-    location: v.location || "",
+    location: getVillaAddress(v.location, "Udaipur, Rajasthan"),
     pricePerNight: v.pricePerNight,
     maxGuests: v.maxGuests,
     status: v.status,

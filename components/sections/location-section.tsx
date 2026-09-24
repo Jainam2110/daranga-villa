@@ -16,6 +16,7 @@ import {
 import { Container } from "@/components/ui/container";
 import { Villa } from "@/types/villa";
 import { getPrimaryVillaImageUrl } from "@/lib/utils/image";
+import { getVillaAddress } from "@/lib/utils/villa-location";
 import { RealUdaipurMap } from "@/components/maps/real-udaipur-map";
 
 export interface UdaipurLocation {
@@ -105,8 +106,8 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
         number: String(index + 1).padStart(2, "0"),
         name: v.name.startsWith("Daranga") ? v.name : `Daranga ${v.name}`,
         tagline: v.tagline || v.description?.slice(0, 60) || "Private Luxury Villa Residence",
-        zone: v.zone || v.location || "Udaipur, Rajasthan",
-        address: v.location || "Udaipur, Rajasthan",
+        zone: v.zone || getVillaAddress(v.location, "Udaipur, Rajasthan"),
+        address: getVillaAddress(v.location, "Udaipur, Rajasthan"),
         coordinates: { lat, lng },
         mapPos: {
           x: Math.min(90, Math.max(10, posX)),
@@ -213,7 +214,7 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
 
         {/* Main Interactive Map & Details Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
-          {/* Left Column: Real Interactive Leaflet Udaipur Map (7 Cols) */}
+          {/* Left Column: Real Interactive Google Maps Udaipur Map (7 Cols) */}
           <div className="lg:col-span-7 flex flex-col">
             <div className="w-full h-[440px] sm:h-[500px] lg:h-[600px] rounded-[16px] overflow-hidden border border-[var(--border-color)] bg-[#12110F] shadow-2xl flex-1 flex flex-col">
               <RealUdaipurMap

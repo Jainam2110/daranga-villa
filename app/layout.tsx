@@ -3,6 +3,7 @@ import { Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { CustomerAuthProvider } from "@/components/providers/customer-auth-provider";
 import { MobileBottomNav } from "@/components/navigation/mobile-bottom-nav";
+import { WhatsAppButton } from "@/components/ui/whatsapp-button";
 import { ScrollProgressBar } from "@/components/ui/scroll-progress-bar";
 import "./globals.css";
 
@@ -26,10 +27,11 @@ export const metadata: Metadata = {
   description: "Experience private luxury stays at Daranga Villa.",
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/brand/daranga-icon-mark.png", type: "image/png" },
     ],
     apple: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/apple-touch-icon.png", type: "image/png" },
     ],
   },
 };
@@ -57,6 +59,7 @@ export default function RootLayout({
         <ThemeProvider>
           <CustomerAuthProvider>
             {children}
+            <WhatsAppButton />
             <MobileBottomNav />
           </CustomerAuthProvider>
         </ThemeProvider>

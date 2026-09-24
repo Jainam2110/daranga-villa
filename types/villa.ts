@@ -1,9 +1,47 @@
+export type VillaImageCategory =
+  | "EXTERIOR"
+  | "LIVING_ROOM"
+  | "BEDROOM"
+  | "BATHROOM"
+  | "KITCHEN"
+  | "POOL"
+  | "DINING"
+  | "GARDEN"
+  | "BALCONY"
+  | "VIEW"
+  | "AMENITIES"
+  | "OTHER";
+
+export const VILLA_IMAGE_CATEGORIES: { value: VillaImageCategory; label: string }[] = [
+  { value: "EXTERIOR", label: "Exterior" },
+  { value: "LIVING_ROOM", label: "Living Room" },
+  { value: "BEDROOM", label: "Bedroom" },
+  { value: "BATHROOM", label: "Bathroom" },
+  { value: "KITCHEN", label: "Kitchen" },
+  { value: "POOL", label: "Pool" },
+  { value: "DINING", label: "Dining" },
+  { value: "GARDEN", label: "Garden" },
+  { value: "BALCONY", label: "Balcony" },
+  { value: "VIEW", label: "View" },
+  { value: "AMENITIES", label: "Amenities" },
+  { value: "OTHER", label: "Other" },
+];
+
 export interface VillaImageObject {
   url: string;
-  publicId: string;
+  publicId?: string;
+  category?: VillaImageCategory;
+  label?: string;
 }
 
 export type VillaImage = VillaImageObject | string;
+
+export interface VillaLocation {
+  address: string;
+  latitude: number;
+  longitude: number;
+  placeId?: string;
+}
 
 export interface Villa {
   id: string;
@@ -12,10 +50,12 @@ export interface Villa {
   slug?: string;
   tagline?: string;
   description?: string;
-  location?: string;
+  location?: string | VillaLocation;
   zone?: string;
+  googleMapsUrl?: string;
   latitude?: number;
   longitude?: number;
+  placeId?: string;
   mapX?: number;
   mapY?: number;
   images?: (VillaImageObject | string)[];

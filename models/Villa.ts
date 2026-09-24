@@ -3,16 +3,27 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 export interface IVillaImage {
   url: string;
   publicId?: string;
+  category?: string;
+  label?: string;
+}
+
+export interface IVillaLocation {
+  address: string;
+  latitude: number;
+  longitude: number;
+  placeId?: string;
 }
 
 export interface IVilla extends Document {
   name: string;
   slug: string;
   description?: string;
-  location?: string;
+  location?: IVillaLocation | string;
   zone?: string;
+  googleMapsUrl?: string;
   latitude?: number;
   longitude?: number;
+  placeId?: string;
   mapX?: number;
   mapY?: number;
   images: (IVillaImage | string)[];
@@ -48,12 +59,17 @@ const VillaSchema = new Schema<IVilla>(
       default: "",
     },
     location: {
-      type: String,
-      default: "",
+      type: Schema.Types.Mixed,
+      default: () => ({ address: "", latitude: undefined, longitude: undefined, placeId: "" }),
     },
     zone: {
       type: String,
       default: "Udaipur, Rajasthan",
+    },
+    googleMapsUrl: {
+      type: String,
+      default: "",
+      trim: true,
     },
     latitude: {
       type: Number,
@@ -62,6 +78,11 @@ const VillaSchema = new Schema<IVilla>(
     longitude: {
       type: Number,
       default: 73.7125,
+    },
+    placeId: {
+      type: String,
+      default: "",
+      trim: true,
     },
     mapX: {
       type: Number,

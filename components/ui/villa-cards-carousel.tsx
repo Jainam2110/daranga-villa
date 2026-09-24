@@ -100,7 +100,7 @@ export function VillaCardsCarousel({
 
   return (
     <div className={`w-full min-w-0 ${className}`}>
-      {/* Mobile: 100% 1-by-1 Slide Carousel (< md) | Desktop: Multi-column Grid (md+) */}
+      {/* Mobile: Partial Peek Swipeable Carousel (< md) | Desktop: Multi-column Grid (md+) */}
       <div
         ref={scrollContainerRef}
         onTouchStart={handleTouchStart}
@@ -110,15 +110,16 @@ export function VillaCardsCarousel({
           overflow-x-auto md:overflow-visible
           snap-x snap-mandatory md:snap-none
           scrollbar-none scroll-touch-pan
-          gap-0 md:gap-8
-          py-1 md:py-0
+          gap-4 md:gap-8
+          pb-2 md:pb-0
+          px-1 md:px-0
           ${gridClassName}
         `}
       >
         {villas.map((villa, idx) => (
           <div
             key={villa.id || villa._id || idx}
-            className="w-full min-w-full md:min-w-0 md:w-auto flex-shrink-0 snap-center md:snap-align-none px-0"
+            className="w-[85vw] sm:w-[360px] md:w-auto min-w-[280px] flex-shrink-0 snap-start md:snap-align-none"
           >
             <VillaCard villa={villa} onViewClick={onViewClick} />
           </div>

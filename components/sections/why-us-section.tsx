@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
+import { AmenityIcon } from "@/components/ui/amenity-icon";
 
 export function WhyUsSection() {
   const pillars = [
@@ -84,11 +85,11 @@ export function WhyUsSection() {
               <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--accent)] block">
                 Signature Estate Inclusions
               </span>
-              <div className="grid grid-cols-2 gap-2 text-xs text-[var(--text-secondary)]">
+              <div className="grid grid-cols-2 gap-2.5 text-xs text-[var(--text-secondary)]">
                 {signatureAmenities.map((amenity, i) => (
                   <div key={i} className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] flex-shrink-0" />
-                    <span className="truncate">{amenity}</span>
+                    <AmenityIcon name={amenity} className="w-3.5 h-3.5 text-[var(--accent)] flex-shrink-0" />
+                    <span className="truncate font-medium">{amenity}</span>
                   </div>
                 ))}
               </div>
