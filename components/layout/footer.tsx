@@ -38,13 +38,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#experiences" className="hover:text-[var(--accent)] transition-colors">
-                  Experiences
+                <Link href="/#about" className="hover:text-[var(--accent)] transition-colors">
+                  About Us
                 </Link>
               </li>
               <li>
-                <Link href="/#gallery" className="hover:text-[var(--accent)] transition-colors">
-                  Gallery
+                <Link href="/#experiences" className="hover:text-[var(--accent)] transition-colors">
+                  Experiences
                 </Link>
               </li>
             </ul>

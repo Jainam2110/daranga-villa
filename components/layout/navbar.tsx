@@ -112,9 +112,8 @@ export function Navbar({
 
   const navLinks = [
     { label: "Villas", href: "/villas" },
-    { label: "Philosophy", href: "/#experience" },
+    { label: "About Us", href: "/#about" },
     { label: "Experiences", href: "/#experiences" },
-    { label: "Gallery", href: "/#gallery" },
   ];
 
   return (

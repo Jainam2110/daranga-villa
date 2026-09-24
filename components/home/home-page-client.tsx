@@ -6,9 +6,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/sections/hero-section";
 import { FeaturedVillasSection } from "@/components/sections/featured-villas-section";
-import { WhyUsSection } from "@/components/sections/why-us-section";
+import { AboutUsSection } from "@/components/sections/about-us-section";
 import { ExperiencesSection } from "@/components/sections/experiences-section";
-import { GallerySection } from "@/components/sections/gallery-section";
 import { BookingCtaSection } from "@/components/sections/booking-cta-section";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { Villa } from "@/types/villa";
@@ -106,23 +105,18 @@ export function HomePageClient({ villas }: HomePageClientProps) {
           onSelectVilla={handleSelectVilla}
         />
 
-        {/* 4. Estate Philosophy & Curated Amenities */}
-        <ScrollReveal delay={150} direction="up">
-          <WhyUsSection />
+        {/* 4. About Us Section */}
+        <ScrollReveal delay={100} direction="up">
+          <AboutUsSection />
         </ScrollReveal>
 
         {/* 5. Curated Resort Experiences */}
-        <ScrollReveal delay={150} direction="up">
+        <ScrollReveal delay={100} direction="up">
           <ExperiencesSection />
         </ScrollReveal>
 
-        {/* 6. Property Gallery Portfolio */}
-        <ScrollReveal delay={150} direction="up">
-          <GallerySection villas={villas} />
-        </ScrollReveal>
-
-        {/* 7. Final Reservation CTA Banner */}
-        <ScrollReveal delay={150} direction="up">
+        {/* 6. Final Reservation CTA Banner */}
+        <ScrollReveal delay={100} direction="up">
           <BookingCtaSection
             onCheckAvailabilityClick={handleScrollToVillas}
           />

@@ -265,10 +265,10 @@ export function HeroSection({
               EXPLORE VILLAS
             </button>
             <a
-              href="#experience"
+              href="#about"
               className="w-full sm:w-auto px-8 py-3.5 rounded-[6px] bg-black/45 hover:bg-white/15 text-white border border-white/30 text-xs uppercase tracking-[0.2em] font-medium transition-all duration-300 backdrop-blur-md text-center hover:border-white/60 active:scale-95"
             >
-              OUR PHILOSOPHY
+              ABOUT US
             </a>
           </div>
         </div>
