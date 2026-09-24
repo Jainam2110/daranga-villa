@@ -105,14 +105,14 @@ export function HomePageClient({ villas }: HomePageClientProps) {
           onSelectVilla={handleSelectVilla}
         />
 
-        {/* 4. About Us Section */}
-        <ScrollReveal delay={100} direction="up">
-          <AboutUsSection />
-        </ScrollReveal>
-
-        {/* 5. Curated Resort Experiences */}
+        {/* 4. Curated Resort Experiences */}
         <ScrollReveal delay={100} direction="up">
           <ExperiencesSection />
+        </ScrollReveal>
+
+        {/* 5. About Us Section (Story & Values) */}
+        <ScrollReveal delay={100} direction="up">
+          <AboutUsSection />
         </ScrollReveal>
 
         {/* 6. Final Reservation CTA Banner */}
