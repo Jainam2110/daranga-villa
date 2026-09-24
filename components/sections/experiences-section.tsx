@@ -9,21 +9,21 @@ export function ExperiencesSection() {
       subtitle: "Bespoke Culinary Journeys",
       description:
         "Enjoy candles lit along private pool terraces while our master chefs serve multi-course Indian and international menus prepared with locally sourced organic produce.",
-      image: "/images/hero/heroimg.webp",
+      image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2070&q=85",
     },
     {
-      title: "SLOW MORNINGS & REVALUATION",
+      title: "SLOW MORNINGS & REVITALIZATION",
       subtitle: "Mindful Revival",
       description:
         "Begin your day with guided sunrise yoga, personalized spa therapies, and floating breakfast spreads served right in your private infinity pool.",
-      image: "/images/hero/heroimg.webp",
+      image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=2080&q=85",
     },
     {
       title: "LOCAL EXPERIENCES & NATURE",
       subtitle: "Curated Estate Excursions",
       description:
         "Explore private trails, secluded estate vantage points, and cultural landmarks accompanied by private estate guides.",
-      image: "/images/hero/heroimg.webp",
+      image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=2070&q=85",
     },
   ];
 

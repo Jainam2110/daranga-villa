@@ -59,6 +59,7 @@ export function AdminSidebar({
       title: "PROPERTY MANAGEMENT",
       items: [
         { name: "Villas & Suites", href: "/admin/villas", icon: Home },
+        { name: "Hero Slideshow", href: "/admin/hero-slides", icon: CalendarDays },
         { name: "Availability", href: "/admin/availability", icon: CalendarDays },
         { name: "Dynamic Pricing", href: "/admin/pricing", icon: Tag },
       ],

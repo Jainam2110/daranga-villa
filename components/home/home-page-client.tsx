@@ -12,12 +12,14 @@ import { BookingCtaSection } from "@/components/sections/booking-cta-section";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { Villa } from "@/types/villa";
 import { getPrimaryVillaImageUrl } from "@/lib/utils/image";
+import { HeroSlideData } from "@/lib/api/hero-slides";
 
 interface HomePageClientProps {
   villas: Villa[];
+  customHeroSlides?: HeroSlideData[];
 }
 
-export function HomePageClient({ villas }: HomePageClientProps) {
+export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps) {
   const router = useRouter();
 
   // Shared Availability Booking State (Powers both landing search bar and sticky header)
@@ -96,6 +98,7 @@ export function HomePageClient({ villas }: HomePageClientProps) {
         {/* 2. Full-Screen Cinematic 5-Second Hero Image Slideshow */}
         <HeroSection
           heroImages={heroImages}
+          customHeroSlides={customHeroSlides}
           onExploreClick={handleScrollToVillas}
         />
 

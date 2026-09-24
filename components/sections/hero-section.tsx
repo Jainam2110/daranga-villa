@@ -5,9 +5,22 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 
+export interface HeroSlideItem {
+  _id?: string;
+  id?: string;
+  url: string;
+  title: string;
+  tagline?: string;
+  subtitle?: string;
+  caption?: string;
+  order?: number;
+  isActive?: boolean;
+}
+
 interface HeroSectionProps {
   heroImageUrl?: string;
   heroImages?: string[];
+  customHeroSlides?: HeroSlideItem[];
   onExploreClick?: () => void;
 }
 
@@ -70,10 +83,20 @@ const SLIDE_DURATION = 5000; // 5 seconds per slide
 export function HeroSection({
   heroImageUrl,
   heroImages,
+  customHeroSlides,
   onExploreClick,
 }: HeroSectionProps) {
-  // Consolidate slides: prioritize dynamic images if provided
+  // Consolidate slides: prioritize dynamic admin slides, then dynamic villa images if provided
   const slides: HeroSlide[] = React.useMemo(() => {
+    if (customHeroSlides && customHeroSlides.length > 0) {
+      return customHeroSlides.map((s) => ({
+        url: s.url,
+        tagline: s.tagline || "DARANGA SANCTUARIES",
+        title: s.title || "Villas For\nLuxury Living",
+        subtitle: s.subtitle || "",
+        caption: s.caption || s.title || "Daranga Luxury Sanctuaries",
+      }));
+    }
     if (heroImages && heroImages.length > 0) {
       return heroImages.map((url, idx) => {
         const theme = SANCTUARY_THEMES[idx % SANCTUARY_THEMES.length];
@@ -99,7 +122,7 @@ export function HeroSection({
       ];
     }
     return DEFAULT_HERO_SLIDES;
-  }, [heroImageUrl, heroImages]);
+  }, [customHeroSlides, heroImageUrl, heroImages]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
