@@ -5,9 +5,16 @@ import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/sections/hero-section";
+import { HeroSearchBar } from "@/components/sections/hero-search-bar";
+import {
+  ExperienceCategoriesSection,
+  EXPERIENCE_CATEGORIES,
+} from "@/components/sections/experience-categories-section";
+import { PromotionalStrip } from "@/components/ui/promotional-strip";
 import { FeaturedVillasSection } from "@/components/sections/featured-villas-section";
 import { AboutUsSection } from "@/components/sections/about-us-section";
 import { ExperiencesSection } from "@/components/sections/experiences-section";
+import { LocationSection } from "@/components/sections/location-section";
 import { BookingCtaSection } from "@/components/sections/booking-cta-section";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { Villa } from "@/types/villa";
@@ -22,7 +29,11 @@ interface HomePageClientProps {
 export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps) {
   const router = useRouter();
 
-  // Shared Availability Booking State (Powers both landing search bar and sticky header)
+  // Search & Category Filter State
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // Shared Availability Booking State
   const [checkIn, setCheckIn] = useState<string>("");
   const [checkOut, setCheckOut] = useState<string>("");
   const [guests, setGuests] = useState<number>(2);
@@ -55,6 +66,75 @@ export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps
     router.push(`/villas/${slug}`);
   };
 
+  const handleClearAllFilters = () => {
+    setSearchQuery("");
+    setSelectedCategory(null);
+  };
+
+  // Filter villas based on both search query and selected experience category
+  const filteredVillas = useMemo(() => {
+    let result = [...villas];
+
+    // 1. Filter by Search Query
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      result = result.filter((v) => {
+        const name = (v.name || "").toLowerCase();
+        const desc = (v.description || "").toLowerCase();
+        const tagline = (v.tagline || "").toLowerCase();
+        const loc = typeof v.location === "string" ? v.location.toLowerCase() : (v.location?.address || "").toLowerCase();
+        const amenitiesStr = Array.isArray(v.amenities) ? v.amenities.join(" ").toLowerCase() : "";
+        const highlightsStr = Array.isArray(v.highlights) ? v.highlights.join(" ").toLowerCase() : "";
+        const bhk = `${v.bedrooms || ""} bhk`.toLowerCase();
+
+        return (
+          name.includes(q) ||
+          desc.includes(q) ||
+          tagline.includes(q) ||
+          loc.includes(q) ||
+          amenitiesStr.includes(q) ||
+          highlightsStr.includes(q) ||
+          bhk.includes(q) ||
+          q.includes("udaipur") // if query is just "udaipur", all belong to Udaipur
+        );
+      });
+    }
+
+    // 2. Filter by Experience Category
+    if (selectedCategory) {
+      const catConfig = EXPERIENCE_CATEGORIES.find((c) => c.id === selectedCategory);
+      if (catConfig) {
+        const keywords = catConfig.keywords;
+        result = result.filter((v) => {
+          const combined = [
+            v.name,
+            v.description,
+            v.tagline,
+            ...(Array.isArray(v.amenities) ? v.amenities : []),
+            ...(Array.isArray(v.highlights) ? v.highlights : []),
+          ]
+            .join(" ")
+            .toLowerCase();
+
+          return keywords.some((kw) => combined.includes(kw));
+        });
+      }
+    }
+
+    return result;
+  }, [villas, searchQuery, selectedCategory]);
+
+  // Active filter label for user feedback
+  const activeFilterLabel = useMemo(() => {
+    const parts: string[] = [];
+    if (searchQuery.trim()) parts.push(`"${searchQuery.trim()}"`);
+    if (selectedCategory) {
+      const cat = EXPERIENCE_CATEGORIES.find((c) => c.id === selectedCategory);
+      if (cat) parts.push(cat.name);
+    }
+    return parts.length > 0 ? parts.join(" • ") : null;
+  }, [searchQuery, selectedCategory]);
+
   // Collect high-res hero images across active villas
   const heroImages = useMemo(() => {
     const images: string[] = ["/images/hero/heroimg.webp"];
@@ -81,8 +161,8 @@ export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps
   }, [villas]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-[var(--bg-primary)] font-sans text-[var(--text-primary)] selection:bg-[var(--accent)] selection:text-[var(--bg-primary)]">
-      {/* 1. Header (State 1: Transparent over hero | State 2: Sticky availability header on scroll) */}
+    <div className="flex min-h-screen flex-col bg-[#FCFBF8] dark:bg-[#171717] font-sans text-[#202020] dark:text-[#FCFBF8] selection:bg-[#E8A0A8] selection:text-[#202020]">
+      {/* 1. Header with Call Us button on top right & menu */}
       <Navbar
         checkIn={checkIn}
         checkOut={checkOut}
@@ -95,30 +175,61 @@ export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps
 
       {/* Main Content Sections */}
       <main className="flex-1">
-        {/* 2. Full-Screen Cinematic 5-Second Hero Image Slideshow */}
+        {/* 2. Full-Screen / Cinematic Hero Slideshow */}
         <HeroSection
           heroImages={heroImages}
           customHeroSlides={customHeroSlides}
           onExploreClick={handleScrollToVillas}
         />
 
-        {/* 3. Featured Villas Section */}
-        <FeaturedVillasSection
-          villas={villas}
-          onSelectVilla={handleSelectVilla}
+        {/* 3. Floating Stay Vista-style Search Bar (Overlapping bottom edge of hero) */}
+        <div className="relative -mt-6 sm:-mt-8 z-30">
+          <HeroSearchBar
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            onSearchSubmit={handleScrollToVillas}
+          />
+        </div>
+
+        {/* 4. Curated Udaipur Experiences Section (Replacing "Pick a Destination") */}
+        <ExperienceCategoriesSection
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
         />
 
-        {/* 4. Curated Resort Experiences */}
+        {/* 5. Soft Luxury Promotional / Offer Strip */}
+        <PromotionalStrip
+          message="Direct Booking Privilege • Complimentary artisanal breakfast & bespoke concierge hospitality with every stay"
+          ctaText="Explore Sanctuaries"
+          ctaHref="/villas"
+        />
+
+        {/* 6. Featured Villas Section (Receives Live Filtered Results) */}
+        <FeaturedVillasSection
+          villas={filteredVillas}
+          onSelectVilla={handleSelectVilla}
+          activeFilter={activeFilterLabel}
+          onClearFilter={handleClearAllFilters}
+        />
+
+        {/* 7. Curated Resort Experiences */}
         <ScrollReveal delay={100} direction="up">
           <ExperiencesSection />
         </ScrollReveal>
 
-        {/* 5. About Us Section (Story & Values) */}
+        {/* 8. About Us Section (Story & Values) */}
         <ScrollReveal delay={100} direction="up">
           <AboutUsSection />
         </ScrollReveal>
 
-        {/* 6. Final Reservation CTA Banner */}
+        {/* 9. Estate Locations & Map */}
+        {villas.length > 0 && (
+          <ScrollReveal delay={100} direction="up">
+            <LocationSection villas={villas} />
+          </ScrollReveal>
+        )}
+
+        {/* 10. Final Reservation CTA Banner */}
         <ScrollReveal delay={100} direction="up">
           <BookingCtaSection
             onCheckAvailabilityClick={handleScrollToVillas}
@@ -126,7 +237,7 @@ export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps
         </ScrollReveal>
       </main>
 
-      {/* 9. Footer */}
+      {/* 11. Footer */}
       <Footer />
     </div>
   );

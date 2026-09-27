@@ -131,7 +131,6 @@ export function VillaBookingProvider({
 }) {
   const villaId = villa.id || (villa as unknown as { _id: string })._id;
 
-  // Helper date functions
   const formatDateISO = (d: Date): string => {
     const year = d.getFullYear();
     const month = String(d.getMonth() + 1).padStart(2, "0");
@@ -164,7 +163,7 @@ export function VillaBookingProvider({
     new Date(today.getFullYear(), today.getMonth(), 1)
   );
 
-  // Booking selections & Stepper State
+  // Selections & Stepper State
   const [checkIn, setCheckIn] = useState<string>("");
   const [checkOut, setCheckOut] = useState<string>("");
   const [hoverDate, setHoverDate] = useState<string>("");
@@ -253,10 +252,12 @@ export function VillaBookingProvider({
   const nights = calculateNights(checkIn, checkOut);
   const totalPrice = nights * villa.pricePerNight;
 
-  const checkAvailability = useCallback(
-    async (inDate: string, outDate: string) => {
-      if (!inDate || !outDate) return;
-      if (outDate <= inDate) {
+  useEffect(() => {
+    let isCancelled = false;
+    if (!checkIn || !checkOut) return;
+
+    async function runCheck() {
+      if (checkOut <= checkIn) {
         setAvailabilityState("ERROR");
         setAvailabilityMessage("Check-out date must be after check-in date.");
         return;
@@ -267,9 +268,11 @@ export function VillaBookingProvider({
 
       try {
         const res = await fetch(
-          `/api/villas/${villaId}/availability?checkIn=${inDate}&checkOut=${outDate}&guests=${guests}`
+          `/api/villas/${villaId}/availability?checkIn=${checkIn}&checkOut=${checkOut}&guests=${guests}`
         );
         const data = await res.json();
+
+        if (isCancelled) return;
 
         if (!res.ok) {
           setAvailabilityState("ERROR");
@@ -287,26 +290,19 @@ export function VillaBookingProvider({
           );
         }
       } catch {
-        setAvailabilityState("ERROR");
-        setAvailabilityMessage("Network error checking availability.");
-      }
-    },
-    [villaId, guests, setAvailabilityState, setAvailabilityMessage]
-  );
-
-  useEffect(() => {
-    let isCancelled = false;
-    if (checkIn && checkOut) {
-      void (async () => {
         if (!isCancelled) {
-          await checkAvailability(checkIn, checkOut);
+          setAvailabilityState("ERROR");
+          setAvailabilityMessage("Network error checking availability.");
         }
-      })();
+      }
     }
+
+    void runCheck();
+
     return () => {
       isCancelled = true;
     };
-  }, [checkIn, checkOut, checkAvailability]);
+  }, [checkIn, checkOut, villaId, guests]);
 
   const handleDateClick = (dateStr: string) => {
     if (isPast(dateStr) || isDateBlocked(dateStr)) return;
@@ -420,7 +416,7 @@ export function VillaBookingProvider({
           contact: guestPhone.trim() || bookingToUse?.guestPhone || "",
         },
         theme: {
-          color: "#C5A880", // Luxury champagne gold theme matching Daranga Villa visual design
+          color: "#202020", // Deep Charcoal luxury brand theme
         },
         handler: async function (response: {
           razorpay_payment_id: string;
@@ -431,7 +427,6 @@ export function VillaBookingProvider({
           setBookingError(null);
 
           try {
-            // STEP 3: Server-side Payment Signature & Amount Verification
             const verifyRes = await fetch("/api/payments/verify", {
               method: "POST",
               headers: {
@@ -455,7 +450,6 @@ export function VillaBookingProvider({
               return;
             }
 
-            // Signature & Payment Verification Succeeded! Update state to CONFIRMED / PAID
             setRazorpayCallbackData({
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_order_id: response.razorpay_order_id,
@@ -516,9 +510,6 @@ export function VillaBookingProvider({
     }
   };
 
-  /**
-   * Submit Booking Form (Step 2 Submit) -> Creates MongoDB Booking & Initiates Razorpay Payment
-   */
   const handleSubmitBooking = async (e: React.FormEvent) => {
     e.preventDefault();
     setBookingError(null);
@@ -545,7 +536,6 @@ export function VillaBookingProvider({
 
     setIsSubmitting(true);
 
-    // If booking document already created for this session, reuse it
     if (confirmedBooking && (confirmedBooking._id || confirmedBooking.id)) {
       await handleInitiatePayment(confirmedBooking);
       return;
@@ -584,8 +574,6 @@ export function VillaBookingProvider({
 
       const createdBooking: ConfirmedBookingDetails = data.data || data.booking;
       setConfirmedBooking(createdBooking);
-
-      // Launch Razorpay Order Creation & Checkout Modal
       await handleInitiatePayment(createdBooking);
     } catch {
       setBookingError("A network error occurred while submitting your booking.");
@@ -735,13 +723,13 @@ export function VillaCalendar() {
     return (
       <div className="w-full min-w-0 space-y-3">
         {/* Month Header */}
-        <div className="flex items-center justify-between w-full min-w-0 pb-2 border-b border-[var(--border-color)]/40">
+        <div className="flex items-center justify-between w-full min-w-0 pb-2 border-b border-[#E8E6E2]/80 dark:border-[#383633]">
           {showPrevArrow ? (
             <button
               type="button"
               onClick={handlePrevMonth}
               disabled={!canGoPrevMonth}
-              className="w-8 h-8 rounded-full border border-[var(--border-color)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors flex items-center justify-center text-xs font-bold disabled:opacity-20 disabled:pointer-events-none flex-shrink-0"
+              className="w-8 h-8 rounded-full border border-[#E8E6E2] dark:border-[#383633] text-[#202020] dark:text-[#FCFBF8] hover:border-[#202020] dark:hover:border-[#FCFBF8] transition-colors flex items-center justify-center text-xs font-bold disabled:opacity-20 disabled:pointer-events-none flex-shrink-0 cursor-pointer"
               aria-label="Previous Month"
             >
               &larr;
@@ -750,7 +738,7 @@ export function VillaCalendar() {
             <div className="w-8 flex-shrink-0" />
           )}
 
-          <h4 className="font-serif text-sm sm:text-base font-bold text-[var(--text-primary)] tracking-wide uppercase whitespace-nowrap truncate px-1 text-center flex-1 min-w-0">
+          <h4 className="font-serif text-sm sm:text-base font-semibold text-[#202020] dark:text-[#FCFBF8] tracking-wide uppercase whitespace-nowrap truncate px-1 text-center flex-1 min-w-0">
             {grid.monthName} {grid.year}
           </h4>
 
@@ -758,7 +746,7 @@ export function VillaCalendar() {
             <button
               type="button"
               onClick={handleNextMonth}
-              className="w-8 h-8 rounded-full border border-[var(--border-color)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors flex items-center justify-center text-xs font-bold flex-shrink-0"
+              className="w-8 h-8 rounded-full border border-[#E8E6E2] dark:border-[#383633] text-[#202020] dark:text-[#FCFBF8] hover:border-[#202020] dark:hover:border-[#FCFBF8] transition-colors flex items-center justify-center text-xs font-bold flex-shrink-0 cursor-pointer"
               aria-label="Next Month"
             >
               &rarr;
@@ -767,7 +755,7 @@ export function VillaCalendar() {
             <button
               type="button"
               onClick={handleNextMonth}
-              className="md:hidden w-8 h-8 rounded-full border border-[var(--border-color)] text-[var(--text-primary)] hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors flex items-center justify-center text-xs font-bold flex-shrink-0"
+              className="md:hidden w-8 h-8 rounded-full border border-[#E8E6E2] dark:border-[#383633] text-[#202020] dark:text-[#FCFBF8] hover:border-[#202020] dark:hover:border-[#FCFBF8] transition-colors flex items-center justify-center text-xs font-bold flex-shrink-0 cursor-pointer"
               aria-label="Next Month"
             >
               &rarr;
@@ -778,11 +766,11 @@ export function VillaCalendar() {
         </div>
 
         {/* Days of Week Header */}
-        <div className="grid grid-cols-7 text-center w-full min-w-0 border-b border-[var(--border-color)]/50 pb-2">
+        <div className="grid grid-cols-7 text-center w-full min-w-0 border-b border-[#E8E6E2]/60 dark:border-[#383633] pb-2">
           {DAY_NAMES.map((d) => (
             <span
               key={d}
-              className="w-full min-w-0 text-center text-[9px] min-[360px]:text-[10px] sm:text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-normal truncate"
+              className="w-full min-w-0 text-center text-[9px] min-[360px]:text-[10px] sm:text-xs font-semibold text-[#66635F] dark:text-[#BDB8B0] uppercase tracking-normal truncate"
             >
               {d}
             </span>
@@ -815,24 +803,24 @@ export function VillaCalendar() {
 
             let containerBg = "";
             if (checkOut && checkIn) {
-              if (isCheckIn) containerBg = "bg-[var(--accent)]/20 rounded-l-full";
-              else if (isCheckOut) containerBg = "bg-[var(--accent)]/20 rounded-r-full";
-              else if (inSelectedRange) containerBg = "bg-[var(--accent)]/20";
+              if (isCheckIn) containerBg = "bg-[#F3C5C8] dark:bg-[#E8A0A8]/30 rounded-l-full";
+              else if (isCheckOut) containerBg = "bg-[#F3C5C8] dark:bg-[#E8A0A8]/30 rounded-r-full";
+              else if (inSelectedRange) containerBg = "bg-[#F3C5C8] dark:bg-[#E8A0A8]/30";
             } else if (checkIn && !checkOut && hoverDate && hoverDate > checkIn) {
-              if (isCheckIn) containerBg = "bg-[var(--accent)]/12 rounded-l-full";
-              else if (dateStr === hoverDate) containerBg = "bg-[var(--accent)]/12 rounded-r-full";
-              else if (inHoverRange) containerBg = "bg-[var(--accent)]/12";
+              if (isCheckIn) containerBg = "bg-[#F3C5C8]/50 dark:bg-[#E8A0A8]/15 rounded-l-full";
+              else if (dateStr === hoverDate) containerBg = "bg-[#F3C5C8]/50 dark:bg-[#E8A0A8]/15 rounded-r-full";
+              else if (inHoverRange) containerBg = "bg-[#F3C5C8]/50 dark:bg-[#E8A0A8]/15";
             }
 
             let btnStyle =
-              "text-[var(--text-primary)] hover:bg-[var(--accent)]/20 hover:text-[var(--accent)] rounded-full font-medium";
+              "text-[#202020] dark:text-[#FCFBF8] hover:bg-[#F7F6F3] dark:hover:bg-[#202020] rounded-full font-medium cursor-pointer";
 
             if (isDisabled) {
               btnStyle =
-                "text-[var(--text-secondary)]/35 line-through cursor-not-allowed pointer-events-none";
+                "bg-[#F1F0ED] dark:bg-[#202020]/50 text-[#8A8782] line-through cursor-not-allowed pointer-events-none";
             } else if (isCheckIn || isCheckOut) {
               btnStyle =
-                "bg-[var(--accent)] text-[var(--accent-text)] font-bold rounded-full shadow-md z-10";
+                "bg-[#202020] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:text-[#202020] font-bold rounded-full shadow-md z-10 scale-105";
             }
 
             const ariaLabel = `${grid.monthName} ${dayNum}, ${grid.year}${
@@ -884,11 +872,11 @@ export function VillaCalendar() {
   };
 
   return (
-    <div id="booking-widget" className="w-full min-w-0 bg-[var(--bg-secondary)] p-3.5 sm:p-6 md:p-8 border border-[var(--border-color)] rounded-[12px] shadow-xl text-[var(--text-primary)] space-y-5">
+    <div id="booking-widget" className="w-full min-w-0 bg-white dark:bg-[#202020] p-3.5 sm:p-6 md:p-8 border border-[#E8E6E2] dark:border-[#383633] rounded-[12px] shadow-sm text-[#202020] dark:text-[#FCFBF8] space-y-5">
       {/* Calendar Grid */}
       <div className="space-y-4 w-full min-w-0">
         <div className="flex items-center justify-between px-1">
-          <span className="text-xs font-sans uppercase tracking-[0.15em] text-[var(--accent)] font-semibold truncate">
+          <span className="text-xs font-sans uppercase tracking-[0.15em] text-[#66635F] dark:text-[#BDB8B0] font-semibold truncate">
             {checkIn && !checkOut
               ? "Select check-out date"
               : checkIn && checkOut
@@ -899,14 +887,14 @@ export function VillaCalendar() {
             <button
               type="button"
               onClick={clearDates}
-              className="text-[10px] text-[var(--accent)] underline hover:opacity-80 uppercase tracking-wider flex-shrink-0 ml-2"
+              className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] underline hover:text-[#202020] dark:hover:text-[#FCFBF8] uppercase tracking-wider flex-shrink-0 ml-2 cursor-pointer"
             >
               Clear dates
             </button>
           )}
         </div>
 
-        <div className="bg-[var(--bg-primary)] p-3 sm:p-5 md:p-6 rounded-[8px] border border-[var(--border-color)]/80 w-full min-w-0">
+        <div className="bg-white dark:bg-[#171717] p-3 sm:p-5 md:p-6 rounded-[8px] border border-[#E8E6E2] dark:border-[#383633] w-full min-w-0">
           {/* Mobile Single Month View (< md) */}
           <div className="block md:hidden w-full min-w-0">
             {renderSingleMonth(month0Grid, true, true, true)}
@@ -918,10 +906,10 @@ export function VillaCalendar() {
               <div className="w-[290px] lg:w-[310px] xl:w-[330px] flex-shrink-0">
                 {renderSingleMonth(month0Grid, true, false)}
               </div>
-              <div className="w-[290px] lg:w-[310px] xl:w-[330px] flex-shrink-0 border-l border-[var(--border-color)]/50 pl-6 lg:pl-8">
+              <div className="w-[290px] lg:w-[310px] xl:w-[330px] flex-shrink-0 border-l border-[#E8E6E2] dark:border-[#383633] pl-6 lg:pl-8">
                 {renderSingleMonth(month1Grid, false, false)}
               </div>
-              <div className="w-[290px] lg:w-[310px] xl:w-[330px] flex-shrink-0 border-l border-[var(--border-color)]/50 pl-6 lg:pl-8">
+              <div className="w-[290px] lg:w-[310px] xl:w-[330px] flex-shrink-0 border-l border-[#E8E6E2] dark:border-[#383633] pl-6 lg:pl-8">
                 {renderSingleMonth(month2Grid, false, true)}
               </div>
             </div>
@@ -929,51 +917,51 @@ export function VillaCalendar() {
         </div>
 
         {/* Legend */}
-        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-[9px] sm:text-[10px] uppercase tracking-wider text-[var(--text-secondary)] pt-1">
+        <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-[9px] sm:text-[10px] uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] pt-1">
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[var(--text-primary)]" />
+            <span className="w-2 h-2 rounded-full bg-white border border-[#DAD7D1] dark:bg-[#171717]" />
             <span>Available</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[var(--accent)]" />
+            <span className="w-2 h-2 rounded-full bg-[#202020] dark:bg-[#FCFBF8]" />
             <span>Selected</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[var(--text-secondary)]/40" />
+            <span className="w-2 h-2 rounded-full bg-[#F1F0ED] border border-[#DAD7D1]" />
             <span className="line-through">Unavailable</span>
           </div>
         </div>
       </div>
 
       {/* Date Range Strip */}
-      <div className="grid grid-cols-3 gap-2 py-4 border-y border-[var(--border-color)]/60 text-center">
+      <div className="grid grid-cols-3 gap-2 py-4 border-y border-[#E8E6E2] dark:border-[#383633] text-center">
         <div>
-          <span className="text-[9px] uppercase tracking-widest text-[var(--accent)] font-semibold block">CHECK-IN</span>
-          <span className="text-xs font-semibold text-[var(--text-primary)] block truncate mt-0.5">
+          <span className="text-[9px] uppercase tracking-widest text-[#66635F] dark:text-[#BDB8B0] font-semibold block">CHECK-IN</span>
+          <span className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] block truncate mt-0.5">
             {checkIn ? formatDateDisplay(checkIn) : "Select date"}
           </span>
         </div>
-        <div className="border-x border-[var(--border-color)]/60 px-1">
-          <span className="text-[9px] uppercase tracking-widest text-[var(--accent)] font-semibold block">CHECK-OUT</span>
-          <span className="text-xs font-semibold text-[var(--text-primary)] block truncate mt-0.5">
+        <div className="border-x border-[#E8E6E2] dark:border-[#383633] px-1">
+          <span className="text-[9px] uppercase tracking-widest text-[#66635F] dark:text-[#BDB8B0] font-semibold block">CHECK-OUT</span>
+          <span className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] block truncate mt-0.5">
             {checkOut ? formatDateDisplay(checkOut) : "Select date"}
           </span>
         </div>
         <div>
-          <span className="text-[9px] uppercase tracking-widest text-[var(--accent)] font-semibold block">STAY</span>
-          <span className="text-xs font-semibold text-[var(--text-primary)] block mt-0.5">
+          <span className="text-[9px] uppercase tracking-widest text-[#66635F] dark:text-[#BDB8B0] font-semibold block">STAY</span>
+          <span className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] block mt-0.5">
             {nights > 0 ? `${nights} ${nights === 1 ? "night" : "nights"}` : "--"}
           </span>
         </div>
       </div>
 
       {/* Number of Guests Selector */}
-      <div className="flex items-center justify-between p-4 sm:p-5 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-[8px]">
+      <div className="flex items-center justify-between p-4 sm:p-5 bg-[#FCFBF8] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] rounded-[8px]">
         <div>
-          <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[var(--accent)] block">
+          <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#66635F] dark:text-[#BDB8B0] block">
             NUMBER OF GUESTS
           </span>
-          <span className="text-xs text-[var(--text-secondary)] font-light block mt-0.5">
+          <span className="text-xs text-[#8A8782] font-light block mt-0.5">
             Max occupancy: {villa.maxGuests || 4} guests
           </span>
         </div>
@@ -984,11 +972,11 @@ export function VillaCalendar() {
             onClick={() => setGuests((g) => Math.max(1, g - 1))}
             disabled={guests <= 1}
             aria-label="Decrease guests"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--accent)] hover:text-[var(--accent-text)] disabled:opacity-25 disabled:pointer-events-none flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#DAD7D1] dark:border-[#383633] text-[#202020] dark:text-[#FCFBF8] hover:bg-[#202020] hover:text-[#FFFFFF] dark:hover:bg-[#FCFBF8] dark:hover:text-[#202020] disabled:opacity-25 disabled:pointer-events-none flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
           >
             -
           </button>
-          <span className="font-serif text-base sm:text-lg font-bold text-[var(--text-primary)] w-6 text-center">
+          <span className="font-serif text-base sm:text-lg font-bold text-[#202020] dark:text-[#FCFBF8] w-6 text-center">
             {guests}
           </span>
           <button
@@ -996,7 +984,7 @@ export function VillaCalendar() {
             onClick={() => setGuests((g) => Math.min(villa.maxGuests || 4, g + 1))}
             disabled={guests >= (villa.maxGuests || 4)}
             aria-label="Increase guests"
-            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[var(--border-color)] text-[var(--text-primary)] hover:bg-[var(--accent)] hover:text-[var(--accent-text)] disabled:opacity-25 disabled:pointer-events-none flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-[#DAD7D1] dark:border-[#383633] text-[#202020] dark:text-[#FCFBF8] hover:bg-[#202020] hover:text-[#FFFFFF] dark:hover:bg-[#FCFBF8] dark:hover:text-[#202020] disabled:opacity-25 disabled:pointer-events-none flex items-center justify-center font-bold text-sm transition-colors cursor-pointer"
           >
             +
           </button>
@@ -1007,7 +995,7 @@ export function VillaCalendar() {
 }
 
 /**
- * 2-STEP LUXURY RESERVATION CARD COMPONENT (STEP 1 & STEP 2 + CONFIRMATION VIEW)
+ * 2-STEP LUXURY RESERVATION CARD COMPONENT
  */
 export function VillaBookingCard() {
   const {
@@ -1038,11 +1026,8 @@ export function VillaBookingCard() {
     totalPrice,
   } = useVillaBooking();
 
-  // State for live countdown timer
-  // Initialize current time lazily; the authoritative expiry comes from booking.paymentHoldExpiresAt
   const [nowMs, setNowMs] = useState<number>(() => Date.now());
 
-  // Update nowMs every second when a pending booking with a hold exists
   useEffect(() => {
     if (!confirmedBooking || confirmedBooking.status !== "PENDING" || !confirmedBooking.paymentHoldExpiresAt) {
       return;
@@ -1051,7 +1036,7 @@ export function VillaBookingCard() {
     return () => clearInterval(interval);
   }, [confirmedBooking]);
 
-  // CONFIRMATION VIEW (Renders when booking is created/confirmed)
+  // CONFIRMATION VIEW
   if (confirmedBooking) {
     const isPaidAndConfirmed =
       confirmedBooking.paymentStatus === "PAID" || confirmedBooking.status === "CONFIRMED";
@@ -1074,27 +1059,27 @@ export function VillaBookingCard() {
     const formattedTimer = `${String(remainingMinutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
 
     return (
-      <div className="bg-[var(--bg-secondary)] p-6 sm:p-8 rounded-[12px] border border-[var(--border-color)] shadow-xl space-y-6 animate-in fade-in duration-300 text-[var(--text-primary)]">
-        <div className="text-center space-y-3 pb-4 border-b border-[var(--border-color)]">
+      <div className="bg-white dark:bg-[#202020] p-6 sm:p-8 rounded-[12px] border border-[#E8E6E2] dark:border-[#383633] shadow-lg space-y-6 animate-in fade-in duration-300 text-[#202020] dark:text-[#FCFBF8]">
+        <div className="text-center space-y-3 pb-4 border-b border-[#E8E6E2] dark:border-[#383633]">
           <div
             className={`w-14 h-14 rounded-full flex items-center justify-center mx-auto border ${
               isPaidAndConfirmed
-                ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/30"
+                ? "bg-[#3F6B52]/10 text-[#3F6B52] border-[#3F6B52]/30"
                 : isHoldExpired
-                ? "bg-rose-500/10 text-rose-500 border-rose-500/30"
-                : "bg-amber-500/10 text-amber-500 border-amber-500/30"
+                ? "bg-[#B84A4A]/10 text-[#B84A4A] border-[#B84A4A]/30"
+                : "bg-[#B99A62]/10 text-[#B99A62] border-[#B99A62]/30"
             }`}
           >
             {isPaidAndConfirmed ? (
-              <svg className="w-7 h-7 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-7 h-7 text-[#3F6B52]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
               </svg>
             ) : isHoldExpired ? (
-              <svg className="w-7 h-7 text-rose-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-7 h-7 text-[#B84A4A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg className="w-7 h-7 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-7 h-7 text-[#B99A62]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             )}
@@ -1103,10 +1088,10 @@ export function VillaBookingCard() {
           <span
             className={`text-[10px] font-semibold uppercase tracking-[0.2em] block ${
               isPaidAndConfirmed
-                ? "text-emerald-500"
+                ? "text-[#3F6B52]"
                 : isHoldExpired
-                ? "text-rose-500"
-                : "text-amber-500"
+                ? "text-[#B84A4A]"
+                : "text-[#B99A62]"
             }`}
           >
             {isPaidAndConfirmed
@@ -1116,7 +1101,7 @@ export function VillaBookingCard() {
               : "RESERVATION PENDING"}
           </span>
 
-          <h3 className="font-serif text-2xl font-bold text-[var(--text-primary)]">
+          <h3 className="font-serif text-2xl font-bold text-[#202020] dark:text-[#FCFBF8]">
             {isPaidAndConfirmed
               ? "Your Stay is Confirmed!"
               : isHoldExpired
@@ -1124,7 +1109,7 @@ export function VillaBookingCard() {
               : "Booking Request Pending Payment"}
           </h3>
 
-          <p className="text-xs text-[var(--text-secondary)] font-light leading-relaxed">
+          <p className="text-xs text-[#66635F] dark:text-[#BDB8B0] font-light leading-relaxed">
             {isPaidAndConfirmed
               ? `Your reservation at ${villa.name} has been verified and fully confirmed.`
               : isHoldExpired
@@ -1134,7 +1119,7 @@ export function VillaBookingCard() {
 
           {!isPaidAndConfirmed && !isHoldExpired && confirmedBooking.paymentHoldExpiresAt && (
             <div className="pt-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 border border-amber-500/30 rounded-full text-xs font-semibold text-amber-500">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#B99A62]/10 border border-[#B99A62]/30 rounded-full text-xs font-semibold text-[#B99A62]">
                 ⏳ Dates held for {formattedTimer}
               </span>
             </div>
@@ -1143,52 +1128,52 @@ export function VillaBookingCard() {
 
         {/* Inline Error Display */}
         {bookingError && (
-          <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-[6px] text-xs text-rose-500 font-medium animate-in fade-in duration-200">
+          <div className="p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-[6px] text-xs text-[#B84A4A] font-medium animate-in fade-in duration-200">
             {bookingError}
           </div>
         )}
 
-        <div className="bg-[var(--bg-primary)] p-4 rounded-[8px] border border-[var(--border-color)] space-y-3 text-xs">
-          <div className="flex justify-between items-center pb-2 border-b border-[var(--border-color)]/60">
-            <span className="text-[var(--text-secondary)] text-[10px] font-semibold uppercase tracking-wider">Booking Reference</span>
-            <span className="font-mono font-semibold text-[var(--text-primary)] text-xs">
+        <div className="bg-[#FCFBF8] dark:bg-[#171717] p-4 rounded-[8px] border border-[#E8E6E2] dark:border-[#383633] space-y-3 text-xs">
+          <div className="flex justify-between items-center pb-2 border-b border-[#E8E6E2] dark:border-[#383633]">
+            <span className="text-[#66635F] dark:text-[#BDB8B0] text-[10px] font-semibold uppercase tracking-wider">Booking Reference</span>
+            <span className="font-mono font-semibold text-[#202020] dark:text-[#FCFBF8] text-xs">
               #{(confirmedBooking._id || confirmedBooking.id || "").slice(-8).toUpperCase()}
             </span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-[var(--text-secondary)]">Residence</span>
-            <span className="font-semibold text-[var(--text-primary)]">{villa.name}</span>
+            <span className="text-[#66635F] dark:text-[#BDB8B0]">Residence</span>
+            <span className="font-semibold text-[#202020] dark:text-[#FCFBF8]">{villa.name}</span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-[var(--text-secondary)]">Dates</span>
-            <span className="font-medium text-[var(--text-primary)]">
+            <span className="text-[#66635F] dark:text-[#BDB8B0]">Dates</span>
+            <span className="font-medium text-[#202020] dark:text-[#FCFBF8]">
               {formatDateDisplay(confirmedBooking.checkIn?.split("T")[0])} &rarr; {formatDateDisplay(confirmedBooking.checkOut?.split("T")[0])}
             </span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-[var(--text-secondary)]">Guests</span>
-            <span className="font-medium text-[var(--text-primary)]">{confirmedBooking.guests} Guests</span>
+            <span className="text-[#66635F] dark:text-[#BDB8B0]">Guests</span>
+            <span className="font-medium text-[#202020] dark:text-[#FCFBF8]">{confirmedBooking.guests} Guests</span>
           </div>
 
-          <div className="flex justify-between items-center pt-2 border-t border-[var(--border-color)]/60">
-            <span className="text-[var(--text-secondary)]">Total Amount</span>
-            <span className="font-sans text-base font-bold text-[var(--accent)]">
+          <div className="flex justify-between items-center pt-2 border-t border-[#E8E6E2] dark:border-[#383633]">
+            <span className="text-[#66635F] dark:text-[#BDB8B0]">Total Amount</span>
+            <span className="font-sans text-base font-bold text-[#202020] dark:text-[#FCFBF8]">
               ₹{confirmedBooking.totalAmount?.toLocaleString("en-IN")}
             </span>
           </div>
 
-          <div className="flex justify-between items-center pt-2 border-t border-[var(--border-color)]/60">
-            <span className="text-[var(--text-secondary)] text-[10px]">Payment Status</span>
+          <div className="flex justify-between items-center pt-2 border-t border-[#E8E6E2] dark:border-[#383633]">
+            <span className="text-[#66635F] dark:text-[#BDB8B0] text-[10px]">Payment Status</span>
             <span
               className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
                 isPaidAndConfirmed
-                  ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/30"
+                  ? "bg-[#3F6B52]/10 text-[#3F6B52] border-[#3F6B52]/30"
                   : isHoldExpired
-                  ? "bg-rose-500/10 text-rose-500 border-rose-500/30"
-                  : "bg-amber-500/10 text-amber-500 border-amber-500/30"
+                  ? "bg-[#B84A4A]/10 text-[#B84A4A] border-[#B84A4A]/30"
+                  : "bg-[#B99A62]/10 text-[#B99A62] border-[#B99A62]/30"
               }`}
             >
               {isPaidAndConfirmed ? "PAID" : isHoldExpired ? "EXPIRED" : "UNPAID"}
@@ -1201,21 +1186,21 @@ export function VillaBookingCard() {
           <div className="space-y-3 pt-2">
             <Link
               href={`/account/bookings/${confirmedBooking._id || confirmedBooking.id}`}
-              className="w-full py-3.5 bg-[var(--accent)] text-[var(--accent-text)] text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-md hover:opacity-90 transition-all flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-[#202020] hover:bg-[#171717] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#202020] text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-md transition-all flex items-center justify-center gap-2"
             >
               <span>VIEW FULL BOOKING CONFIRMATION</span>
               <span>&rarr;</span>
             </Link>
             <Link
               href="/account/bookings"
-              className="w-full py-3 bg-[var(--bg-primary)] text-[var(--text-secondary)] border border-[var(--border-color)] text-[10px] uppercase tracking-[0.2em] font-semibold rounded-[6px] hover:text-[var(--text-primary)] hover:border-[var(--accent)] transition-all flex items-center justify-center"
+              className="w-full py-3 bg-white dark:bg-[#202020] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] hover:bg-[#F7F6F3] dark:hover:bg-[#2A2825] text-[10px] uppercase tracking-[0.2em] font-semibold rounded-[6px] transition-all flex items-center justify-center"
             >
               View All My Bookings
             </Link>
             <button
               type="button"
               onClick={handleResetBooking}
-              className="w-full py-2.5 text-[var(--text-secondary)] text-[10px] uppercase tracking-[0.18em] font-semibold hover:text-[var(--text-primary)] transition-all"
+              className="w-full py-2.5 text-[#66635F] dark:text-[#BDB8B0] text-[10px] uppercase tracking-[0.18em] font-semibold hover:text-[#202020] dark:hover:text-[#FCFBF8] transition-all cursor-pointer"
             >
               Make Another Reservation
             </button>
@@ -1225,7 +1210,7 @@ export function VillaBookingCard() {
             <button
               type="button"
               onClick={handleResetBooking}
-              className="w-full py-3.5 bg-[var(--accent)] text-[var(--accent-text)] text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-md hover:opacity-90 transition-all flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-[#202020] hover:bg-[#171717] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#202020] text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>SELECT DATES AGAIN</span>
             </button>
@@ -1236,7 +1221,7 @@ export function VillaBookingCard() {
               type="button"
               onClick={() => handleInitiatePayment(confirmedBooking)}
               disabled={isProcessingPayment || isSubmitting}
-              className="w-full py-4 bg-[var(--accent)] text-[var(--accent-text)] text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-lg hover:opacity-90 disabled:opacity-50 transition-all flex items-center justify-center gap-2"
+              className="w-full py-4 bg-[#202020] hover:bg-[#171717] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#202020] text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-lg disabled:opacity-50 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               {isProcessingPayment ? (
                 <>
@@ -1254,7 +1239,7 @@ export function VillaBookingCard() {
             <button
               type="button"
               onClick={handleResetBooking}
-              className="w-full py-3 bg-[var(--bg-primary)] text-[var(--text-secondary)] border border-[var(--border-color)] text-[10px] uppercase tracking-[0.2em] font-semibold rounded-[6px] hover:text-[var(--text-primary)] hover:border-[var(--accent)] transition-all"
+              className="w-full py-3 bg-white dark:bg-[#202020] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] text-[10px] uppercase tracking-[0.2em] font-semibold rounded-[6px] hover:bg-[#F7F6F3] dark:hover:bg-[#2A2825] transition-all cursor-pointer"
             >
               Make Another Reservation
             </button>
@@ -1274,26 +1259,26 @@ export function VillaBookingCard() {
   );
 
   return (
-    <div className="bg-[var(--bg-secondary)] p-4 sm:p-7 rounded-[12px] border border-[var(--border-color)] shadow-xl space-y-6 text-[var(--text-primary)]">
+    <div className="bg-white dark:bg-[#202020] p-4 sm:p-7 rounded-[12px] border border-[#E8E6E2] dark:border-[#383633] shadow-sm space-y-6 text-[#202020] dark:text-[#FCFBF8]">
       {/* Stepper Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-[var(--border-color)] text-xs font-semibold uppercase tracking-[0.2em]">
+      <div className="flex items-center justify-between pb-4 border-b border-[#E8E6E2] dark:border-[#383633] text-xs font-semibold uppercase tracking-[0.2em]">
         {/* Step 01 */}
         <button
           type="button"
           onClick={() => currentStep === 2 && setCurrentStep(1)}
           className={`flex items-center gap-2 transition-colors ${
             currentStep === 1
-              ? "text-[var(--accent)] font-bold"
-              : "text-[var(--text-secondary)] hover:text-[var(--text-primary)] cursor-pointer"
+              ? "text-[#202020] dark:text-[#FCFBF8] font-bold"
+              : "text-[#66635F] dark:text-[#BDB8B0] hover:text-[#202020] dark:hover:text-[#FCFBF8] cursor-pointer"
           }`}
         >
           <span
             className={`w-5 h-5 rounded-full text-[10px] flex items-center justify-center border transition-all ${
               currentStep === 1
-                ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] font-bold"
+                ? "border-[#202020] bg-[#202020] text-white dark:border-[#FCFBF8] dark:bg-[#FCFBF8] dark:text-[#202020] font-bold"
                 : checkIn && checkOut
-                ? "border-emerald-500 bg-emerald-500/10 text-emerald-500 font-bold"
-                : "border-[var(--border-color)] text-[var(--text-secondary)]"
+                ? "border-[#3F6B52] bg-[#3F6B52]/10 text-[#3F6B52] font-bold"
+                : "border-[#E8E6E2] dark:border-[#383633] text-[#8A8782]"
             }`}
           >
             {checkIn && checkOut && currentStep === 2 ? "✓" : "01"}
@@ -1301,21 +1286,21 @@ export function VillaBookingCard() {
           <span>DATES</span>
         </button>
 
-        <span className="text-[var(--border-color)]">—</span>
+        <span className="text-[#E8E6E2] dark:text-[#383633]">—</span>
 
         {/* Step 02 */}
         <div
           className={`flex items-center gap-2 transition-colors ${
             currentStep === 2
-              ? "text-[var(--accent)] font-bold"
-              : "text-[var(--text-secondary)]/50"
+              ? "text-[#202020] dark:text-[#FCFBF8] font-bold"
+              : "text-[#8A8782]"
           }`}
         >
           <span
             className={`w-5 h-5 rounded-full text-[10px] flex items-center justify-center border transition-all ${
               currentStep === 2
-                ? "border-[var(--accent)] bg-[var(--accent)]/10 text-[var(--accent)] font-bold"
-                : "border-[var(--border-color)]/50 text-[var(--text-secondary)]/50"
+                ? "border-[#202020] bg-[#202020] text-white dark:border-[#FCFBF8] dark:bg-[#FCFBF8] dark:text-[#202020] font-bold"
+                : "border-[#E8E6E2] dark:border-[#383633] text-[#8A8782]"
             }`}
           >
             02
@@ -1329,34 +1314,34 @@ export function VillaBookingCard() {
         <div className="space-y-6 animate-in fade-in duration-200">
           {/* Pricing Header */}
           <div className="space-y-1">
-            <span className="text-[9px] uppercase tracking-widest text-[var(--accent)] font-semibold block">
+            <span className="text-[9px] uppercase tracking-widest text-[#66635F] dark:text-[#BDB8B0] font-semibold block">
               {nights > 0 ? "ESTIMATED TOTAL" : "STARTING FROM"}
             </span>
             <div className="flex items-baseline gap-2">
-              <span className="font-sans text-3xl font-bold text-[var(--text-primary)] tracking-tight">
+              <span className="font-sans text-3xl font-bold text-[#202020] dark:text-[#FCFBF8] tracking-tight">
                 ₹{(nights > 0 ? totalPrice : villa.pricePerNight).toLocaleString("en-IN")}
               </span>
-              <span className="font-sans text-xs text-[var(--text-secondary)] font-normal">
+              <span className="font-sans text-xs text-[#66635F] dark:text-[#BDB8B0] font-normal">
                 {nights > 0 ? `for ${nights} ${nights === 1 ? "night" : "nights"}` : "/ night"}
               </span>
             </div>
           </div>
 
           {/* Selected Dates Display */}
-          <div className="p-3.5 bg-[var(--bg-primary)] rounded-[8px] border border-[var(--border-color)] grid grid-cols-2 gap-3 text-xs">
+          <div className="p-3.5 bg-[#FCFBF8] dark:bg-[#171717] rounded-[8px] border border-[#E8E6E2] dark:border-[#383633] grid grid-cols-2 gap-3 text-xs">
             <div>
-              <span className="text-[9px] font-semibold uppercase tracking-wider text-[var(--text-secondary)] block">
+              <span className="text-[9px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] block">
                 CHECK-IN
               </span>
-              <span className="font-medium text-[var(--text-primary)] block mt-0.5 truncate">
+              <span className="font-medium text-[#202020] dark:text-[#FCFBF8] block mt-0.5 truncate">
                 {checkIn ? formatDateDisplay(checkIn) : "Select date"}
               </span>
             </div>
-            <div className="border-l border-[var(--border-color)] pl-3">
-              <span className="text-[9px] font-semibold uppercase tracking-wider text-[var(--text-secondary)] block">
+            <div className="border-l border-[#E8E6E2] dark:border-[#383633] pl-3">
+              <span className="text-[9px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] block">
                 CHECK-OUT
               </span>
-              <span className="font-medium text-[var(--text-primary)] block mt-0.5 truncate">
+              <span className="font-medium text-[#202020] dark:text-[#FCFBF8] block mt-0.5 truncate">
                 {checkOut ? formatDateDisplay(checkOut) : "Select date"}
               </span>
             </div>
@@ -1366,22 +1351,22 @@ export function VillaBookingCard() {
           {checkIn && checkOut && availabilityState !== "IDLE" && (
             <div className="text-center py-1">
               {availabilityState === "LOADING" && (
-                <span className="text-xs text-[var(--accent)] font-medium animate-pulse">
+                <span className="text-xs text-[#66635F] dark:text-[#BDB8B0] font-medium animate-pulse">
                   Checking availability...
                 </span>
               )}
               {availabilityState === "AVAILABLE" && (
-                <span className="text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/30 inline-block">
+                <span className="text-xs font-semibold text-[#3F6B52] bg-[#3F6B52]/10 px-3 py-1 rounded-full border border-[#3F6B52]/30 inline-block">
                   ✓ AVAILABLE FOR YOUR DATES
                 </span>
               )}
               {availabilityState === "UNAVAILABLE" && (
-                <span className="text-xs font-semibold text-amber-500 bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/30 inline-block">
+                <span className="text-xs font-semibold text-[#B84A4A] bg-[#B84A4A]/10 px-3 py-1 rounded-full border border-[#B84A4A]/30 inline-block">
                   {availabilityMessage || "THESE DATES ARE NOT AVAILABLE"}
                 </span>
               )}
               {availabilityState === "ERROR" && (
-                <span className="text-xs font-semibold text-rose-500 bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/30 inline-block">
+                <span className="text-xs font-semibold text-[#B84A4A] bg-[#B84A4A]/10 px-3 py-1 rounded-full border border-[#B84A4A]/30 inline-block">
                   {availabilityMessage}
                 </span>
               )}
@@ -1390,19 +1375,19 @@ export function VillaBookingCard() {
 
           {/* Price Summary Breakdown */}
           {checkIn && checkOut && nights > 0 && (
-            <div className="space-y-2 pt-1 text-xs border-t border-[var(--border-color)]/70">
-              <div className="flex justify-between text-[var(--text-secondary)] font-light">
+            <div className="space-y-2 pt-1 text-xs border-t border-[#E8E6E2] dark:border-[#383633]">
+              <div className="flex justify-between text-[#66635F] dark:text-[#BDB8B0] font-light">
                 <span>
                   ₹{villa.pricePerNight.toLocaleString("en-IN")} × {nights}{" "}
                   {nights === 1 ? "night" : "nights"}
                 </span>
-                <span className="text-[var(--text-primary)] font-medium">
+                <span className="text-[#202020] dark:text-[#FCFBF8] font-medium">
                   ₹{totalPrice.toLocaleString("en-IN")}
                 </span>
               </div>
-              <div className="flex justify-between font-bold text-[var(--text-primary)] pt-2 border-t border-[var(--border-color)] text-sm">
+              <div className="flex justify-between font-bold text-[#202020] dark:text-[#FCFBF8] pt-2 border-t border-[#E8E6E2] dark:border-[#383633] text-sm">
                 <span>Total Price</span>
-                <span className="text-[var(--accent)]">
+                <span className="text-[#202020] dark:text-[#FCFBF8]">
                   ₹{totalPrice.toLocaleString("en-IN")}
                 </span>
               </div>
@@ -1410,7 +1395,6 @@ export function VillaBookingCard() {
           )}
 
           {/* Step 1 Dynamic CTA */}
-          {/* Requirement 4: Hide upper BOOK NOW on mobile when dates are selected, so only the sticky mobile CTA is visible */}
           <button
             type="button"
             onClick={() => {
@@ -1426,10 +1410,10 @@ export function VillaBookingCard() {
               Boolean(checkIn && checkOut) &&
               (nights <= 0 || availabilityState === "UNAVAILABLE" || availabilityState === "LOADING")
             }
-            className={`w-full py-4 text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-lg transition-all duration-200 ${
+            className={`w-full py-4 text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-sm transition-all duration-200 cursor-pointer ${
               isBookingReady
-                ? "hidden lg:flex items-center justify-center bg-[var(--accent)] text-[var(--accent-text)] hover:opacity-95 cursor-pointer"
-                : "flex items-center justify-center bg-[var(--bg-surface)] text-[var(--text-secondary)] border border-[var(--border-color)] opacity-70 cursor-pointer"
+                ? "hidden lg:flex items-center justify-center bg-[#202020] hover:bg-[#171717] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#202020]"
+                : "flex items-center justify-center bg-[#F7F6F3] dark:bg-[#171717] text-[#66635F] dark:text-[#BDB8B0] border border-[#DAD7D1] dark:border-[#383633] opacity-80"
             }`}
           >
             {isBookingReady ? "BOOK NOW" : "SELECT DATES & RESERVE"}
@@ -1441,15 +1425,15 @@ export function VillaBookingCard() {
       {currentStep === 2 && (
         <form onSubmit={handleSubmitBooking} className="space-y-6 animate-in fade-in duration-200">
           {/* YOUR STAY Box */}
-          <div className="p-4 bg-[var(--bg-primary)] rounded-[8px] border border-[var(--border-color)] space-y-3">
-            <div className="flex items-center justify-between border-b border-[var(--border-color)]/60 pb-2">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--accent)]">
+          <div className="p-4 bg-[#FCFBF8] dark:bg-[#171717] rounded-[8px] border border-[#E8E6E2] dark:border-[#383633] space-y-3">
+            <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-[#202020] dark:text-[#FCFBF8]">
                 YOUR STAY
               </span>
               <button
                 type="button"
                 onClick={() => setCurrentStep(1)}
-                className="text-[10px] uppercase font-semibold text-[var(--accent)] hover:underline flex items-center gap-1"
+                className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>Edit dates</span>
                 <span>&rarr;</span>
@@ -1458,26 +1442,26 @@ export function VillaBookingCard() {
 
             <div className="grid grid-cols-3 gap-2 text-xs">
               <div>
-                <span className="text-[9px] uppercase tracking-wider text-[var(--text-secondary)] block">
+                <span className="text-[9px] uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] block">
                   Check-in
                 </span>
-                <span className="font-semibold text-[var(--text-primary)] mt-0.5 block truncate">
+                <span className="font-semibold text-[#202020] dark:text-[#FCFBF8] mt-0.5 block truncate">
                   {formatDateDisplay(checkIn)}
                 </span>
               </div>
-              <div className="border-x border-[var(--border-color)]/60 px-2">
-                <span className="text-[9px] uppercase tracking-wider text-[var(--text-secondary)] block">
+              <div className="border-x border-[#E8E6E2] dark:border-[#383633] px-2">
+                <span className="text-[9px] uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] block">
                   Check-out
                 </span>
-                <span className="font-semibold text-[var(--text-primary)] mt-0.5 block truncate">
+                <span className="font-semibold text-[#202020] dark:text-[#FCFBF8] mt-0.5 block truncate">
                   {formatDateDisplay(checkOut)}
                 </span>
               </div>
               <div>
-                <span className="text-[9px] uppercase tracking-wider text-[var(--text-secondary)] block">
+                <span className="text-[9px] uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] block">
                   Guests
                 </span>
-                <span className="font-semibold text-[var(--text-primary)] mt-0.5 block">
+                <span className="font-semibold text-[#202020] dark:text-[#FCFBF8] mt-0.5 block">
                   {guests} {guests === 1 ? "Guest" : "Guests"}
                 </span>
               </div>
@@ -1486,14 +1470,14 @@ export function VillaBookingCard() {
 
           {/* GUEST DETAILS Inputs */}
           <div className="space-y-3 pt-1">
-            <span className="text-[10px] uppercase font-bold tracking-widest text-[var(--accent)] block">
+            <span className="text-[10px] uppercase font-bold tracking-widest text-[#202020] dark:text-[#FCFBF8] block">
               GUEST DETAILS
             </span>
 
             <div>
               <label
                 htmlFor="guestName"
-                className="text-[10px] uppercase font-semibold text-[var(--text-secondary)] block mb-1"
+                className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-1"
               >
                 Full Name *
               </label>
@@ -1507,14 +1491,14 @@ export function VillaBookingCard() {
                   if (bookingError) setBookingError(null);
                 }}
                 placeholder="Enter your full name"
-                className="w-full px-3.5 py-2.5 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-[6px] text-xs text-[var(--text-primary)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:border-[var(--accent)] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] rounded-[6px] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#E8A0A8] dark:focus:border-[#B99A62] transition-colors"
               />
             </div>
 
             <div>
               <label
                 htmlFor="guestEmail"
-                className="text-[10px] uppercase font-semibold text-[var(--text-secondary)] block mb-1"
+                className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-1"
               >
                 Email Address *
               </label>
@@ -1528,14 +1512,14 @@ export function VillaBookingCard() {
                   if (bookingError) setBookingError(null);
                 }}
                 placeholder="Enter your email"
-                className="w-full px-3.5 py-2.5 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-[6px] text-xs text-[var(--text-primary)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:border-[var(--accent)] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] rounded-[6px] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#E8A0A8] dark:focus:border-[#B99A62] transition-colors"
               />
             </div>
 
             <div>
               <label
                 htmlFor="guestPhone"
-                className="text-[10px] uppercase font-semibold text-[var(--text-secondary)] block mb-1"
+                className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-1"
               >
                 Phone Number *
               </label>
@@ -1549,46 +1533,46 @@ export function VillaBookingCard() {
                   if (bookingError) setBookingError(null);
                 }}
                 placeholder="+91 XXXXX XXXXX"
-                className="w-full px-3.5 py-2.5 bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-[6px] text-xs text-[var(--text-primary)] placeholder-[var(--text-secondary)]/50 focus:outline-none focus:border-[var(--accent)] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] rounded-[6px] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#E8A0A8] dark:focus:border-[#B99A62] transition-colors"
               />
             </div>
           </div>
 
           {/* PRICE SUMMARY Box */}
-          <div className="p-4 bg-[var(--bg-primary)] rounded-[8px] border border-[var(--border-color)] space-y-2 text-xs">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[var(--accent)] block border-b border-[var(--border-color)]/60 pb-2">
+          <div className="p-4 bg-[#FCFBF8] dark:bg-[#171717] rounded-[8px] border border-[#E8E6E2] dark:border-[#383633] space-y-2 text-xs">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#202020] dark:text-[#FCFBF8] block border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
               PRICE SUMMARY
             </span>
 
-            <div className="flex justify-between text-[var(--text-secondary)] font-light pt-1">
+            <div className="flex justify-between text-[#66635F] dark:text-[#BDB8B0] font-light pt-1">
               <span>
                 ₹{villa.pricePerNight.toLocaleString("en-IN")} × {nights}{" "}
                 {nights === 1 ? "night" : "nights"}
               </span>
-              <span className="text-[var(--text-primary)] font-medium">
+              <span className="text-[#202020] dark:text-[#FCFBF8] font-medium">
                 ₹{totalPrice.toLocaleString("en-IN")}
               </span>
             </div>
 
-            <div className="flex justify-between font-bold text-[var(--text-primary)] pt-2 border-t border-[var(--border-color)] text-sm">
+            <div className="flex justify-between font-bold text-[#202020] dark:text-[#FCFBF8] pt-2 border-t border-[#E8E6E2] dark:border-[#383633] text-sm">
               <span>Total Price</span>
-              <span className="text-[var(--accent)]">₹{totalPrice.toLocaleString("en-IN")}</span>
+              <span className="text-[#202020] dark:text-[#FCFBF8]">₹{totalPrice.toLocaleString("en-IN")}</span>
             </div>
           </div>
 
           {/* Inline Error Display */}
           {bookingError && (
-            <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-[6px] text-xs text-rose-500 font-medium animate-in fade-in duration-200">
+            <div className="p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-[6px] text-xs text-[#B84A4A] font-medium animate-in fade-in duration-200">
               {bookingError}
             </div>
           )}
 
-          {/* Step 2 CTA: visible on desktop right sidebar, hidden on mobile so only the bottom sticky bar CTA is shown */}
+          {/* Step 2 CTA */}
           <button
             id="step2-submit-btn"
             type="submit"
             disabled={isSubmitting || isProcessingPayment}
-            className="hidden lg:flex w-full py-4 bg-[var(--accent)] text-[var(--accent-text)] text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-lg hover:opacity-95 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 items-center justify-center gap-2"
+            className="hidden lg:flex w-full py-4 bg-[#202020] hover:bg-[#171717] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#202020] text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 items-center justify-center gap-2 cursor-pointer"
           >
             {isSubmitting || isProcessingPayment ? (
               <>
@@ -1627,7 +1611,6 @@ export function MobileStickyBookingBar() {
     confirmedBooking,
   } = useVillaBooking();
 
-  // If booking is already created or confirmed/expired, hide sticky bar
   if (confirmedBooking) return null;
 
   const isValidDates = Boolean(checkIn && checkOut && nights > 0);
@@ -1640,7 +1623,6 @@ export function MobileStickyBookingBar() {
       if (currentStep === 1) {
         setCurrentStep(2);
         setBookingError(null);
-        // Smooth scroll to guest details inputs
         const target =
           document.getElementById("guestName") ||
           document.getElementById("mobile-booking-card");
@@ -1650,14 +1632,12 @@ export function MobileStickyBookingBar() {
           if (inputEl) inputEl.focus();
         }
       } else {
-        // In step 2, trigger form submission directly
         const submitBtn = document.getElementById("step2-submit-btn");
         if (submitBtn) {
           submitBtn.click();
         }
       }
     } else {
-      // Guide user to select dates on the calendar
       const el = document.getElementById("select-dates");
       if (el) {
         el.scrollIntoView({ behavior: "smooth" });
@@ -1667,7 +1647,7 @@ export function MobileStickyBookingBar() {
 
   return (
     <div
-      className="lg:hidden fixed bottom-[calc(4rem+env(safe-area-inset-bottom,0px))] left-0 right-0 z-40 bg-[var(--bg-secondary)]/98 border-t border-[var(--border-color)] px-4 py-2.5 sm:px-6 shadow-[0_-4px_20px_rgba(0,0,0,0.25)] dark:shadow-[0_-4px_25px_rgba(0,0,0,0.7)] backdrop-blur-md transition-all duration-300"
+      className="lg:hidden fixed bottom-[calc(4rem+env(safe-area-inset-bottom,0px))] left-0 right-0 z-40 bg-white/98 dark:bg-[#202020]/98 border-t border-[#E8E6E2] dark:border-[#383633] px-4 py-2.5 sm:px-6 shadow-[0_-4px_20px_rgba(32,32,32,0.08)] backdrop-blur-md transition-all duration-300"
     >
       <div className="flex items-center justify-between gap-3 max-w-lg mx-auto">
         {/* Left Side: Price & Night Calculation */}
@@ -1675,54 +1655,54 @@ export function MobileStickyBookingBar() {
           {isBookingReady ? (
             <div className="space-y-0.5">
               <div className="flex items-baseline gap-1">
-                <span className="font-sans text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
+                <span className="font-sans text-xl sm:text-2xl font-bold text-[#202020] dark:text-[#FCFBF8]">
                   ₹{totalPrice.toLocaleString("en-IN")}
                 </span>
-                <span className="text-[10px] text-[var(--text-secondary)] font-light">total</span>
+                <span className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] font-light">total</span>
               </div>
-              <span className="text-[11px] font-medium text-[var(--accent)] tracking-wider block">
+              <span className="text-[11px] font-medium text-[#66635F] dark:text-[#BDB8B0] tracking-wider block">
                 {nights} {nights === 1 ? "night" : "nights"} • {guests} {guests === 1 ? "guest" : "guests"}
               </span>
             </div>
           ) : isValidDates && availabilityState === "LOADING" ? (
             <div className="space-y-0.5">
               <div className="flex items-baseline gap-1">
-                <span className="font-sans text-lg font-bold text-[var(--text-primary)]">
+                <span className="font-sans text-lg font-bold text-[#202020] dark:text-[#FCFBF8]">
                   ₹{totalPrice.toLocaleString("en-IN")}
                 </span>
               </div>
-              <span className="text-[10px] text-[var(--accent)] font-medium animate-pulse block">
+              <span className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] font-medium animate-pulse block">
                 Checking availability...
               </span>
             </div>
           ) : isValidDates && availabilityState === "UNAVAILABLE" ? (
             <div className="space-y-0.5">
-              <span className="font-sans text-base font-bold text-[var(--text-secondary)] line-through">
+              <span className="font-sans text-base font-bold text-[#8A8782] line-through">
                 ₹{totalPrice.toLocaleString("en-IN")}
               </span>
-              <span className="text-[10px] text-amber-500 font-semibold block truncate">
+              <span className="text-[10px] text-[#B84A4A] font-semibold block truncate">
                 {availabilityMessage || "Dates unavailable"}
               </span>
             </div>
           ) : isValidDates && availabilityState === "ERROR" ? (
             <div className="space-y-0.5">
-              <span className="font-sans text-base font-bold text-[var(--text-primary)]">
+              <span className="font-sans text-base font-bold text-[#202020] dark:text-[#FCFBF8]">
                 ₹{totalPrice.toLocaleString("en-IN")}
               </span>
-              <span className="text-[10px] text-rose-500 font-semibold block">
+              <span className="text-[10px] text-[#B84A4A] font-semibold block">
                 {availabilityMessage || "Unavailable"}
               </span>
             </div>
           ) : (
             <div>
-              <span className="text-[9px] text-[var(--accent-muted)] uppercase tracking-widest block font-medium">
+              <span className="text-[9px] text-[#66635F] dark:text-[#BDB8B0] uppercase tracking-widest block font-medium">
                 Starting from
               </span>
               <div className="flex items-baseline gap-1">
-                <span className="font-sans text-xl font-bold text-[var(--text-primary)]">
+                <span className="font-sans text-xl font-bold text-[#202020] dark:text-[#FCFBF8]">
                   ₹{villa.pricePerNight.toLocaleString("en-IN")}
                 </span>
-                <span className="font-sans text-[10px] text-[var(--text-secondary)] font-normal">/ night</span>
+                <span className="font-sans text-[10px] text-[#66635F] dark:text-[#BDB8B0] font-normal">/ night</span>
               </div>
             </div>
           )}
@@ -1738,14 +1718,14 @@ export function MobileStickyBookingBar() {
               availabilityState === "UNAVAILABLE" ||
               availabilityState === "ERROR")
           }
-          className={`px-6 py-3.5 text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-lg transition-all flex-shrink-0 flex items-center justify-center ${
+          className={`px-6 py-3.5 text-xs uppercase tracking-[0.2em] font-bold rounded-[6px] shadow-sm transition-all flex-shrink-0 flex items-center justify-center cursor-pointer ${
             isBookingReady
-              ? "bg-[var(--accent)] text-[var(--accent-text)] hover:opacity-90 active:scale-[0.98] cursor-pointer"
+              ? "bg-[#202020] hover:bg-[#171717] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#202020] active:scale-[0.98]"
               : isValidDates && (availabilityState === "UNAVAILABLE" || availabilityState === "ERROR")
-              ? "bg-[var(--bg-surface)] text-[var(--text-secondary)]/50 border border-[var(--border-color)] opacity-60 cursor-not-allowed"
+              ? "bg-[#F7F6F3] dark:bg-[#171717] text-[#8A8782] border border-[#DAD7D1] dark:border-[#383633] opacity-60 cursor-not-allowed"
               : isValidDates && availabilityState === "LOADING"
-              ? "bg-[var(--bg-surface)] text-[var(--accent)] border border-[var(--border-color)] opacity-70 cursor-wait"
-              : "bg-[var(--accent)] text-[var(--accent-text)] hover:opacity-90 active:scale-[0.98] cursor-pointer"
+              ? "bg-[#F7F6F3] dark:bg-[#171717] text-[#66635F] dark:text-[#BDB8B0] border border-[#DAD7D1] dark:border-[#383633] opacity-70 cursor-wait"
+              : "bg-[#202020] hover:bg-[#171717] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#202020] active:scale-[0.98]"
           }`}
         >
           {isBookingReady
@@ -1779,4 +1759,3 @@ export function VillaBookingWidget({ villa }: { villa: Villa }) {
     </VillaBookingProvider>
   );
 }
-

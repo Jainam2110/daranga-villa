@@ -66,16 +66,16 @@ export function RealUdaipurMap({
       : `https://www.google.com/maps/search/?api=1&query=24.5854,73.6780`;
 
   return (
-    <div className="relative w-full h-full bg-[#12110F] overflow-hidden rounded-[16px] select-none border border-[var(--border-color)] flex flex-col shadow-2xl">
+    <div className="relative w-full h-full bg-white dark:bg-[#202020] overflow-hidden rounded-[12px] select-none border border-[#E8E6E2] dark:border-[#383633] flex flex-col shadow-md">
       {/* 1. Interactive Google Map Iframe Container */}
-      <div className="relative w-full h-full flex-1 overflow-hidden bg-[#151412]">
+      <div className="relative w-full h-full flex-1 overflow-hidden bg-[#F7F6F3] dark:bg-[#171717]">
         <iframe
           key={`${activeLoc.id}-${mapMode}-${activeLoc.coordinates?.lat}-${activeLoc.coordinates?.lng}`}
           title={`${activeLoc.name} - Google Maps Location`}
           src={getEmbedSrc()}
           width="100%"
           height="100%"
-          style={{ border: 0, minHeight: "100%", filter: "contrast(1.03) saturate(1.05)" }}
+          style={{ border: 0, minHeight: "100%", filter: "contrast(1.02) saturate(1.02)" }}
           allowFullScreen={true}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
@@ -86,14 +86,14 @@ export function RealUdaipurMap({
       {/* 2. Map Top Control Bar (Overlay) */}
       <div className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
         {/* Active Property Pill */}
-        <div className="px-3 sm:px-4 py-1.5 rounded-full bg-[#0B0B0A]/90 backdrop-blur-md border border-white/20 text-white text-[11px] font-medium flex items-center gap-2 shadow-xl pointer-events-auto">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#C89B4A] animate-ping" />
-          <MapPin className="w-3.5 h-3.5 text-[#C89B4A] flex-shrink-0" />
+        <div className="px-3 sm:px-4 py-1.5 rounded-full bg-[#202020]/90 backdrop-blur-md border border-white/20 text-white text-[11px] font-medium flex items-center gap-2 shadow-lg pointer-events-auto">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#B99A62] animate-ping" />
+          <MapPin className="w-3.5 h-3.5 text-[#B99A62] flex-shrink-0" />
           <span className="font-semibold text-white truncate max-w-[160px] sm:max-w-[240px]">
             {activeLoc.name}
           </span>
           <span className="text-white/30 hidden sm:inline">•</span>
-          <span className="text-[#C89B4A] text-[10px] uppercase font-mono tracking-wider hidden sm:inline">
+          <span className="text-[#B99A62] text-[10px] uppercase font-mono tracking-wider hidden sm:inline">
             {activeLoc.zone}
           </span>
         </div>
@@ -101,13 +101,13 @@ export function RealUdaipurMap({
         {/* Controls: Google Map Modes & Open App Link */}
         <div className="flex items-center gap-2 pointer-events-auto ml-auto">
           {/* Mode Switcher Tabs */}
-          <div className="flex items-center gap-1 p-1 bg-[#0B0B0A]/90 backdrop-blur-md rounded-full border border-white/20 shadow-xl">
+          <div className="flex items-center gap-1 p-1 bg-[#202020]/90 backdrop-blur-md rounded-full border border-white/20 shadow-lg">
             <button
               type="button"
               onClick={() => setMapMode("street")}
               className={`px-2.5 sm:px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider transition-all flex items-center gap-1 ${
                 mapMode === "street"
-                  ? "bg-[#C89B4A] text-[#0B0B0A] shadow-xs"
+                  ? "bg-white text-[#202020] shadow-xs"
                   : "text-stone-300 hover:text-white"
               }`}
             >
@@ -119,7 +119,7 @@ export function RealUdaipurMap({
               onClick={() => setMapMode("satellite")}
               className={`px-2.5 sm:px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider transition-all flex items-center gap-1 ${
                 mapMode === "satellite"
-                  ? "bg-[#C89B4A] text-[#0B0B0A] shadow-xs"
+                  ? "bg-white text-[#202020] shadow-xs"
                   : "text-stone-300 hover:text-white"
               }`}
             >
@@ -134,10 +134,10 @@ export function RealUdaipurMap({
             target="_blank"
             rel="noopener noreferrer"
             title="Open in Google Maps App"
-            className="px-3 py-1.5 rounded-full bg-[#C89B4A] hover:bg-[#b5893a] text-[#0B0B0A] text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-xl transition-all hover:scale-105 active:scale-95 flex-shrink-0"
+            className="px-3 py-1.5 rounded-full bg-[#202020] hover:bg-[#171717] text-white text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5 shadow-lg border border-white/20 transition-all hover:scale-105 active:scale-95 flex-shrink-0"
           >
             <Globe className="w-3 h-3" />
-            <span className="hidden sm:inline">Open in Google Maps</span>
+            <span className="hidden sm:inline">Open in Maps</span>
             <ExternalLink className="w-3 h-3" />
           </a>
         </div>
@@ -155,8 +155,8 @@ export function RealUdaipurMap({
                 onClick={() => onSelectLocation(loc)}
                 className={`px-3 py-1.5 rounded-full text-[10px] font-medium whitespace-nowrap transition-all flex items-center gap-1.5 backdrop-blur-md shadow-lg flex-shrink-0 ${
                   isSelected
-                    ? "bg-[#C89B4A] text-[#0B0B0A] font-bold border border-white/40 scale-105"
-                    : "bg-[#0B0B0A]/85 hover:bg-[#0B0B0A] text-stone-200 border border-white/15 hover:border-[#C89B4A]/60"
+                    ? "bg-[#202020] text-white font-bold border border-white/40 scale-105"
+                    : "bg-[#202020]/80 hover:bg-[#202020] text-stone-200 border border-white/15"
                 }`}
               >
                 <span className="font-mono text-[9px] opacity-75">#{loc.number}</span>

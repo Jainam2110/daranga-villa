@@ -68,7 +68,7 @@ export function WhatsAppButton({ villaName }: WhatsAppButtonProps) {
         </svg>
 
         {/* Floating Tooltip (Desktop) */}
-        <span className="hidden md:group-hover:flex absolute right-16 px-3 py-1.5 bg-[#171513] text-[#F4EFE5] text-[11px] font-medium tracking-wide rounded-md shadow-xl border border-[#302D28] whitespace-nowrap items-center gap-1.5 animate-in fade-in zoom-in-95 duration-150">
+        <span className="hidden md:group-hover:flex absolute right-16 px-3 py-1.5 bg-[#202020] text-[#FFFFFF] text-[11px] font-medium tracking-wide rounded-md shadow-xl border border-[#383633] whitespace-nowrap items-center gap-1.5 animate-in fade-in zoom-in-95 duration-150">
           <span className="w-1.5 h-1.5 rounded-full bg-[#25D366]" />
           <span>Chat on WhatsApp</span>
         </span>

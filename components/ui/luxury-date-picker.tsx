@@ -145,12 +145,12 @@ export function LuxuryDatePicker({
 
     return (
       <div className="space-y-3">
-        <div className="text-center font-serif text-sm font-semibold text-[var(--text-primary)]">
+        <div className="text-center font-serif text-sm font-semibold text-[#202020] dark:text-[#FCFBF8]">
           {monthNames[month]} {year}
         </div>
         <div className="grid grid-cols-7 gap-1 text-center">
           {dayNames.map((d, i) => (
-            <div key={i} className="text-[10px] uppercase tracking-wider font-semibold text-[var(--accent)] py-1">
+            <div key={i} className="text-[10px] uppercase tracking-wider font-semibold text-[#66635F] dark:text-[#BDB8B0] py-1">
               {d}
             </div>
           ))}
@@ -182,15 +182,15 @@ export function LuxuryDatePicker({
             let cellClass = "h-9 w-full flex items-center justify-center text-xs font-medium transition-all rounded-[4px] ";
 
             if (isDisabled) {
-              cellClass += "opacity-30 cursor-not-allowed line-through text-[var(--text-secondary)]";
+              cellClass += "bg-[#F1F0ED] dark:bg-[#202020]/50 text-[#8A8782] line-through cursor-not-allowed";
             } else if (isCheckIn || isCheckOut) {
-              cellClass += "bg-[var(--accent)] text-[#0B0B0A] font-bold shadow-md scale-105";
+              cellClass += "bg-[#202020] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:text-[#202020] font-bold shadow-md scale-105";
             } else if (isInRange) {
-              cellClass += "bg-[var(--accent)]/20 text-[var(--text-primary)] rounded-none";
+              cellClass += "bg-[#F3C5C8] text-[#202020] rounded-none font-medium";
             } else if (isHoveredRange) {
-              cellClass += "bg-[var(--accent)]/10 text-[var(--text-primary)] rounded-none";
+              cellClass += "bg-[#F3C5C8]/50 text-[#202020] rounded-none";
             } else {
-              cellClass += "text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] hover:text-[var(--accent)] cursor-pointer";
+              cellClass += "bg-white dark:bg-[#202020] text-[#202020] dark:text-[#FCFBF8] hover:bg-[#F7F6F3] dark:hover:bg-[#2A2825] cursor-pointer";
             }
 
             return (
@@ -227,25 +227,25 @@ export function LuxuryDatePicker({
   return (
     <div
       ref={containerRef}
-      className="absolute top-full left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 mt-3 z-50 w-[calc(100vw-2rem)] max-w-[340px] sm:max-w-[360px] md:max-w-[640px] bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-[12px] p-4 sm:p-5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 text-[var(--text-primary)] overflow-x-auto min-w-0"
+      className="absolute top-full left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 mt-3 z-50 w-[calc(100vw-2rem)] max-w-[340px] sm:max-w-[360px] md:max-w-[640px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[12px] p-4 sm:p-5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 text-[#202020] dark:text-[#FCFBF8] overflow-x-auto min-w-0"
     >
       {/* Month Navigation Bar */}
-      <div className="flex items-center justify-between pb-4 border-b border-[var(--border-color)] mb-4">
+      <div className="flex items-center justify-between pb-4 border-b border-[#E8E6E2] dark:border-[#383633] mb-4">
         <button
           type="button"
           onClick={handlePrevMonth}
-          className="p-2 text-[var(--accent)] hover:bg-[var(--bg-primary)] rounded-full transition-colors"
+          className="p-2 text-[#202020] dark:text-[#FCFBF8] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] rounded-full transition-colors cursor-pointer"
           title="Previous Month"
         >
           ‹
         </button>
-        <span className="text-xs uppercase tracking-[0.2em] font-semibold text-[var(--accent)]">
+        <span className="text-xs uppercase tracking-[0.2em] font-semibold text-[#B99A62]">
           Select Dates
         </span>
         <button
           type="button"
           onClick={handleNextMonth}
-          className="p-2 text-[var(--accent)] hover:bg-[var(--bg-primary)] rounded-full transition-colors"
+          className="p-2 text-[#202020] dark:text-[#FCFBF8] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] rounded-full transition-colors cursor-pointer"
           title="Next Month"
         >
           ›
@@ -261,17 +261,17 @@ export function LuxuryDatePicker({
       </div>
 
       {/* Footer Info & Actions */}
-      <div className="flex items-center justify-between pt-4 border-t border-[var(--border-color)] mt-5 text-xs">
+      <div className="flex items-center justify-between pt-4 border-t border-[#E8E6E2] dark:border-[#383633] mt-5 text-xs">
         <div>
           {tempCheckIn && tempCheckOut ? (
-            <span className="text-[var(--text-primary)] font-medium">
+            <span className="text-[#202020] dark:text-[#FCFBF8] font-medium">
               {formatShortDate(tempCheckIn)} – {formatShortDate(tempCheckOut)}{" "}
-              <span className="text-[var(--accent)]">({numberOfNights} {numberOfNights === 1 ? "night" : "nights"})</span>
+              <span className="text-[#B99A62]">({numberOfNights} {numberOfNights === 1 ? "night" : "nights"})</span>
             </span>
           ) : tempCheckIn ? (
-            <span className="text-[var(--text-secondary)]">Select Check-Out Date</span>
+            <span className="text-[#66635F] dark:text-[#BDB8B0]">Select Check-Out Date</span>
           ) : (
-            <span className="text-[var(--text-secondary)]">Select Check-In Date</span>
+            <span className="text-[#66635F] dark:text-[#BDB8B0]">Select Check-In Date</span>
           )}
         </div>
 
@@ -280,7 +280,7 @@ export function LuxuryDatePicker({
             <button
               type="button"
               onClick={handleClear}
-              className="text-[var(--accent)] hover:underline font-medium text-xs transition-colors"
+              className="text-[#66635F] dark:text-[#BDB8B0] hover:underline font-medium text-xs transition-colors cursor-pointer"
             >
               Clear
             </button>
@@ -288,7 +288,7 @@ export function LuxuryDatePicker({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-[#0B0B0A] font-semibold text-xs uppercase tracking-wider rounded-[4px] transition-colors"
+            className="px-4 py-1.5 bg-[#202020] hover:bg-[#171717] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#202020] font-semibold text-xs uppercase tracking-wider rounded-[4px] transition-colors cursor-pointer"
           >
             Done
           </button>

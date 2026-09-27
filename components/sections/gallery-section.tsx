@@ -125,7 +125,7 @@ export function GallerySection({ villas = [] }: GallerySectionProps) {
                 <div
                   key={idx}
                   onClick={() => handleOpenLightbox(idx)}
-                  className="w-full h-full flex-shrink-0 snap-center relative cursor-pointer bg-[#151412]"
+                  className="w-full h-full flex-shrink-0 snap-center relative cursor-pointer bg-[#202020] dark:bg-[#171717]"
                 >
                   <Image
                     src={imgUrl}

@@ -40,20 +40,20 @@ export default async function AdminPaymentsPage() {
 
   return (
     <AdminLayoutShell adminName={admin.name} adminEmail={admin.email} pageTitle="Payments">
-      <div className="border-b border-[#DDD5C7]/70 dark:border-[#302D28] pb-5">
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#171513] dark:text-[#F4EFE5]">
+      <div className="border-b border-[#E8E6E2] dark:border-[#383633] pb-5">
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#202020] dark:text-[#FCFBF8]">
           Payments &amp; Financial Ledger
         </h1>
-        <p className="text-xs sm:text-sm text-[#6E685F] dark:text-[#A9A39A] mt-0.5">
+        <p className="text-xs sm:text-sm text-[#66635F] dark:text-[#BDB8B0] mt-0.5">
           Monitor online gateway transactions, payment statuses, and reservation revenue logs.
         </p>
       </div>
 
-      <div className="bg-white dark:bg-[#151412] rounded-xl border border-[#DDD5C7] dark:border-[#302D28] overflow-hidden shadow-xs">
+      <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E6E2] dark:border-[#383633] overflow-hidden shadow-xs">
         {serializedPayments.length === 0 ? (
-          <div className="p-12 text-center text-[#6E685F] dark:text-[#A9A39A] space-y-3">
-            <CreditCard className="w-10 h-10 mx-auto text-[#6E685F]/40 dark:text-[#A9A39A]/40" />
-            <h3 className="font-semibold text-[#171513] dark:text-[#F4EFE5] text-sm">No payment records found</h3>
+          <div className="p-12 text-center text-[#66635F] dark:text-[#BDB8B0] space-y-3">
+            <CreditCard className="w-10 h-10 mx-auto text-[#8A8782]" />
+            <h3 className="font-semibold text-[#202020] dark:text-[#FCFBF8] text-sm">No payment records found</h3>
             <p className="text-xs max-w-sm mx-auto">
               Payments will appear here once online payments are enabled or recorded for guest stays.
             </p>
@@ -62,7 +62,7 @@ export default async function AdminPaymentsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-[#F5F2EC]/60 dark:bg-[#1C1A17]/60 border-b border-[#DDD5C7] dark:border-[#302D28] text-[#6E685F] dark:text-[#A9A39A] uppercase text-[10px] font-semibold tracking-wider">
+                <tr className="bg-[#F7F6F3] dark:bg-[#171717] border-b border-[#E8E6E2] dark:border-[#383633] text-[#66635F] dark:text-[#BDB8B0] uppercase text-[10px] font-semibold tracking-wider">
                   <th className="py-3 px-4">Transaction Ref</th>
                   <th className="py-3 px-4">Guest</th>
                   <th className="py-3 px-4">Villa</th>
@@ -72,47 +72,47 @@ export default async function AdminPaymentsPage() {
                   <th className="py-3 px-4 text-right">Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#DDD5C7]/40 dark:divide-[#302D28]/60 text-[#171513] dark:text-[#F4EFE5]">
+              <tbody className="divide-y divide-[#E8E6E2]/60 dark:divide-[#383633] text-[#202020] dark:text-[#FCFBF8]">
                 {serializedPayments.map((p) => (
-                  <tr key={p._id} className="hover:bg-[#F5F2EC]/50 dark:hover:bg-[#1C1A17]/50 transition-colors">
-                    <td className="py-3.5 px-4 font-mono text-[11px] font-semibold text-[#6E685F] dark:text-[#A9A39A]">
+                  <tr key={p._id} className="hover:bg-[#F7F6F3]/50 dark:hover:bg-[#171717]/50 transition-colors">
+                    <td className="py-3.5 px-4 font-mono text-[11px] font-semibold text-[#66635F] dark:text-[#BDB8B0]">
                       #{p._id.slice(-8).toUpperCase()}
                     </td>
 
                     <td className="py-3.5 px-4">
-                      <div className="font-semibold text-[#171513] dark:text-[#F4EFE5]">{p.guestName}</div>
-                      <div className="text-[11px] text-[#6E685F] dark:text-[#A9A39A]">{p.guestEmail}</div>
+                      <div className="font-semibold text-[#202020] dark:text-[#FCFBF8]">{p.guestName}</div>
+                      <div className="text-[11px] text-[#66635F] dark:text-[#BDB8B0]">{p.guestEmail}</div>
                     </td>
 
-                    <td className="py-3.5 px-4 text-[#6E685F] dark:text-[#A9A39A]">
+                    <td className="py-3.5 px-4 text-[#66635F] dark:text-[#BDB8B0]">
                       {p.villaName}
                     </td>
 
-                    <td className="py-3.5 px-4 text-right font-sans font-bold text-[#171513] dark:text-[#F4EFE5]">
+                    <td className="py-3.5 px-4 text-right font-sans font-bold text-[#202020] dark:text-[#FCFBF8]">
                       {formatCurrency(p.amount)}
                     </td>
 
                     <td className="py-3.5 px-4 text-center">
                       <span
-                        className={`inline-block px-2.5 py-0.5 text-[10px] font-semibold rounded-full uppercase tracking-wider ${
+                        className={`inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider ${
                           p.paymentStatus === "PAID"
-                            ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40"
+                            ? "bg-[#3F6B52]/10 text-[#3F6B52] border border-[#3F6B52]/30"
                             : p.paymentStatus === "PENDING"
-                            ? "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40"
+                            ? "bg-[#F5D0B5]/30 text-[#B99A62] border border-[#B99A62]/30"
                             : p.paymentStatus === "FAILED"
-                            ? "bg-rose-50 text-rose-700 dark:bg-rose-950/40 dark:text-rose-400 border border-rose-200 dark:border-rose-800/40"
-                            : "bg-stone-100 text-stone-700 dark:bg-stone-800 dark:text-stone-300 border border-stone-200 dark:border-stone-700"
+                            ? "bg-[#B84A4A]/10 text-[#B84A4A] border border-[#B84A4A]/30"
+                            : "bg-[#8A8782]/10 text-[#66635F] border border-[#DAD7D1]"
                         }`}
                       >
                         {p.paymentStatus}
                       </span>
                     </td>
 
-                    <td className="py-3.5 px-4 text-[#6E685F] dark:text-[#A9A39A]">
+                    <td className="py-3.5 px-4 text-[#66635F] dark:text-[#BDB8B0]">
                       {p.paymentMethod}
                     </td>
 
-                    <td className="py-3.5 px-4 text-right text-[#6E685F] dark:text-[#A9A39A]">
+                    <td className="py-3.5 px-4 text-right text-[#66635F] dark:text-[#BDB8B0]">
                       {p.date}
                     </td>
                   </tr>

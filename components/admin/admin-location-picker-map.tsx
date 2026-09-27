@@ -450,15 +450,15 @@ export function AdminLocationPickerMap({
       : buildGoogleMapsSearchUrl(safeLat, safeLng);
 
   return (
-    <div className="space-y-4 rounded-xl p-4 sm:p-5 bg-[#F5F2EC]/80 dark:bg-[#1C1A17]/80 border border-[#DDD5C7] dark:border-[#302D28] shadow-sm">
+    <div className="space-y-4 rounded-xl p-4 sm:p-5 bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] shadow-sm">
       {/* 1. Places Search Bar */}
       <div className="space-y-2 relative">
         <div className="flex items-center justify-between">
-          <label className="text-[11px] font-bold uppercase tracking-wider text-[#171513] dark:text-[#F4EFE5] flex items-center gap-1.5">
-            <Search className="w-3.5 h-3.5 text-[#C89B4A]" />
+          <label className="text-[11px] font-bold uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
+            <Search className="w-3.5 h-3.5 text-[#B99A62]" />
             <span>Search Villa Location</span>
           </label>
-          <span className="text-[10px] text-[#6E685F] dark:text-[#A9A39A]">
+          <span className="text-[10px] text-[#66635F] dark:text-[#BDB8B0]">
             Google Places Autocomplete
           </span>
         </div>
@@ -481,17 +481,17 @@ export function AdminLocationPickerMap({
                   handleSearchPlaces();
                 }
               }}
-              placeholder="Search villa location (e.g. Black Rose Villa, Sisarma, Rani Road, Fatehsagar Lake...)"
-              className="w-full pl-9 pr-3 py-2.5 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A] shadow-xs"
+              placeholder="Search villa location (e.g. Sisarma, Rani Road, Fatehsagar Lake...)"
+              className="w-full pl-9 pr-3 py-2.5 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62] shadow-xs"
             />
-            <Search className="w-4 h-4 text-[#6E685F] dark:text-[#A9A39A] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <Search className="w-4 h-4 text-[#66635F] dark:text-[#BDB8B0] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
 
           <button
             type="button"
             disabled={isSearching || !searchQuery.trim()}
             onClick={() => handleSearchPlaces()}
-            className="px-4 py-2.5 rounded-lg bg-[#C89B4A] hover:bg-[#b5893a] text-[#0B0B0A] font-bold text-xs flex items-center gap-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 shadow-xs"
+            className="px-4 py-2.5 rounded-lg bg-[#202020] hover:bg-[#171717] text-white font-semibold text-xs flex items-center gap-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 shadow-xs"
           >
             {isSearching ? (
               <>
@@ -500,7 +500,7 @@ export function AdminLocationPickerMap({
               </>
             ) : (
               <>
-                <MapPin className="w-3.5 h-3.5" />
+                <MapPin className="w-3.5 h-3.5 text-[#B99A62]" />
                 <span>Search</span>
               </>
             )}
@@ -509,20 +509,20 @@ export function AdminLocationPickerMap({
 
         {/* Autocomplete Dropdown Fallback */}
         {showDropdown && searchResults.length > 0 && (
-          <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] rounded-xl shadow-2xl max-h-60 overflow-y-auto divide-y divide-[#DDD5C7]/50 dark:divide-[#302D28]">
+          <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-xl shadow-2xl max-h-60 overflow-y-auto divide-y divide-[#E8E6E2]/50 dark:divide-[#383633]">
             {searchResults.map((item, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => handleSelectSearchResult(item)}
-                className="w-full text-left px-3.5 py-2.5 hover:bg-[#F5F2EC] dark:hover:bg-[#1C1A17] transition-colors flex items-start gap-2.5 group"
+                className="w-full text-left px-3.5 py-2.5 hover:bg-[#F7F6F3] dark:hover:bg-[#171717] transition-colors flex items-start gap-2.5 group"
               >
-                <MapPin className="w-4 h-4 text-[#EA4335] flex-shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-[#B84A4A] flex-shrink-0 mt-0.5" />
                 <div className="min-w-0">
-                  <div className="text-xs font-semibold text-[#171513] dark:text-[#F4EFE5] group-hover:text-[#A8792E] dark:group-hover:text-[#C89B4A]">
+                  <div className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] group-hover:text-[#B99A62]">
                     {item.name}
                   </div>
-                  <div className="text-[10px] text-[#6E685F] dark:text-[#A9A39A] truncate mt-0.5">
+                  <div className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] truncate mt-0.5">
                     {item.displayName}
                   </div>
                 </div>
@@ -535,46 +535,46 @@ export function AdminLocationPickerMap({
       {/* 2. Interactive Google Map Container */}
       <div className="space-y-2">
         <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
-          <span className="font-semibold text-[#171513] dark:text-[#F4EFE5] flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#EA4335] inline-block shadow-xs animate-pulse" />
+          <span className="font-semibold text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#B84A4A] inline-block shadow-xs animate-pulse" />
             <span>
-              Interactive Google Map: {safeLat.toFixed(6)}, {safeLng.toFixed(6)}
+              Interactive Map: {safeLat.toFixed(6)}, {safeLng.toFixed(6)}
             </span>
           </span>
 
           <div className="flex items-center gap-2">
             {/* Zoom Controls */}
-            <div className="flex items-center gap-0.5 bg-white dark:bg-[#151412] p-0.5 rounded-lg border border-[#DDD5C7] dark:border-[#302D28]">
+            <div className="flex items-center gap-0.5 bg-white dark:bg-[#202020] p-0.5 rounded-lg border border-[#E8E6E2] dark:border-[#383633]">
               <button
                 type="button"
                 onClick={() => handleZoomChange(zoomLevel + 1)}
                 title="Zoom In"
-                className="p-1 rounded text-[#6E685F] dark:text-[#A9A39A] hover:text-[#C89B4A] hover:bg-[#F5F2EC] dark:hover:bg-[#1C1A17]"
+                className="p-1 rounded text-[#66635F] dark:text-[#BDB8B0] hover:text-[#202020] dark:hover:text-white hover:bg-[#F7F6F3] dark:hover:bg-[#171717]"
               >
                 <ZoomIn className="w-3.5 h-3.5" />
               </button>
-              <span className="px-1 text-[10px] font-mono text-[#6E685F] dark:text-[#A9A39A]">
+              <span className="px-1 text-[10px] font-mono text-[#66635F] dark:text-[#BDB8B0]">
                 z{zoomLevel}
               </span>
               <button
                 type="button"
                 onClick={() => handleZoomChange(zoomLevel - 1)}
                 title="Zoom Out"
-                className="p-1 rounded text-[#6E685F] dark:text-[#A9A39A] hover:text-[#C89B4A] hover:bg-[#F5F2EC] dark:hover:bg-[#1C1A17]"
+                className="p-1 rounded text-[#66635F] dark:text-[#BDB8B0] hover:text-[#202020] dark:hover:text-white hover:bg-[#F7F6F3] dark:hover:bg-[#171717]"
               >
                 <ZoomOut className="w-3.5 h-3.5" />
               </button>
             </div>
 
             {/* Mode Switcher */}
-            <div className="flex items-center gap-1 p-0.5 bg-white dark:bg-[#151412] rounded-lg border border-[#DDD5C7] dark:border-[#302D28]">
+            <div className="flex items-center gap-1 p-0.5 bg-white dark:bg-[#202020] rounded-lg border border-[#E8E6E2] dark:border-[#383633]">
               <button
                 type="button"
                 onClick={() => handleToggleMapMode("roadmap")}
                 className={`px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider transition-all flex items-center gap-1 ${
                   mapMode === "roadmap"
-                    ? "bg-[#C89B4A] text-[#0B0B0A] shadow-xs"
-                    : "text-[#6E685F] dark:text-[#A9A39A]"
+                    ? "bg-[#202020] text-white shadow-xs"
+                    : "text-[#66635F] dark:text-[#BDB8B0]"
                 }`}
               >
                 <MapIcon className="w-3 h-3" />
@@ -585,8 +585,8 @@ export function AdminLocationPickerMap({
                 onClick={() => handleToggleMapMode("satellite")}
                 className={`px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider transition-all flex items-center gap-1 ${
                   mapMode === "satellite"
-                    ? "bg-[#C89B4A] text-[#0B0B0A] shadow-xs"
-                    : "text-[#6E685F] dark:text-[#A9A39A]"
+                    ? "bg-[#202020] text-white shadow-xs"
+                    : "text-[#66635F] dark:text-[#BDB8B0]"
                 }`}
               >
                 <Satellite className="w-3 h-3" />
@@ -597,7 +597,7 @@ export function AdminLocationPickerMap({
         </div>
 
         {/* Map Canvas */}
-        <div className="relative w-full h-80 sm:h-96 rounded-xl overflow-hidden border border-[#DDD5C7] dark:border-[#302D28] shadow-inner bg-[#12110F]">
+        <div className="relative w-full h-80 sm:h-96 rounded-xl overflow-hidden border border-[#E8E6E2] dark:border-[#383633] shadow-inner bg-[#202020]">
           {/* Official Google Maps JS Canvas */}
           <div ref={mapContainerRef} className="w-full h-full absolute inset-0 z-10" />
 
@@ -624,9 +624,9 @@ export function AdminLocationPickerMap({
               target="_blank"
               rel="noopener noreferrer"
               title="Test Navigation Directions"
-              className="px-2.5 py-1 rounded-md bg-[#0B0B0A]/90 hover:bg-[#C89B4A] text-white hover:text-black text-[10px] font-bold flex items-center gap-1 backdrop-blur-md border border-white/20 transition-all shadow-md"
+              className="px-2.5 py-1 rounded-md bg-[#202020]/90 hover:bg-[#171717] text-white text-[10px] font-semibold flex items-center gap-1 backdrop-blur-md border border-white/20 transition-all shadow-md"
             >
-              <Navigation className="w-3 h-3 text-[#C89B4A] group-hover:text-black" />
+              <Navigation className="w-3 h-3 text-[#B99A62]" />
               <span>Directions</span>
             </a>
             <a
@@ -634,7 +634,7 @@ export function AdminLocationPickerMap({
               target="_blank"
               rel="noopener noreferrer"
               title="Open full view in Google Maps"
-              className="px-2.5 py-1 rounded-md bg-[#0B0B0A]/90 hover:bg-[#C89B4A] text-white hover:text-black text-[10px] font-bold flex items-center gap-1 backdrop-blur-md border border-white/20 transition-all shadow-md"
+              className="px-2.5 py-1 rounded-md bg-[#202020]/90 hover:bg-[#171717] text-white text-[10px] font-semibold flex items-center gap-1 backdrop-blur-md border border-white/20 transition-all shadow-md"
             >
               <span>View Map</span>
               <ExternalLink className="w-3 h-3" />
@@ -643,7 +643,7 @@ export function AdminLocationPickerMap({
 
           {/* Map Bottom Hint Banner */}
           <div className="absolute bottom-2 left-2 right-2 z-20 pointer-events-none text-center">
-            <span className="px-3 py-1 rounded-full bg-[#0B0B0A]/90 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-md inline-flex items-center gap-1.5">
+            <span className="px-3 py-1 rounded-full bg-[#202020]/90 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-md inline-flex items-center gap-1.5">
               <span>🎯</span>
               <span>Search for the villa, then drag the pin to the exact property location if needed.</span>
             </span>
@@ -652,20 +652,20 @@ export function AdminLocationPickerMap({
       </div>
 
       {/* 3. Selected Location Details Card & Confirmation */}
-      <div className="p-4 rounded-xl bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] shadow-sm space-y-3">
-        <div className="flex items-center justify-between border-b border-[#DDD5C7]/50 dark:border-[#302D28] pb-2">
-          <h5 className="font-bold text-xs uppercase tracking-wider text-[#171513] dark:text-[#F4EFE5] flex items-center gap-1.5">
-            <MapPin className="w-4 h-4 text-[#EA4335]" />
+      <div className="p-4 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-sm space-y-3">
+        <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
+          <h5 className="font-bold text-xs uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
+            <MapPin className="w-4 h-4 text-[#B84A4A]" />
             <span>📍 Selected Location</span>
           </h5>
 
           {isConfirmed ? (
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold text-[#3F6B52] bg-[#3F6B52]/10 border border-[#3F6B52]/30 flex items-center gap-1">
               <CheckCircle2 className="w-3 h-3" />
               <span>Location Verified</span>
             </span>
           ) : (
-            <span className="px-2 py-0.5 rounded text-[10px] font-medium text-amber-600 dark:text-amber-400 bg-amber-500/10 border border-amber-500/30 flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded text-[10px] font-medium text-[#B99A62] bg-[#F5D0B5]/30 border border-[#B99A62]/30 flex items-center gap-1">
               <AlertTriangle className="w-3 h-3" />
               <span>Unconfirmed Changes</span>
             </span>
@@ -674,37 +674,37 @@ export function AdminLocationPickerMap({
 
         <div className="space-y-2 text-xs">
           <div>
-            <span className="text-[10px] uppercase font-semibold text-[#6E685F] dark:text-[#A9A39A] block mb-0.5">
+            <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-0.5">
               Formatted Address:
             </span>
-            <div className="font-medium text-[#171513] dark:text-[#F4EFE5] bg-[#F5F2EC] dark:bg-[#1C1A17] px-3 py-2 rounded-lg border border-[#DDD5C7]/60 dark:border-[#302D28] flex items-center justify-between gap-2">
+            <div className="font-medium text-[#202020] dark:text-[#FCFBF8] bg-[#F7F6F3] dark:bg-[#171717] px-3 py-2 rounded-lg border border-[#E8E6E2] dark:border-[#383633] flex items-center justify-between gap-2">
               <span className="truncate">{currentAddress || "No address selected yet"}</span>
-              {isReversingGeocode && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C89B4A] flex-shrink-0" />}
+              {isReversingGeocode && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B99A62] flex-shrink-0" />}
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <span className="text-[10px] uppercase font-semibold text-[#6E685F] dark:text-[#A9A39A] block mb-0.5">
+              <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-0.5">
                 Exact Latitude:
               </span>
-              <div className="font-mono font-semibold text-[#171513] dark:text-[#F4EFE5] bg-[#F5F2EC] dark:bg-[#1C1A17] px-3 py-2 rounded-lg border border-[#DDD5C7]/60 dark:border-[#302D28]">
+              <div className="font-mono font-semibold text-[#202020] dark:text-[#FCFBF8] bg-[#F7F6F3] dark:bg-[#171717] px-3 py-2 rounded-lg border border-[#E8E6E2] dark:border-[#383633]">
                 {safeLat.toFixed(6)}
               </div>
             </div>
 
             <div>
-              <span className="text-[10px] uppercase font-semibold text-[#6E685F] dark:text-[#A9A39A] block mb-0.5">
+              <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-0.5">
                 Exact Longitude:
               </span>
-              <div className="font-mono font-semibold text-[#171513] dark:text-[#F4EFE5] bg-[#F5F2EC] dark:bg-[#1C1A17] px-3 py-2 rounded-lg border border-[#DDD5C7]/60 dark:border-[#302D28]">
+              <div className="font-mono font-semibold text-[#202020] dark:text-[#FCFBF8] bg-[#F7F6F3] dark:bg-[#171717] px-3 py-2 rounded-lg border border-[#E8E6E2] dark:border-[#383633]">
                 {safeLng.toFixed(6)}
               </div>
             </div>
           </div>
 
           {currentPlaceId && (
-            <div className="text-[10px] text-[#6E685F] dark:text-[#A9A39A] font-mono truncate">
+            <div className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] font-mono truncate">
               Google Place ID: {currentPlaceId}
             </div>
           )}
@@ -715,7 +715,7 @@ export function AdminLocationPickerMap({
           <button
             type="button"
             onClick={handleConfirmLocation}
-            className="flex-1 py-2.5 px-4 rounded-lg bg-[#C89B4A] hover:bg-[#b5893a] text-[#0B0B0A] font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md"
+            className="flex-1 py-2.5 px-4 rounded-lg bg-[#202020] hover:bg-[#171717] text-white font-semibold text-xs flex items-center justify-center gap-2 transition-all shadow-md"
           >
             <Check className="w-4 h-4" />
             <span>Confirm Location</span>
@@ -724,16 +724,16 @@ export function AdminLocationPickerMap({
       </div>
 
       {/* 4. Fine-Tuning D-Pad, Steppers & Paste Input */}
-      <div className="p-3.5 rounded-xl bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] space-y-3">
+      <div className="p-3.5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-[#171513] dark:text-[#F4EFE5] flex items-center gap-1.5">
-            <RefreshCw className="w-3.5 h-3.5 text-[#C89B4A]" />
+          <span className="text-xs font-bold text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
+            <RefreshCw className="w-3.5 h-3.5 text-[#B99A62]" />
             <span>Fine-Tune Pin or Paste Coordinates</span>
           </span>
 
           {/* Step Size Selector */}
           <div className="flex items-center gap-1 text-[10px]">
-            <span className="text-[#6E685F] dark:text-[#A9A39A]">Step:</span>
+            <span className="text-[#66635F] dark:text-[#BDB8B0]">Step:</span>
             {[
               { label: "10m", val: 0.0001 },
               { label: "50m", val: 0.0005 },
@@ -745,8 +745,8 @@ export function AdminLocationPickerMap({
                 onClick={() => setStepSize(s.val)}
                 className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${
                   stepSize === s.val
-                    ? "bg-[#C89B4A] text-[#0B0B0A] font-bold"
-                    : "bg-[#F5F2EC] dark:bg-[#1C1A17] text-[#6E685F] dark:text-[#A9A39A]"
+                    ? "bg-[#202020] text-white font-bold"
+                    : "bg-[#F7F6F3] dark:bg-[#171717] text-[#66635F] dark:text-[#BDB8B0]"
                 }`}
               >
                 {s.label}
@@ -759,7 +759,7 @@ export function AdminLocationPickerMap({
           {/* Direct Coordinate Inputs */}
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-[10px] font-semibold uppercase text-[#6E685F] dark:text-[#A9A39A] mb-1">
+              <label className="block text-[10px] font-semibold uppercase text-[#66635F] dark:text-[#BDB8B0] mb-1">
                 Latitude
               </label>
               <input
@@ -774,11 +774,11 @@ export function AdminLocationPickerMap({
                     setIsConfirmed(false);
                   }
                 }}
-                className="w-full px-2.5 py-1.5 rounded bg-[#F5F2EC] dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs font-mono focus:outline-none focus:ring-1 focus:ring-[#A8792E]"
+                className="w-full px-2.5 py-1.5 rounded bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-mono text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
               />
             </div>
             <div>
-              <label className="block text-[10px] font-semibold uppercase text-[#6E685F] dark:text-[#A9A39A] mb-1">
+              <label className="block text-[10px] font-semibold uppercase text-[#66635F] dark:text-[#BDB8B0] mb-1">
                 Longitude
               </label>
               <input
@@ -793,21 +793,21 @@ export function AdminLocationPickerMap({
                     setIsConfirmed(false);
                   }
                 }}
-                className="w-full px-2.5 py-1.5 rounded bg-[#F5F2EC] dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs font-mono focus:outline-none focus:ring-1 focus:ring-[#A8792E]"
+                className="w-full px-2.5 py-1.5 rounded bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-mono text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
               />
             </div>
           </div>
 
           {/* D-Pad Buttons */}
           <div className="flex items-center justify-center gap-1.5">
-            <span className="text-[10px] font-semibold text-[#6E685F] dark:text-[#A9A39A] mr-2">
+            <span className="text-[10px] font-semibold text-[#66635F] dark:text-[#BDB8B0] mr-2">
               Nudge Pin:
             </span>
             <button
               type="button"
               onClick={() => nudgeCoordinates(0, -stepSize)}
               title="Move West"
-              className="p-1.5 rounded-md bg-[#F5F2EC] dark:bg-[#1C1A17] hover:bg-[#C89B4A] hover:text-[#0B0B0A] text-[#171513] dark:text-[#F4EFE5] border border-[#DDD5C7] dark:border-[#302D28] transition-colors"
+              className="p-1.5 rounded-md bg-[#F7F6F3] dark:bg-[#171717] hover:bg-[#202020] hover:text-white text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] transition-colors"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -816,7 +816,7 @@ export function AdminLocationPickerMap({
                 type="button"
                 onClick={() => nudgeCoordinates(stepSize, 0)}
                 title="Move North"
-                className="p-1.5 rounded-md bg-[#F5F2EC] dark:bg-[#1C1A17] hover:bg-[#C89B4A] hover:text-[#0B0B0A] text-[#171513] dark:text-[#F4EFE5] border border-[#DDD5C7] dark:border-[#302D28] transition-colors"
+                className="p-1.5 rounded-md bg-[#F7F6F3] dark:bg-[#171717] hover:bg-[#202020] hover:text-white text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] transition-colors"
               >
                 <ChevronUp className="w-4 h-4" />
               </button>
@@ -824,7 +824,7 @@ export function AdminLocationPickerMap({
                 type="button"
                 onClick={() => nudgeCoordinates(-stepSize, 0)}
                 title="Move South"
-                className="p-1.5 rounded-md bg-[#F5F2EC] dark:bg-[#1C1A17] hover:bg-[#C89B4A] hover:text-[#0B0B0A] text-[#171513] dark:text-[#F4EFE5] border border-[#DDD5C7] dark:border-[#302D28] transition-colors"
+                className="p-1.5 rounded-md bg-[#F7F6F3] dark:bg-[#171717] hover:bg-[#202020] hover:text-white text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] transition-colors"
               >
                 <ChevronDown className="w-4 h-4" />
               </button>
@@ -833,7 +833,7 @@ export function AdminLocationPickerMap({
               type="button"
               onClick={() => nudgeCoordinates(0, stepSize)}
               title="Move East"
-              className="p-1.5 rounded-md bg-[#F5F2EC] dark:bg-[#1C1A17] hover:bg-[#C89B4A] hover:text-[#0B0B0A] text-[#171513] dark:text-[#F4EFE5] border border-[#DDD5C7] dark:border-[#302D28] transition-colors"
+              className="p-1.5 rounded-md bg-[#F7F6F3] dark:bg-[#171717] hover:bg-[#202020] hover:text-white text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -841,7 +841,7 @@ export function AdminLocationPickerMap({
         </div>
 
         {/* URL Paste */}
-        <div className="pt-2 border-t border-[#DDD5C7]/40 dark:border-[#302D28]/40 flex gap-2">
+        <div className="pt-2 border-t border-[#E8E6E2] dark:border-[#383633] flex gap-2">
           <input
             type="text"
             value={pastedUrl}
@@ -852,14 +852,14 @@ export function AdminLocationPickerMap({
                 handleResolvePastedLink();
               }
             }}
-            placeholder="Paste Google Maps URL (maps.app.goo.gl / google.com/maps) or 24.5854, 73.6780"
-            className="flex-1 px-3 py-1.5 rounded-md bg-[#F5F2EC] dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs focus:outline-none focus:ring-1 focus:ring-[#A8792E]"
+            placeholder="Paste Google Maps URL or coordinates"
+            className="flex-1 px-3 py-1.5 rounded-md bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
           />
           <button
             type="button"
             disabled={isResolvingUrl || !pastedUrl.trim()}
             onClick={handleResolvePastedLink}
-            className="px-3 py-1.5 rounded-md bg-[#171513] dark:bg-[#2A2723] hover:bg-[#C89B4A] hover:text-[#0B0B0A] text-white text-xs font-semibold transition-all disabled:opacity-50 flex items-center gap-1.5"
+            className="px-3 py-1.5 rounded-md bg-[#202020] hover:bg-[#171717] text-white text-xs font-semibold transition-all disabled:opacity-50 flex items-center gap-1.5"
           >
             {isResolvingUrl ? <Loader2 className="w-3 h-3 animate-spin" /> : <LinkIcon className="w-3 h-3" />}
             <span>Set Pin</span>
@@ -868,7 +868,7 @@ export function AdminLocationPickerMap({
       </div>
 
       {statusMessage && (
-        <div className="text-[11px] font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-2 rounded-md animate-in fade-in flex items-center gap-1.5">
+        <div className="text-[11px] font-medium text-[#3F6B52] bg-[#3F6B52]/10 border border-[#3F6B52]/30 px-3 py-2 rounded-md animate-in fade-in flex items-center gap-1.5">
           <Check className="w-3.5 h-3.5 flex-shrink-0" />
           <span>{statusMessage}</span>
         </div>

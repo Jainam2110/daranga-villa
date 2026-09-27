@@ -29,19 +29,19 @@ function applyThemeToDOM(t: Theme) {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(() => {
-    if (typeof window === "undefined") return "dark";
+    if (typeof window === "undefined") return "light";
     try {
       const savedTheme = (localStorage.getItem("daranga_theme") || localStorage.getItem("theme")) as Theme | null;
       if (savedTheme === "dark" || savedTheme === "light") {
         return savedTheme;
       }
-      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-        return "light";
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        return "dark";
       }
     } catch {
       // fallback
     }
-    return "dark";
+    return "light";
   });
 
   useEffect(() => {

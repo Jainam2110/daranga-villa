@@ -50,7 +50,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("daranga_theme")||localStorage.getItem("theme");var d=document.documentElement;if(t==="light"||t==="dark"){d.setAttribute("data-theme",t);d.classList.toggle("dark",t==="dark");d.classList.toggle("light",t==="light");d.style.colorScheme=t;}else if(window.matchMedia("(prefers-color-scheme: light)").matches){d.setAttribute("data-theme","light");d.classList.add("light");d.classList.remove("dark");d.style.colorScheme="light";}else{d.setAttribute("data-theme","dark");d.classList.add("dark");d.classList.remove("light");d.style.colorScheme="dark";}}catch(e){}})()`,
+            __html: `(function(){try{var t=localStorage.getItem("daranga_theme")||localStorage.getItem("theme");var d=document.documentElement;if(t==="light"||t==="dark"){d.setAttribute("data-theme",t);d.classList.toggle("dark",t==="dark");d.classList.toggle("light",t==="light");d.style.colorScheme=t;}else if(window.matchMedia("(prefers-color-scheme: dark)").matches){d.setAttribute("data-theme","dark");d.classList.add("dark");d.classList.remove("light");d.style.colorScheme="dark";}else{d.setAttribute("data-theme","light");d.classList.add("light");d.classList.remove("dark");d.style.colorScheme="light";}}catch(e){}})()`,
           }}
         />
       </head>

@@ -5,76 +5,185 @@
 @theme {
   --font-serif: var(--font-serif), "Cormorant Garamond", Georgia, serif;
   --font-sans: var(--font-sans), "Plus Jakarta Sans", system-ui, sans-serif;
+
+  /* Primary Palette */
+  --color-charcoal: #202020;
+  --color-near-black: #171717;
+
+  /* Backgrounds */
+  --color-pure-white: #ffffff;
+  --color-warm-white: #fcfbf8;
+  --color-soft-white: #f7f6f3;
+
+  /* Blush / Brand Accent */
+  --color-blush: #e8a0a8;
+  --color-rose: #f3c5c8;
+
+  /* Peach Accent */
+  --color-peach: #f5d0b5;
+  --color-pale-peach: #fbe5d4;
+
+  /* Luxury Accent */
+  --color-gold: #b99a62;
+
+  /* Text */
+  --color-text-primary: #202020;
+  --color-text-secondary: #66635f;
+  --color-text-muted: #8a8782;
+
+  /* Borders */
+  --color-border-soft: #e8e6e2;
+  --color-border-strong: #dad7d1;
+
+  /* Functional Status */
+  --color-success: #3f6b52;
+  --color-error: #b84a4a;
 }
 
 :root {
-  /* DARK MODE (Default Theme) */
-  --bg-primary: #0b0b0a;
-  --bg-secondary: #151412;
-  --bg-surface: #1c1a17;
-  --text-primary: #f5f1e8;
-  --text-secondary: #b8b1a5;
-  --text-muted: #9e7837;
-  --accent: #c89b4a;
-  --accent-hover: #b5893a;
-  --accent-muted: #9e7837;
-  --accent-text: #0b0b0a;
-  --border-color: #262420;
-  --nav-bg-scrolled: rgba(21, 20, 18, 0.95);
-  --shadow-color: rgba(0, 0, 0, 0.5);
+  /* LIGHT MODE (Primary Experience: 70% Warm White/White, 15% Charcoal, 8% Blush, 5% Peach, 2% Gold) */
+  --bg-primary: #fcfbf8;
+  --bg-secondary: #f7f6f3;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+
+  --text-primary: #202020;
+  --text-secondary: #66635f;
+  --text-muted: #8a8782;
+
+  --color-primary: #202020;
+  --color-primary-dark: #171717;
+  --color-background: #ffffff;
+  --color-background-warm: #fcfbf8;
+  --color-surface: #f7f6f3;
+  --color-blush: #e8a0a8;
+  --color-rose: #f3c5c8;
+  --color-peach: #f5d0b5;
+  --color-pale-peach: #fbe5d4;
+  --color-gold: #b99a62;
+  --color-text: #202020;
+  --color-text-muted: #66635f;
+  --color-border: #e8e6e2;
+  --color-border-strong: #dad7d1;
+  --color-success: #3f6b52;
+  --color-error: #b84a4a;
+
+  --accent: #b99a62;
+  --accent-hover: #a88850;
+  --accent-blush: #e8a0a8;
+  --accent-rose: #f3c5c8;
+  --accent-peach: #f5d0b5;
+  --accent-text: #ffffff;
+
+  --border-color: #e8e6e2;
+  --border-soft: #e8e6e2;
+  --border-strong: #dad7d1;
+
+  --nav-bg-scrolled: rgba(255, 255, 255, 0.94);
+  --shadow-color: rgba(32, 32, 32, 0.06);
 
   --background: var(--bg-primary);
   --foreground: var(--text-primary);
-  --font-serif: var(--font-serif), "Cormorant Garamond", Georgia, serif;
-  --font-sans: var(--font-sans), "Plus Jakarta Sans", system-ui, sans-serif;
-  color-scheme: dark;
-}
-
-html[data-theme="dark"],
-html.dark,
-:root.dark,
-[data-theme="dark"] {
-  --bg-primary: #0b0b0a;
-  --bg-secondary: #151412;
-  --bg-surface: #1c1a17;
-  --text-primary: #f5f1e8;
-  --text-secondary: #b8b1a5;
-  --text-muted: #9e7837;
-  --accent: #c89b4a;
-  --accent-hover: #b5893a;
-  --accent-muted: #9e7837;
-  --accent-text: #0b0b0a;
-  --border-color: #262420;
-  --nav-bg-scrolled: rgba(21, 20, 18, 0.95);
-  --shadow-color: rgba(0, 0, 0, 0.5);
-
-  --background: var(--bg-primary);
-  --foreground: var(--text-primary);
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 html[data-theme="light"],
 html.light,
 :root.light,
 [data-theme="light"] {
-  /* LIGHT MODE (Warm Ivory & Contemporary Editorial) */
-  --bg-primary: #f7f4ed;
-  --bg-secondary: #f4efe5;
+  --bg-primary: #fcfbf8;
+  --bg-secondary: #f7f6f3;
   --bg-surface: #ffffff;
-  --text-primary: #171513;
-  --text-secondary: #625d55;
-  --text-muted: #9a6f2f;
-  --accent: #9a6f2f;
-  --accent-hover: #825c25;
-  --accent-muted: #9a6f2f;
+  --bg-card: #ffffff;
+
+  --text-primary: #202020;
+  --text-secondary: #66635f;
+  --text-muted: #8a8782;
+
+  --color-primary: #202020;
+  --color-primary-dark: #171717;
+  --color-background: #ffffff;
+  --color-background-warm: #fcfbf8;
+  --color-surface: #f7f6f3;
+  --color-blush: #e8a0a8;
+  --color-rose: #f3c5c8;
+  --color-peach: #f5d0b5;
+  --color-pale-peach: #fbe5d4;
+  --color-gold: #b99a62;
+  --color-text: #202020;
+  --color-text-muted: #66635f;
+  --color-border: #e8e6e2;
+  --color-border-strong: #dad7d1;
+  --color-success: #3f6b52;
+  --color-error: #b84a4a;
+
+  --accent: #b99a62;
+  --accent-hover: #a88850;
+  --accent-blush: #e8a0a8;
+  --accent-rose: #f3c5c8;
+  --accent-peach: #f5d0b5;
   --accent-text: #ffffff;
-  --border-color: #d9d1c3;
-  --nav-bg-scrolled: rgba(247, 244, 237, 0.95);
-  --shadow-color: rgba(23, 21, 19, 0.08);
+
+  --border-color: #e8e6e2;
+  --border-soft: #e8e6e2;
+  --border-strong: #dad7d1;
+
+  --nav-bg-scrolled: rgba(255, 255, 255, 0.94);
+  --shadow-color: rgba(32, 32, 32, 0.06);
 
   --background: var(--bg-primary);
   --foreground: var(--text-primary);
   color-scheme: light;
+}
+
+html[data-theme="dark"],
+html.dark,
+:root.dark,
+[data-theme="dark"] {
+  /* DARK MODE (Understated Luxury Identity) */
+  --bg-primary: #171717;
+  --bg-secondary: #202020;
+  --bg-surface: #202020;
+  --bg-card: #202020;
+
+  --text-primary: #fcfbf8;
+  --text-secondary: #bdb8b0;
+  --text-muted: #8a8782;
+
+  --color-primary: #fcfbf8;
+  --color-primary-dark: #e8e6e2;
+  --color-background: #171717;
+  --color-background-warm: #171717;
+  --color-surface: #202020;
+  --color-blush: #e8a0a8;
+  --color-rose: #f3c5c8;
+  --color-peach: #f5d0b5;
+  --color-pale-peach: #fbe5d4;
+  --color-gold: #b99a62;
+  --color-text: #fcfbf8;
+  --color-text-muted: #bdb8b0;
+  --color-border: #383633;
+  --color-border-strong: #4a4743;
+  --color-success: #528c6c;
+  --color-error: #d46565;
+
+  --accent: #b99a62;
+  --accent-hover: #c9ab73;
+  --accent-blush: #e8a0a8;
+  --accent-rose: #f3c5c8;
+  --accent-peach: #f5d0b5;
+  --accent-text: #171717;
+
+  --border-color: #383633;
+  --border-soft: #383633;
+  --border-strong: #4a4743;
+
+  --nav-bg-scrolled: rgba(23, 23, 23, 0.94);
+  --shadow-color: rgba(0, 0, 0, 0.4);
+
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+  color-scheme: dark;
 }
 
 body {
@@ -95,6 +204,12 @@ body {
 /* Editorial letter-spacing & line height */
 .tracking-editorial {
   letter-spacing: 0.25em;
+}
+
+/* Soft Promotional Luxury Strip Gradient */
+.bg-promo-strip {
+  background: linear-gradient(90deg, #f3c5c8 0%, #f5d0b5 100%);
+  color: #202020;
 }
 
 /* Smooth Image Hover Zoom */
@@ -175,7 +290,7 @@ body {
   animation: slideProgress5s 5s linear forwards;
 }
 
-/* 3. Luxury Gold Shimmer Sweep across CTA buttons */
+/* 3. Luxury Subtle Shimmer Sweep across CTA buttons */
 @keyframes shimmerSweep {
   0% {
     transform: translateX(-150%) skewX(-20deg);
@@ -200,7 +315,7 @@ body {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.28),
+    rgba(255, 255, 255, 0.22),
     transparent
   );
   transform: translateX(-150%) skewX(-20deg);
@@ -228,12 +343,12 @@ body {
 /* 5. Luxury Soft Glow Pulse for Accents & Badges */
 @keyframes ambientPulse {
   0%, 100% {
-    opacity: 0.4;
+    opacity: 0.35;
     transform: scale(1);
   }
   50% {
-    opacity: 0.7;
-    transform: scale(1.04);
+    opacity: 0.6;
+    transform: scale(1.03);
   }
 }
 
@@ -250,8 +365,6 @@ body {
 
 .card-luxury-hover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.4),
-              0 0 25px -5px rgba(200, 155, 74, 0.15);
+  box-shadow: 0 16px 36px -12px rgba(32, 32, 32, 0.08),
+              0 0 1px 1px rgba(232, 230, 226, 0.8);
 }
-
-

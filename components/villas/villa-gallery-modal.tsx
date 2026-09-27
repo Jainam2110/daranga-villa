@@ -153,16 +153,16 @@ function VillaGalleryModalContent({
       role="dialog"
       aria-modal="true"
       aria-label={`${villaName} Photo Gallery`}
-      className="fixed inset-0 z-50 flex flex-col bg-[#0B0B0A] text-[#F4EFE5] select-none animate-in fade-in duration-250"
+      className="fixed inset-0 z-50 flex flex-col bg-[#171717] text-[#FCFBF8] select-none animate-in fade-in duration-250"
     >
       {/* Top Header Bar */}
-      <header className="flex-shrink-0 flex items-center justify-between px-4 sm:px-8 py-3.5 border-b border-[#302D28] bg-[#151412]/90 backdrop-blur-md z-20">
+      <header className="flex-shrink-0 flex items-center justify-between px-4 sm:px-8 py-3.5 border-b border-[#383633] bg-[#202020]/95 backdrop-blur-md z-20">
         <div className="flex items-center gap-3">
           <div>
-            <h2 className="font-serif text-base sm:text-lg font-light text-[#F4EFE5] truncate max-w-xs sm:max-w-md">
+            <h2 className="font-serif text-base sm:text-lg font-light text-[#FCFBF8] truncate max-w-xs sm:max-w-md">
               {villaName}
             </h2>
-            <div className="text-[10px] sm:text-[11px] text-[#A9A39A] uppercase tracking-wider font-mono">
+            <div className="text-[10px] sm:text-[11px] text-[#BDB8B0] uppercase tracking-wider font-mono">
               Photo {safeCurrentIndex + 1} of {filteredImages.length}
             </div>
           </div>
@@ -171,15 +171,15 @@ function VillaGalleryModalContent({
         {/* Right Controls: View Switcher & Close */}
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Cinema vs Grid View Toggle */}
-          <div className="flex items-center bg-[#1C1A17] p-1 rounded-lg border border-[#302D28]">
+          <div className="flex items-center bg-[#171717] p-1 rounded-lg border border-[#383633]">
             <button
               type="button"
               onClick={() => setViewMode("cinema")}
               title="Cinema Slideshow View"
               className={`p-1.5 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors ${
                 viewMode === "cinema"
-                  ? "bg-[#C89B4A] text-[#0B0B0A] shadow-xs"
-                  : "text-[#A9A39A] hover:text-[#F4EFE5]"
+                  ? "bg-white text-[#202020] shadow-xs"
+                  : "text-[#BDB8B0] hover:text-[#FCFBF8]"
               }`}
             >
               <Maximize2 className="w-3.5 h-3.5" />
@@ -191,8 +191,8 @@ function VillaGalleryModalContent({
               title="Grid Thumbnail View"
               className={`p-1.5 rounded text-xs font-semibold flex items-center gap-1.5 transition-colors ${
                 viewMode === "grid"
-                  ? "bg-[#C89B4A] text-[#0B0B0A] shadow-xs"
-                  : "text-[#A9A39A] hover:text-[#F4EFE5]"
+                  ? "bg-white text-[#202020] shadow-xs"
+                  : "text-[#BDB8B0] hover:text-[#FCFBF8]"
               }`}
             >
               <Grid className="w-3.5 h-3.5" />
@@ -205,7 +205,7 @@ function VillaGalleryModalContent({
             type="button"
             onClick={onClose}
             aria-label="Close Gallery"
-            className="p-2 rounded-full bg-[#1C1A17] hover:bg-[#C89B4A] text-[#A9A39A] hover:text-[#0B0B0A] transition-all border border-[#302D28] hover:scale-105 active:scale-95"
+            className="p-2 rounded-full bg-[#171717] hover:bg-[#202020] text-[#BDB8B0] hover:text-[#FCFBF8] transition-all border border-[#383633] hover:scale-105 active:scale-95"
           >
             <X className="w-5 h-5" />
           </button>
@@ -216,7 +216,7 @@ function VillaGalleryModalContent({
       {availableCategories.length > 1 && (
         <nav
           aria-label="Photo categories"
-          className="flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-4 sm:px-8 py-2.5 overflow-x-auto scrollbar-none border-b border-[#302D28]/60 bg-[#121110] z-10"
+          className="flex-shrink-0 flex items-center gap-1.5 sm:gap-2 px-4 sm:px-8 py-2.5 overflow-x-auto scrollbar-none border-b border-[#383633] bg-[#202020]/60 z-10"
         >
           {availableCategories.map((cat) => {
             const isActive = selectedCategory === cat.key;
@@ -230,14 +230,14 @@ function VillaGalleryModalContent({
                 }}
                 className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-all duration-200 flex items-center gap-1.5 ${
                   isActive
-                    ? "bg-[#C89B4A] text-[#0B0B0A] font-bold shadow-md scale-105"
-                    : "bg-[#1C1A17] text-[#A9A39A] hover:text-[#F4EFE5] border border-[#302D28] hover:border-[#C89B4A]/50"
+                    ? "bg-white text-[#202020] font-bold shadow-md scale-105"
+                    : "bg-[#202020] text-[#BDB8B0] hover:text-[#FCFBF8] border border-[#383633] hover:border-[#B99A62]/50"
                 }`}
               >
                 <span>{cat.label}</span>
                 <span
                   className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                    isActive ? "bg-[#0B0B0A]/30 text-[#0B0B0A]" : "bg-[#151412] text-[#A9A39A]"
+                    isActive ? "bg-[#202020]/20 text-[#202020]" : "bg-[#171717] text-[#BDB8B0]"
                   }`}
                 >
                   {cat.count}
@@ -278,7 +278,7 @@ function VillaGalleryModalContent({
                   type="button"
                   onClick={handlePrev}
                   aria-label="Previous photo"
-                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-black/70 hover:bg-[#C89B4A] text-white hover:text-[#0B0B0A] border border-white/20 hover:border-[#C89B4A] flex items-center justify-center transition-all duration-200 shadow-2xl hover:scale-110 active:scale-95"
+                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#202020]/80 hover:bg-[#202020] text-white border border-white/20 flex items-center justify-center transition-all duration-200 shadow-2xl hover:scale-105 active:scale-95"
                 >
                   <ChevronLeft className="w-6 h-6" />
                 </button>
@@ -290,7 +290,7 @@ function VillaGalleryModalContent({
                   type="button"
                   onClick={handleNext}
                   aria-label="Next photo"
-                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-black/70 hover:bg-[#C89B4A] text-white hover:text-[#0B0B0A] border border-white/20 hover:border-[#C89B4A] flex items-center justify-center transition-all duration-200 shadow-2xl hover:scale-110 active:scale-95"
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#202020]/80 hover:bg-[#202020] text-white border border-white/20 flex items-center justify-center transition-all duration-200 shadow-2xl hover:scale-105 active:scale-95"
                 >
                   <ChevronRight className="w-6 h-6" />
                 </button>
@@ -301,13 +301,13 @@ function VillaGalleryModalContent({
             <div className="flex-shrink-0 pt-2 pb-1 text-center space-y-1 px-4 max-w-xl">
               <div className="flex items-center justify-center gap-2 flex-wrap">
                 {activeImage?.category && (
-                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C89B4A] bg-[#C89B4A]/10 px-2.5 py-0.5 rounded border border-[#C89B4A]/25">
+                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#B99A62] bg-[#B99A62]/10 px-2.5 py-0.5 rounded border border-[#B99A62]/25">
                     <Tag className="w-3 h-3" />
                     <span>{formatCategoryLabel(activeImage.category)}</span>
                   </span>
                 )}
                 {activeImage?.label && (
-                  <span className="text-xs sm:text-sm font-medium text-[#F4EFE5] tracking-wide">
+                  <span className="text-xs sm:text-sm font-medium text-[#FCFBF8] tracking-wide">
                     {activeImage.label}
                   </span>
                 )}
@@ -326,7 +326,7 @@ function VillaGalleryModalContent({
                     setCurrentIndex(idx);
                     setViewMode("cinema");
                   }}
-                  className="group/grid relative aspect-[4/3] rounded-xl overflow-hidden bg-[#1C1A17] border border-[#302D28] hover:border-[#C89B4A] transition-all hover:scale-[1.02] shadow-lg text-left"
+                  className="group/grid relative aspect-[4/3] rounded-xl overflow-hidden bg-[#202020] border border-[#383633] hover:border-[#B99A62] transition-all hover:scale-[1.02] shadow-lg text-left"
                 >
                   <Image
                     src={img.url}
@@ -339,7 +339,7 @@ function VillaGalleryModalContent({
 
                   {/* Badges on Grid Item */}
                   <div className="absolute top-2 left-2">
-                    <span className="text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded bg-black/70 backdrop-blur-xs text-[#C89B4A] border border-[#C89B4A]/30">
+                    <span className="text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded bg-black/70 backdrop-blur-xs text-[#B99A62] border border-[#B99A62]/30">
                       {img.category ? formatCategoryLabel(img.category) : "Gallery"}
                     </span>
                   </div>
@@ -360,7 +360,7 @@ function VillaGalleryModalContent({
 
       {/* Bottom Thumbnail Filmstrip in Cinema Mode */}
       {viewMode === "cinema" && filteredImages.length > 1 && (
-        <footer className="flex-shrink-0 px-4 sm:px-8 py-3 bg-[#151412] border-t border-[#302D28] overflow-hidden">
+        <footer className="flex-shrink-0 px-4 sm:px-8 py-3 bg-[#202020] border-t border-[#383633] overflow-hidden">
           <div
             ref={thumbnailStripRef}
             className="flex items-center gap-2 sm:gap-3 overflow-x-auto scrollbar-none py-1 scroll-touch-pan justify-start sm:justify-center"
@@ -373,10 +373,10 @@ function VillaGalleryModalContent({
                   type="button"
                   onClick={() => setCurrentIndex(idx)}
                   aria-label={`Jump to photo ${idx + 1}`}
-                  className={`relative flex-shrink-0 w-16 h-11 sm:w-20 sm:h-14 rounded-lg overflow-hidden transition-all duration-200 bg-[#1C1A17] ${
+                  className={`relative flex-shrink-0 w-16 h-11 sm:w-20 sm:h-14 rounded-lg overflow-hidden transition-all duration-200 bg-[#171717] ${
                     isActive
-                      ? "ring-2 ring-[#C89B4A] ring-offset-2 ring-offset-[#0B0B0A] scale-105 opacity-100 shadow-md"
-                      : "opacity-40 hover:opacity-100 border border-[#302D28]"
+                      ? "ring-2 ring-[#B99A62] ring-offset-2 ring-offset-[#171717] scale-105 opacity-100 shadow-md"
+                      : "opacity-40 hover:opacity-100 border border-[#383633]"
                   }`}
                 >
                   <Image

@@ -71,7 +71,7 @@ export function MobileBottomNav() {
   return (
     <nav
       aria-label="Mobile Bottom Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#F5F2EC]/95 dark:bg-[#0B0B0A]/95 backdrop-blur-lg border-t border-[#DDD5C7] dark:border-[#302D28] shadow-[0_-4px_20px_rgba(0,0,0,0.15)] dark:shadow-[0_-4px_25px_rgba(0,0,0,0.6)] transition-colors duration-200"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/98 dark:bg-[#202020]/98 backdrop-blur-lg border-t border-[#E8E6E2] dark:border-[#383633] shadow-[0_-4px_20px_rgba(32,32,32,0.06)] dark:shadow-[0_-4px_25px_rgba(0,0,0,0.6)] transition-colors duration-200"
       style={{
         paddingBottom: "max(0px, env(safe-area-inset-bottom, 0px))",
       }}
@@ -87,16 +87,16 @@ export function MobileBottomNav() {
               type="button"
               onClick={() => handleNavClick(item)}
               aria-label={item.label}
-              className={`group flex flex-col items-center justify-center h-full w-full py-1.5 transition-all duration-200 select-none relative focus:outline-none ${
+              className={`group flex flex-col items-center justify-center h-full w-full py-1.5 transition-all duration-200 select-none relative focus:outline-none cursor-pointer ${
                 active
-                  ? "text-[#A8792E] dark:text-[#C89B4A]"
-                  : "text-[#6E685F] dark:text-[#A9A39A] hover:text-[#171513] dark:hover:text-[#F4EFE5]"
+                  ? "text-[#202020] dark:text-[#FCFBF8]"
+                  : "text-[#8A8782] dark:text-[#8A8782] hover:text-[#202020] dark:hover:text-[#FCFBF8]"
               }`}
             >
-              {/* Icon Container with subtle active scale */}
+              {/* Icon Container */}
               <div
                 className={`relative flex items-center justify-center transition-transform duration-200 ${
-                  active ? "scale-110 -translate-y-0.5" : "group-active:scale-95"
+                  active ? "scale-105 -translate-y-0.5" : "group-active:scale-95"
                 }`}
               >
                 <Icon className="w-5 h-5 transition-colors duration-200" />
@@ -104,18 +104,20 @@ export function MobileBottomNav() {
 
               {/* Text Label */}
               <span
-                className={`text-[10px] font-semibold tracking-wider uppercase mt-1 transition-all duration-200 ${
-                  active ? "font-bold text-[#A8792E] dark:text-[#C89B4A]" : "font-medium"
+                className={`text-[10px] tracking-wider uppercase mt-1 transition-all duration-200 ${
+                  active
+                    ? "font-bold text-[#202020] dark:text-[#FCFBF8]"
+                    : "font-medium text-[#8A8782]"
                 }`}
               >
                 {item.label}
               </span>
 
-              {/* Active Golden Micro-Indicator Dot */}
+              {/* Active Blush Micro-Indicator Dot */}
               <span
                 className={`absolute top-1.5 w-1 h-1 rounded-full transition-all duration-300 ${
                   active
-                    ? "bg-[#A8792E] dark:bg-[#C89B4A] opacity-100 scale-100"
+                    ? "bg-[#E8A0A8] opacity-100 scale-100"
                     : "opacity-0 scale-0"
                 }`}
               />

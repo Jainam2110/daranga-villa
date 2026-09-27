@@ -651,23 +651,23 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
   return (
     <div className="space-y-5">
       {/* Controls Bar */}
-      <div className="p-4 rounded-xl bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] shadow-xs space-y-3 sm:space-y-0 sm:flex sm:items-center sm:gap-3 justify-between">
+      <div className="p-4 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-3 sm:space-y-0 sm:flex sm:items-center sm:gap-3 justify-between">
         <div className="flex flex-col sm:flex-row items-center gap-3 flex-1">
           <div className="relative w-full sm:w-80">
-            <Search className="w-4 h-4 absolute left-3 top-2.5 text-[#6E685F] dark:text-[#A9A39A]" />
+            <Search className="w-4 h-4 absolute left-3 top-2.5 text-[#66635F] dark:text-[#BDB8B0]" />
             <input
               type="text"
               placeholder="Search villa name, zone, or location..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 rounded-lg bg-[#F5F2EC]/40 dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs text-[#171513] dark:text-[#F4EFE5] placeholder-[#6E685F] dark:placeholder-[#A9A39A] focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+              className="w-full pl-9 pr-4 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
             />
           </div>
 
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as "ALL" | "ACTIVE" | "INACTIVE")}
-            className="w-full sm:w-44 px-3 py-2 rounded-lg bg-[#F5F2EC]/40 dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs font-medium text-[#171513] dark:text-[#F4EFE5] focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+            className="w-full sm:w-44 px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-medium text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
           >
             <option value="ALL">All Statuses ({villas.length})</option>
             <option value="ACTIVE">ACTIVE only</option>
@@ -677,7 +677,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
 
         <button
           onClick={openAddModal}
-          className="w-full sm:w-auto px-4 py-2 text-xs font-semibold rounded-lg bg-[#171513] dark:bg-[#C89B4A] text-white dark:text-[#0B0B0A] hover:bg-[#302D28] dark:hover:bg-[#b0853c] transition-colors shadow-xs flex items-center justify-center gap-1.5"
+          className="w-full sm:w-auto px-4 py-2 text-xs font-bold rounded-lg bg-[#202020] hover:bg-[#171717] text-white transition-colors shadow-xs flex items-center justify-center gap-1.5 uppercase tracking-wider"
         >
           <Plus className="w-4 h-4" />
           <span>Add Villa</span>
@@ -685,15 +685,15 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
       </div>
 
       {/* Villa Portfolio Table */}
-      <div className="bg-white dark:bg-[#151412] rounded-xl border border-[#DDD5C7] dark:border-[#302D28] overflow-hidden shadow-xs">
+      <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E6E2] dark:border-[#383633] overflow-hidden shadow-xs">
         {filteredVillas.length === 0 ? (
-          <div className="p-12 text-center text-[#6E685F] dark:text-[#A9A39A] space-y-3">
-            <ImageIcon className="w-10 h-10 mx-auto text-[#6E685F]/40 dark:text-[#A9A39A]/40" />
-            <h3 className="font-semibold text-[#171513] dark:text-[#F4EFE5] text-sm">No villas found</h3>
+          <div className="p-12 text-center text-[#66635F] dark:text-[#BDB8B0] space-y-3">
+            <ImageIcon className="w-10 h-10 mx-auto text-[#8A8782]" />
+            <h3 className="font-semibold text-[#202020] dark:text-[#FCFBF8] text-sm">No villas found</h3>
             <p className="text-xs max-w-sm mx-auto">Click the button below to add your first property residence.</p>
             <button
               onClick={openAddModal}
-              className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#171513] dark:bg-[#C89B4A] text-white dark:text-[#0B0B0A]"
+              className="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#202020] hover:bg-[#171717] text-white uppercase tracking-wider"
             >
               Add Villa
             </button>
@@ -702,7 +702,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-[#F5F2EC]/60 dark:bg-[#1C1A17]/60 border-b border-[#DDD5C7] dark:border-[#302D28] text-[#6E685F] dark:text-[#A9A39A] uppercase text-[10px] font-semibold tracking-wider">
+                <tr className="bg-[#F7F6F3] dark:bg-[#171717] border-b border-[#E8E6E2] dark:border-[#383633] text-[#66635F] dark:text-[#BDB8B0] uppercase text-[10px] font-semibold tracking-wider">
                   <th className="py-3 px-4">Villa Residence</th>
                   <th className="py-3 px-4">Location / Zone</th>
                   <th className="py-3 px-4 text-right">Price / Night</th>
@@ -711,7 +711,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#DDD5C7]/40 dark:divide-[#302D28]/60 text-[#171513] dark:text-[#F4EFE5]">
+              <tbody className="divide-y divide-[#E8E6E2]/60 dark:divide-[#383633] text-[#202020] dark:text-[#FCFBF8]">
                 {filteredVillas.map((villa) => {
                   const coverImage = getPrimaryVillaImageUrl(villa.images);
                   const isDeleting = deletingId === villa._id;
@@ -719,25 +719,25 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                   return (
                     <tr
                       key={villa._id}
-                      className="hover:bg-[#F5F2EC]/50 dark:hover:bg-[#1C1A17]/50 transition-colors"
+                      className="hover:bg-[#F7F6F3]/50 dark:hover:bg-[#171717]/50 transition-colors"
                     >
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-3">
-                          <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-[#F5F2EC] dark:bg-[#1C1A17] border border-[#DDD5C7]/60 dark:border-[#302D28] flex-shrink-0">
+                          <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] flex-shrink-0">
                             <Image src={coverImage} alt={villa.name} fill sizes="48px" className="object-cover" />
                           </div>
                           <div>
-                            <div className="font-serif font-bold text-[#171513] dark:text-[#F4EFE5] text-sm">
+                            <div className="font-serif font-bold text-[#202020] dark:text-[#FCFBF8] text-sm">
                               {villa.name}
                             </div>
-                            <div className="text-[11px] text-[#6E685F] dark:text-[#A9A39A] font-mono">
+                            <div className="text-[11px] text-[#66635F] dark:text-[#BDB8B0] font-mono">
                               /villas/{villa.slug}
                             </div>
                           </div>
                         </div>
                       </td>
 
-                      <td className="py-3.5 px-4 text-[#6E685F] dark:text-[#A9A39A]">
+                      <td className="py-3.5 px-4 text-[#66635F] dark:text-[#BDB8B0]">
                         {(() => {
                           const address =
                             typeof villa.location === "object" && villa.location !== null
@@ -756,26 +756,26 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
 
                           return (
                             <div className="space-y-1">
-                              <div className="font-medium text-[#171513] dark:text-[#F4EFE5] flex items-center gap-1">
-                                <MapPin className="w-3.5 h-3.5 text-[#C89B4A] flex-shrink-0" />
+                              <div className="font-medium text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1">
+                                <MapPin className="w-3.5 h-3.5 text-[#B99A62] flex-shrink-0" />
                                 <span className="truncate max-w-[180px]">{villa.zone || "Udaipur, Rajasthan"}</span>
                               </div>
-                              <div className="text-[11px] truncate max-w-xs text-[#6E685F] dark:text-[#A9A39A]">
+                              <div className="text-[11px] truncate max-w-xs text-[#66635F] dark:text-[#BDB8B0]">
                                 {address}
                               </div>
                               {hasValidCoords ? (
-                                <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
+                                <div className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[#3F6B52]/10 border border-[#3F6B52]/20 text-[10px] font-mono text-[#3F6B52]">
                                   <span>📍 GPS: {villa.latitude?.toFixed(4)}, {villa.longitude?.toFixed(4)}</span>
                                 </div>
                               ) : (
                                 <div className="flex items-center gap-1.5 pt-0.5">
-                                  <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">
+                                  <span className="text-[10px] text-[#B99A62] font-medium">
                                     ⚠️ Location needs to be verified
                                   </span>
                                   <button
                                     type="button"
                                     onClick={() => openEditModal(villa)}
-                                    className="px-2 py-0.5 rounded bg-[#C89B4A] hover:bg-[#b5893a] text-[#0B0B0A] text-[9px] font-bold"
+                                    className="px-2 py-0.5 rounded bg-[#202020] hover:bg-[#171717] text-white text-[9px] font-bold"
                                   >
                                     Set Exact Location
                                   </button>
@@ -786,24 +786,24 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                         })()}
                       </td>
 
-                      <td className="py-3.5 px-4 text-right font-sans font-bold text-[#171513] dark:text-[#F4EFE5]">
+                      <td className="py-3.5 px-4 text-right font-sans font-bold text-[#202020] dark:text-[#FCFBF8]">
                         {formatCurrency(villa.pricePerNight)}
                       </td>
 
-                      <td className="py-3.5 px-4 text-center text-[#6E685F] dark:text-[#A9A39A]">
+                      <td className="py-3.5 px-4 text-center text-[#66635F] dark:text-[#BDB8B0]">
                         <div className="flex items-center justify-center gap-2">
                           <span className="inline-flex items-center gap-1">
-                            <Users className="w-3 h-3 text-[#C89B4A]" />
+                            <Users className="w-3 h-3 text-[#B99A62]" />
                             <span>{villa.maxGuests}</span>
                           </span>
                           <span>•</span>
                           <span className="inline-flex items-center gap-1">
-                            <Bed className="w-3 h-3 text-[#C89B4A]" />
+                            <Bed className="w-3 h-3 text-[#B99A62]" />
                             <span>{villa.bedrooms || 1}BHK</span>
                           </span>
                           <span>•</span>
                           <span className="inline-flex items-center gap-1">
-                            <Bath className="w-3 h-3 text-[#C89B4A]" />
+                            <Bath className="w-3 h-3 text-[#B99A62]" />
                             <span>{villa.bathrooms || 1}B</span>
                           </span>
                         </div>
@@ -813,8 +813,8 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                         <span
                           className={`inline-block px-2.5 py-0.5 text-[10px] font-semibold rounded-full uppercase tracking-wider ${
                             villa.status === "ACTIVE"
-                              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/40"
-                              : "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border border-amber-200 dark:border-amber-800/40"
+                              ? "bg-[#3F6B52]/10 text-[#3F6B52] border border-[#3F6B52]/30"
+                              : "bg-[#8A8782]/10 text-[#66635F] border border-[#DAD7D1] dark:border-[#383633]"
                           }`}
                         >
                           {villa.status}
@@ -824,7 +824,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       <td className="py-3.5 px-4 text-right space-x-1.5 whitespace-nowrap">
                         <button
                           onClick={() => openEditModal(villa)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-[#F5F2EC] dark:bg-[#1C1A17] text-[#171513] dark:text-[#F4EFE5] border border-[#DDD5C7] dark:border-[#302D28] hover:bg-[#DDD5C7]/50 dark:hover:bg-[#302D28] transition-colors"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-[#F7F6F3] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] hover:border-[#202020] dark:hover:border-[#B99A62] transition-colors"
                         >
                           <Edit2 className="w-3 h-3" />
                           <span>Edit</span>
@@ -834,8 +834,8 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                           onClick={() => handleToggleStatus(villa._id, villa.status)}
                           className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg border transition-colors ${
                             villa.status === "ACTIVE"
-                              ? "bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/40 hover:bg-amber-100"
-                              : "bg-emerald-50 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/40 hover:bg-emerald-100"
+                              ? "bg-[#F5D0B5]/30 text-[#B99A62] border-[#B99A62]/30 hover:bg-[#F5D0B5]/50"
+                              : "bg-[#3F6B52]/10 text-[#3F6B52] border-[#3F6B52]/30 hover:bg-[#3F6B52]/20"
                           }`}
                         >
                           <Power className="w-3 h-3" />
@@ -845,7 +845,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                         <button
                           disabled={isDeleting}
                           onClick={() => handleDeleteVilla(villa)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800/40 hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors disabled:opacity-50"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-lg bg-[#B84A4A]/10 text-[#B84A4A] border border-[#B84A4A]/30 hover:bg-[#B84A4A]/20 transition-colors disabled:opacity-50"
                         >
                           <Trash2 className="w-3 h-3" />
                           <span>{isDeleting ? "Deleting..." : "Delete"}</span>
@@ -863,20 +863,20 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
       {/* ADD / EDIT VILLA MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/75 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-4xl bg-white dark:bg-[#151412] rounded-2xl border border-[#DDD5C7] dark:border-[#302D28] shadow-2xl max-h-[92vh] flex flex-col my-auto overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-4xl bg-white dark:bg-[#202020] rounded-2xl border border-[#E8E6E2] dark:border-[#383633] shadow-2xl max-h-[92vh] flex flex-col my-auto overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             {/* Modal Header */}
-            <div className="p-4 sm:p-5 border-b border-[#DDD5C7]/70 dark:border-[#302D28] flex items-center justify-between bg-[#F5F2EC]/30 dark:bg-[#1C1A17]/30">
+            <div className="p-4 sm:p-5 border-b border-[#E8E6E2] dark:border-[#383633] flex items-center justify-between bg-[#F7F6F3]/50 dark:bg-[#171717]/50">
               <div>
-                <h3 className="font-serif text-lg sm:text-xl font-bold text-[#171513] dark:text-[#F4EFE5]">
+                <h3 className="font-serif text-lg sm:text-xl font-bold text-[#202020] dark:text-[#FCFBF8]">
                   {editingVilla ? `Edit Villa: ${editingVilla.name}` : "Create New Luxury Villa"}
                 </h3>
-                <p className="text-[11px] text-[#6E685F] dark:text-[#A9A39A]">
+                <p className="text-[11px] text-[#66635F] dark:text-[#BDB8B0]">
                   Manage residence basic details, categorized media gallery, amenities, and booking policies.
                 </p>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-1.5 rounded-lg text-[#6E685F] hover:text-[#171513] dark:text-[#A9A39A] dark:hover:text-[#F4EFE5] hover:bg-[#F5F2EC] dark:hover:bg-[#1C1A17] transition-colors"
+                className="p-1.5 rounded-lg text-[#66635F] hover:text-[#202020] dark:text-[#BDB8B0] dark:hover:text-[#FCFBF8] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -885,20 +885,20 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
             {/* Modal Form Body */}
             <form onSubmit={handleFormSubmit} className="p-4 sm:p-6 overflow-y-auto space-y-6 flex-1 text-xs">
               {formError && (
-                <div className="p-3 rounded-lg bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-xs">
+                <div className="p-3 rounded-lg bg-[#B84A4A]/10 border border-[#B84A4A]/30 text-[#B84A4A] text-xs">
                   {formError}
                 </div>
               )}
 
               {/* SECTION 1: BASIC INFO */}
-              <div className="p-4 rounded-xl bg-[#F5F2EC]/40 dark:bg-[#1C1A17]/40 border border-[#DDD5C7]/60 dark:border-[#302D28] space-y-4">
-                <h4 className="font-semibold text-xs uppercase tracking-wider text-[#A8792E] dark:text-[#C89B4A] border-b border-[#DDD5C7]/40 dark:border-[#302D28] pb-2">
+              <div className="p-4 rounded-xl bg-[#F7F6F3]/60 dark:bg-[#171717]/40 border border-[#E8E6E2] dark:border-[#383633] space-y-4">
+                <h4 className="font-semibold text-xs uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
                   1. Basic Information
                 </h4>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                       Villa Name *
                     </label>
                     <input
@@ -907,12 +907,12 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. The Celestial Residence"
-                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                       Slug Identifier (Optional)
                     </label>
                     <input
@@ -920,13 +920,13 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       value={formData.slug}
                       onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
                       placeholder="e.g. celestial-residence"
-                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                     Editorial Description
                   </label>
                   <textarea
@@ -934,26 +934,26 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     placeholder="Describe villa highlights, lake views, architectural aesthetics..."
-                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                   />
                 </div>
               </div>
 
               {/* SECTION 2: MAP LOCATION */}
-              <div className="p-4 rounded-xl bg-[#F5F2EC]/40 dark:bg-[#1C1A17]/40 border border-[#DDD5C7]/60 dark:border-[#302D28] space-y-4">
-                <div className="flex items-center justify-between border-b border-[#DDD5C7]/40 dark:border-[#302D28] pb-2">
-                  <h4 className="font-semibold text-xs uppercase tracking-wider text-[#A8792E] dark:text-[#C89B4A] flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-[#C89B4A]" />
+              <div className="p-4 rounded-xl bg-[#F7F6F3]/60 dark:bg-[#171717]/40 border border-[#E8E6E2] dark:border-[#383633] space-y-4">
+                <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
+                  <h4 className="font-semibold text-xs uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-[#B99A62]" />
                     <span>2. Location &amp; Interactive Map Coordinates</span>
                   </h4>
-                  <span className="text-[10px] text-[#6E685F] dark:text-[#A9A39A] font-mono">
+                  <span className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] font-mono">
                     GPS: {formData.latitude}, {formData.longitude}
                   </span>
                 </div>
 
                 {/* Quick Presets */}
                 <div className="space-y-1.5">
-                  <span className="text-[10px] uppercase font-semibold text-[#6E685F] dark:text-[#A9A39A]">
+                  <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0]">
                     Quick Location Presets:
                   </span>
                   <div className="flex flex-wrap gap-2">
@@ -964,8 +964,8 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                         onClick={() => handleApplyPreset(preset)}
                         className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all ${
                           formData.zone === preset.name
-                            ? "bg-[#C89B4A] text-[#0B0B0A] shadow-xs"
-                            : "bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-[#171513] dark:text-[#F4EFE5] hover:border-[#C89B4A]"
+                            ? "bg-[#202020] text-white dark:bg-[#B99A62] dark:text-[#202020] shadow-xs"
+                            : "bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-[#202020] dark:text-[#FCFBF8] hover:border-[#202020]"
                         }`}
                       >
                         {preset.name}
@@ -1009,7 +1009,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                 <div className="space-y-3 pt-2">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                         Zone / Area Name *
                       </label>
                       <input
@@ -1018,12 +1018,12 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                         value={formData.zone}
                         onChange={(e) => setFormData({ ...formData, zone: e.target.value })}
                         placeholder="e.g. Lake Pichola Waterfront, Rani Road"
-                        className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                        className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                         Full Address / Street Location
                       </label>
                       <input
@@ -1031,19 +1031,19 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                         placeholder="e.g. Haridas Ji Ki Magri, Pichola West Bank, Udaipur"
-                        className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                        className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                       />
                     </div>
                   </div>
 
                   {/* Direct Google Maps Share Link */}
-                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] space-y-2">
+                  <div className="p-3.5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] space-y-2">
                     <div className="flex items-center justify-between">
-                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#A8792E] dark:text-[#C89B4A] flex items-center gap-1.5">
-                        <Navigation className="w-3.5 h-3.5" />
+                      <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
+                        <Navigation className="w-3.5 h-3.5 text-[#B99A62]" />
                         <span>Exact Google Maps Link / Share URL</span>
                       </label>
-                      <span className="text-[10px] text-[#6E685F] dark:text-[#A9A39A]">
+                      <span className="text-[10px] text-[#66635F] dark:text-[#BDB8B0]">
                         Live Sync &amp; Customer Directions
                       </span>
                     </div>
@@ -1065,13 +1065,13 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                           }
                         }}
                         placeholder="Paste Google Maps URL (e.g., https://maps.app.goo.gl/... or https://maps.google.com/?q=...)"
-                        className="flex-1 px-3 py-2 rounded-lg bg-[#F5F2EC]/50 dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs font-mono focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                        className="flex-1 px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-mono text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                       />
                       <button
                         type="button"
                         disabled={resolvingMapUrl || !formData.googleMapsUrl.trim()}
                         onClick={() => handleSyncCoordinatesFromUrl()}
-                        className="px-3.5 py-2 rounded-lg bg-[#C89B4A] hover:bg-[#b5893a] text-[#0B0B0A] font-bold text-xs flex items-center gap-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 shadow-xs"
+                        className="px-3.5 py-2 rounded-lg bg-[#202020] hover:bg-[#171717] text-white dark:bg-[#B99A62] dark:text-[#202020] font-bold text-xs flex items-center gap-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 shadow-xs"
                       >
                         {resolvingMapUrl ? (
                           <>
@@ -1088,13 +1088,13 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                     </div>
 
                     {mapSyncSuccess && (
-                      <div className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-md animate-in fade-in flex items-center gap-1.5">
+                      <div className="text-[11px] font-semibold text-[#3F6B52] bg-[#3F6B52]/10 border border-[#3F6B52]/30 px-3 py-1.5 rounded-md animate-in fade-in flex items-center gap-1.5">
                         <Check className="w-3.5 h-3.5 flex-shrink-0" />
                         <span>{mapSyncSuccess}</span>
                       </div>
                     )}
 
-                    <p className="text-[10px] text-[#6E685F] dark:text-[#A9A39A] leading-relaxed">
+                    <p className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] leading-relaxed">
                       💡 <strong>Instant Sync:</strong> Pasting any Google Maps share link (including short <code>maps.app.goo.gl</code> links) will auto-extract coordinates and fly the map marker directly to that exact spot.
                     </p>
                   </div>
@@ -1102,14 +1102,14 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
               </div>
 
               {/* SECTION 3: PROPERTY DETAILS & PRICING */}
-              <div className="p-4 rounded-xl bg-[#F5F2EC]/40 dark:bg-[#1C1A17]/40 border border-[#DDD5C7]/60 dark:border-[#302D28] space-y-4">
-                <h4 className="font-semibold text-xs uppercase tracking-wider text-[#A8792E] dark:text-[#C89B4A] border-b border-[#DDD5C7]/40 dark:border-[#302D28] pb-2">
+              <div className="p-4 rounded-xl bg-[#F7F6F3]/60 dark:bg-[#171717]/40 border border-[#E8E6E2] dark:border-[#383633] space-y-4">
+                <h4 className="font-semibold text-xs uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
                   3. Specs &amp; Pricing
                 </h4>
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                       Price / Night (₹) *
                     </label>
                     <input
@@ -1118,12 +1118,12 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       required
                       value={formData.pricePerNight}
                       onChange={(e) => setFormData({ ...formData, pricePerNight: Number(e.target.value) })}
-                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs font-sans font-bold focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs font-sans font-bold text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                       Max Guests *
                     </label>
                     <input
@@ -1132,12 +1132,12 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       required
                       value={formData.maxGuests}
                       onChange={(e) => setFormData({ ...formData, maxGuests: Number(e.target.value) })}
-                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs font-bold focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs font-bold text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                       Bedrooms
                     </label>
                     <input
@@ -1145,12 +1145,12 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       min="1"
                       value={formData.bedrooms}
                       onChange={(e) => setFormData({ ...formData, bedrooms: Number(e.target.value) })}
-                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                       Bathrooms
                     </label>
                     <input
@@ -1158,47 +1158,47 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       min="1"
                       value={formData.bathrooms}
                       onChange={(e) => setFormData({ ...formData, bathrooms: Number(e.target.value) })}
-                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                      className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                     />
                   </div>
                 </div>
               </div>
 
               {/* SECTION 4: CLOUDINARY IMAGES WITH CATEGORIES & LABELS */}
-              <div className="p-4 rounded-xl bg-[#F5F2EC]/40 dark:bg-[#1C1A17]/40 border border-[#DDD5C7]/60 dark:border-[#302D28] space-y-4">
-                <div className="flex items-center justify-between border-b border-[#DDD5C7]/40 dark:border-[#302D28] pb-2">
+              <div className="p-4 rounded-xl bg-[#F7F6F3]/60 dark:bg-[#171717]/40 border border-[#E8E6E2] dark:border-[#383633] space-y-4">
+                <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
                   <div>
-                    <h4 className="font-semibold text-xs uppercase tracking-wider text-[#A8792E] dark:text-[#C89B4A] flex items-center gap-1.5">
-                      <ImageIcon className="w-3.5 h-3.5" />
+                    <h4 className="font-semibold text-xs uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
+                      <ImageIcon className="w-3.5 h-3.5 text-[#B99A62]" />
                       <span>4. Media &amp; Categorized Image Management</span>
                     </h4>
-                    <span className="text-[10px] text-[#6E685F] dark:text-[#A9A39A]">
+                    <span className="text-[10px] text-[#66635F] dark:text-[#BDB8B0]">
                       Assign categories and descriptive display labels to enhance the customer gallery experience.
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={() => setShowManualUrlInput(!showManualUrlInput)}
-                    className="text-[11px] font-semibold text-[#A8792E] dark:text-[#C89B4A] hover:underline"
+                    className="text-[11px] font-semibold text-[#202020] dark:text-[#B99A62] hover:underline"
                   >
                     {showManualUrlInput ? "Hide URL input" : "+ Add image via URL"}
                   </button>
                 </div>
 
                 {/* Upload Category & Label Controls */}
-                <div className="p-3.5 rounded-xl bg-white/70 dark:bg-[#151412]/70 border border-[#DDD5C7] dark:border-[#302D28] space-y-3">
-                  <div className="text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A]">
+                <div className="p-3.5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] space-y-3">
+                  <div className="text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0]">
                     Upload Defaults (Applied to next batch of photos)
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                         Category
                       </label>
                       <select
                         value={uploadCategory}
                         onChange={(e) => setUploadCategory(e.target.value as VillaImageCategory)}
-                        className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs font-semibold text-[#171513] dark:text-[#F4EFE5]"
+                        className="w-full px-3 py-1.5 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8]"
                       >
                         {VILLA_IMAGE_CATEGORIES.map((cat) => (
                           <option key={cat.value} value={cat.value}>
@@ -1209,7 +1209,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                      <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                         Display Label (e.g. Master Bedroom, Infinity Pool)
                       </label>
                       <input
@@ -1217,13 +1217,13 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                         value={uploadLabel}
                         onChange={(e) => setUploadLabel(e.target.value)}
                         placeholder="e.g. Master Bedroom Suite"
-                        className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs text-[#171513] dark:text-[#F4EFE5]"
+                        className="w-full px-3 py-1.5 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8]"
                       />
                     </div>
                   </div>
 
                   {/* Upload Dropzone */}
-                  <div className="border-2 border-dashed border-[#DDD5C7] dark:border-[#302D28] rounded-xl p-4 text-center bg-[#F5F2EC]/30 dark:bg-[#1C1A17]/30 hover:bg-white dark:hover:bg-[#151412] transition-colors relative cursor-pointer group">
+                  <div className="border-2 border-dashed border-[#DAD7D1] dark:border-[#383633] rounded-xl p-4 text-center bg-[#F7F6F3]/40 dark:bg-[#171717]/40 hover:bg-white dark:hover:bg-[#202020] transition-colors relative cursor-pointer group">
                     <input
                       type="file"
                       multiple
@@ -1232,11 +1232,11 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
                     <div className="space-y-1">
-                      <UploadCloud className="w-7 h-7 mx-auto text-[#A8792E] dark:text-[#C89B4A]" />
-                      <p className="text-xs font-semibold text-[#171513] dark:text-[#F4EFE5]">
+                      <UploadCloud className="w-7 h-7 mx-auto text-[#B99A62]" />
+                      <p className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8]">
                         Click or drag images to upload (Category: {formatCategoryLabel(uploadCategory)})
                       </p>
-                      <p className="text-[10px] text-[#6E685F] dark:text-[#A9A39A]">
+                      <p className="text-[10px] text-[#66635F] dark:text-[#BDB8B0]">
                         Supports WEBP, JPG, PNG, AVIF (Max 10MB per file)
                       </p>
                     </div>
@@ -1250,12 +1250,12 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       value={manualUrl}
                       onChange={(e) => setManualUrl(e.target.value)}
                       placeholder="Paste image URL (https://...)"
-                      className="flex-1 px-3 py-1.5 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs"
+                      className="flex-1 px-3 py-1.5 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8]"
                     />
                     <button
                       type="button"
                       onClick={handleAddManualUrl}
-                      className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#F5F2EC] dark:bg-[#1C1A17] text-[#171513] dark:text-[#F4EFE5] border border-[#DDD5C7] dark:border-[#302D28]"
+                      className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-[#F7F6F3] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633]"
                     >
                       Add URL
                     </button>
@@ -1263,8 +1263,8 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                 )}
 
                 {uploadingImages && (
-                  <div className="p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 text-amber-700 dark:text-amber-400 text-xs flex items-center gap-2">
-                    <div className="w-3.5 h-3.5 border-2 border-amber-600 border-t-transparent rounded-full animate-spin" />
+                  <div className="p-2.5 rounded-lg bg-[#F5D0B5]/30 border border-[#B99A62]/30 text-[#202020] dark:text-[#FCFBF8] text-xs flex items-center gap-2">
+                    <div className="w-3.5 h-3.5 border-2 border-[#202020] dark:border-[#B99A62] border-t-transparent rounded-full animate-spin" />
                     <span>Uploading images to Cloudinary...</span>
                   </div>
                 )}
@@ -1272,7 +1272,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                 {/* Attached Gallery Grid with Inline Category & Label Editors */}
                 {imagesList.length > 0 && (
                   <div className="space-y-3 pt-1">
-                    <div className="flex items-center justify-between text-[11px] text-[#6E685F] dark:text-[#A9A39A]">
+                    <div className="flex items-center justify-between text-[11px] text-[#66635F] dark:text-[#BDB8B0]">
                       <span>{imagesList.length} Image(s) in Gallery</span>
                       <span>The 1st photo is the <strong>Primary Cover</strong></span>
                     </div>
@@ -1281,10 +1281,10 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       {imagesList.map((img, idx) => (
                         <div
                           key={idx}
-                          className={`flex flex-col rounded-xl overflow-hidden border bg-white dark:bg-[#181715] transition-all shadow-xs ${
+                          className={`flex flex-col rounded-xl overflow-hidden border bg-white dark:bg-[#202020] transition-all shadow-xs ${
                             idx === 0
-                              ? "border-[#A8792E] dark:border-[#C89B4A] ring-2 ring-[#A8792E]/20"
-                              : "border-[#DDD5C7] dark:border-[#302D28]"
+                              ? "border-[#202020] dark:border-[#B99A62] ring-2 ring-[#202020]/20 dark:ring-[#B99A62]/20"
+                              : "border-[#E8E6E2] dark:border-[#383633]"
                           }`}
                         >
                           {/* Image Thumbnail & Overlay Actions */}
@@ -1294,8 +1294,8 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                             {/* Badge on Thumbnail */}
                             <div className="absolute top-2 left-2 flex items-center gap-1 z-10">
                               {idx === 0 ? (
-                                <span className="px-2 py-0.5 rounded bg-[#C89B4A] text-[#0B0B0A] text-[9px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-md">
-                                  <Star className="w-2.5 h-2.5 fill-current" />
+                                <span className="px-2 py-0.5 rounded bg-[#202020] text-white dark:bg-[#B99A62] dark:text-[#202020] text-[9px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-md">
+                                  <Star className="w-2.5 h-2.5 fill-current text-[#B99A62] dark:text-[#202020]" />
                                   <span>Cover</span>
                                 </span>
                               ) : (
@@ -1311,7 +1311,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                                 type="button"
                                 onClick={() => setPreviewImageUrl(img.url)}
                                 title="Enlarge preview"
-                                className="w-7 h-7 rounded bg-black/80 text-white flex items-center justify-center hover:bg-[#C89B4A] hover:text-[#0B0B0A] transition-colors"
+                                className="w-7 h-7 rounded bg-black/80 text-white flex items-center justify-center hover:bg-[#202020] transition-colors"
                               >
                                 <Eye className="w-3.5 h-3.5" />
                               </button>
@@ -1320,7 +1320,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                                 disabled={idx === 0}
                                 onClick={() => moveImage(idx, idx - 1)}
                                 title="Move left"
-                                className="w-7 h-7 rounded bg-black/80 text-white flex items-center justify-center hover:bg-[#C89B4A] hover:text-[#0B0B0A] disabled:opacity-30 transition-colors"
+                                className="w-7 h-7 rounded bg-black/80 text-white flex items-center justify-center hover:bg-[#202020] disabled:opacity-30 transition-colors"
                               >
                                 <ArrowLeft className="w-3.5 h-3.5" />
                               </button>
@@ -1329,7 +1329,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                                 disabled={idx === imagesList.length - 1}
                                 onClick={() => moveImage(idx, idx + 1)}
                                 title="Move right"
-                                className="w-7 h-7 rounded bg-black/80 text-white flex items-center justify-center hover:bg-[#C89B4A] hover:text-[#0B0B0A] disabled:opacity-30 transition-colors"
+                                className="w-7 h-7 rounded bg-black/80 text-white flex items-center justify-center hover:bg-[#202020] disabled:opacity-30 transition-colors"
                               >
                                 <ArrowRight className="w-3.5 h-3.5" />
                               </button>
@@ -1337,7 +1337,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                                 type="button"
                                 onClick={() => removeImage(idx)}
                                 title="Delete photo"
-                                className="w-7 h-7 rounded bg-red-800 text-white flex items-center justify-center hover:bg-red-900 transition-colors"
+                                className="w-7 h-7 rounded bg-[#B84A4A] text-white flex items-center justify-center hover:bg-[#B84A4A]/80 transition-colors"
                               >
                                 <Trash2 className="w-3.5 h-3.5" />
                               </button>
@@ -1345,10 +1345,10 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                           </div>
 
                           {/* Inline Category & Label Customization */}
-                          <div className="p-2.5 space-y-2 flex-1 flex flex-col justify-between text-[11px] bg-white dark:bg-[#181715]">
+                          <div className="p-2.5 space-y-2 flex-1 flex flex-col justify-between text-[11px] bg-white dark:bg-[#202020]">
                             <div className="space-y-1.5">
                               <div>
-                                <label className="block text-[9px] uppercase tracking-wider font-semibold text-[#6E685F] dark:text-[#A9A39A]">
+                                <label className="block text-[9px] uppercase tracking-wider font-semibold text-[#66635F] dark:text-[#BDB8B0]">
                                   Category
                                 </label>
                                 <select
@@ -1356,7 +1356,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                                   onChange={(e) =>
                                     updateImageCategory(idx, e.target.value as VillaImageCategory)
                                   }
-                                  className="w-full px-2 py-1 rounded bg-[#F5F2EC]/60 dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-[11px] font-semibold text-[#171513] dark:text-[#F4EFE5]"
+                                  className="w-full px-2 py-1 rounded bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-[11px] font-semibold text-[#202020] dark:text-[#FCFBF8]"
                                 >
                                   {VILLA_IMAGE_CATEGORIES.map((cat) => (
                                     <option key={cat.value} value={cat.value}>
@@ -1367,7 +1367,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                               </div>
 
                               <div>
-                                <label className="block text-[9px] uppercase tracking-wider font-semibold text-[#6E685F] dark:text-[#A9A39A]">
+                                <label className="block text-[9px] uppercase tracking-wider font-semibold text-[#66635F] dark:text-[#BDB8B0]">
                                   Display Label
                                 </label>
                                 <input
@@ -1375,7 +1375,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                                   value={img.label || ""}
                                   onChange={(e) => updateImageLabel(idx, e.target.value)}
                                   placeholder="e.g. Master Bedroom"
-                                  className="w-full px-2 py-1 rounded bg-[#F5F2EC]/60 dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-[11px] text-[#171513] dark:text-[#F4EFE5]"
+                                  className="w-full px-2 py-1 rounded bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-[11px] text-[#202020] dark:text-[#FCFBF8]"
                                 />
                               </div>
                             </div>
@@ -1384,9 +1384,9 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                               <button
                                 type="button"
                                 onClick={() => setPrimaryImage(idx)}
-                                className="w-full py-1 rounded bg-[#F5F2EC] dark:bg-[#1C1A17] hover:bg-[#C89B4A] hover:text-[#0B0B0A] text-[#171513] dark:text-[#F4EFE5] border border-[#DDD5C7] dark:border-[#302D28] text-[10px] font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-1 mt-1"
+                                className="w-full py-1 rounded bg-[#F7F6F3] dark:bg-[#171717] hover:bg-[#202020] hover:text-white dark:hover:bg-[#B99A62] dark:hover:text-[#202020] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] text-[10px] font-semibold uppercase tracking-wider transition-colors flex items-center justify-center gap-1 mt-1"
                               >
-                                <Star className="w-3 h-3" />
+                                <Star className="w-3 h-3 text-[#B99A62]" />
                                 <span>Set as Primary</span>
                               </button>
                             )}
@@ -1399,24 +1399,24 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
               </div>
 
               {/* SECTION 5: AMENITIES MANAGEMENT */}
-              <div className="p-4 rounded-xl bg-[#F5F2EC]/40 dark:bg-[#1C1A17]/40 border border-[#DDD5C7]/60 dark:border-[#302D28] space-y-4">
-                <div className="border-b border-[#DDD5C7]/40 dark:border-[#302D28] pb-2">
-                  <h4 className="font-semibold text-xs uppercase tracking-wider text-[#A8792E] dark:text-[#C89B4A] flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5" />
+              <div className="p-4 rounded-xl bg-[#F7F6F3]/60 dark:bg-[#171717]/40 border border-[#E8E6E2] dark:border-[#383633] space-y-4">
+                <div className="border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
+                  <h4 className="font-semibold text-xs uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#B99A62]" />
                     <span>5. Estate Amenities &amp; Inclusions</span>
                   </h4>
-                  <span className="text-[10px] text-[#6E685F] dark:text-[#A9A39A]">
+                  <span className="text-[10px] text-[#66635F] dark:text-[#BDB8B0]">
                     Click presets below or type custom amenities to assign features to this residence.
                   </span>
                 </div>
 
                 {/* Selected Amenities Chips */}
                 <div className="space-y-2">
-                  <span className="text-[10px] uppercase font-semibold text-[#6E685F] dark:text-[#A9A39A] block">
+                  <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block">
                     Active Amenities ({amenitiesList.length}):
                   </span>
                   {amenitiesList.length === 0 ? (
-                    <p className="text-xs text-[#6E685F] dark:text-[#A9A39A] italic">
+                    <p className="text-xs text-[#66635F] dark:text-[#BDB8B0] italic">
                       No amenities selected. Click presets below to add.
                     </p>
                   ) : (
@@ -1424,14 +1424,14 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       {amenitiesList.map((item, idx) => (
                         <span
                           key={idx}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs font-semibold text-[#171513] dark:text-[#F4EFE5] shadow-xs"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] shadow-xs"
                         >
-                          <AmenityIcon name={item} className="w-3.5 h-3.5 text-[#C89B4A]" />
+                          <AmenityIcon name={item} className="w-3.5 h-3.5 text-[#B99A62]" />
                           <span>{item}</span>
                           <button
                             type="button"
                             onClick={() => removeAmenity(item)}
-                            className="ml-1 text-[#6E685F] hover:text-red-500 transition-colors"
+                            className="ml-1 text-[#66635F] dark:text-[#BDB8B0] hover:text-[#B84A4A] transition-colors"
                             aria-label={`Remove ${item}`}
                           >
                             <X className="w-3.5 h-3.5" />
@@ -1443,8 +1443,8 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                 </div>
 
                 {/* Standard Luxury Presets */}
-                <div className="space-y-2 pt-2 border-t border-[#DDD5C7]/40 dark:border-[#302D28]">
-                  <span className="text-[10px] uppercase font-semibold text-[#6E685F] dark:text-[#A9A39A] block">
+                <div className="space-y-2 pt-2 border-t border-[#E8E6E2] dark:border-[#383633]">
+                  <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block">
                     Quick Add Luxury Presets:
                   </span>
                   <div className="flex flex-wrap gap-1.5">
@@ -1457,11 +1457,11 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                           onClick={() => toggleAmenity(item)}
                           className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium transition-all ${
                             isSelected
-                              ? "bg-[#C89B4A] text-[#0B0B0A] font-bold shadow-xs scale-102"
-                              : "bg-white dark:bg-[#151412] text-[#6E685F] dark:text-[#A9A39A] border border-[#DDD5C7] dark:border-[#302D28] hover:border-[#C89B4A]"
+                              ? "bg-[#202020] text-white dark:bg-[#B99A62] dark:text-[#202020] font-bold shadow-xs scale-102"
+                              : "bg-white dark:bg-[#202020] text-[#66635F] dark:text-[#BDB8B0] border border-[#DAD7D1] dark:border-[#383633] hover:border-[#202020]"
                           }`}
                         >
-                          <AmenityIcon name={item} className={`w-3 h-3 ${isSelected ? "text-[#0B0B0A]" : "text-[#C89B4A]"}`} />
+                          <AmenityIcon name={item} className={`w-3 h-3 ${isSelected ? "text-white dark:text-[#202020]" : "text-[#B99A62]"}`} />
                           <span>{item}</span>
                           {isSelected && <Check className="w-3 h-3" />}
                         </button>
@@ -1483,12 +1483,12 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       }
                     }}
                     placeholder="Type custom amenity (e.g. Private Helicopter Pad, Cigar Lounge)..."
-                    className="flex-1 px-3 py-1.5 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs focus:outline-none focus:ring-1 focus:ring-[#C89B4A]"
+                    className="flex-1 px-3 py-1.5 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
                   />
                   <button
                     type="button"
                     onClick={addCustomAmenity}
-                    className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#171513] dark:bg-[#C89B4A] text-white dark:text-[#0B0B0A] hover:bg-[#302D28] transition-colors"
+                    className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#202020] hover:bg-[#171717] text-white transition-colors"
                   >
                     + Add Custom
                   </button>
@@ -1496,30 +1496,30 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
               </div>
 
               {/* SECTION 6: POLICIES & RULES */}
-              <div className="p-4 rounded-xl bg-[#F5F2EC]/40 dark:bg-[#1C1A17]/40 border border-[#DDD5C7]/60 dark:border-[#302D28] space-y-4">
-                <div className="border-b border-[#DDD5C7]/40 dark:border-[#302D28] pb-2">
-                  <h4 className="font-semibold text-xs uppercase tracking-wider text-[#A8792E] dark:text-[#C89B4A] flex items-center gap-1.5">
-                    <Shield className="w-3.5 h-3.5" />
+              <div className="p-4 rounded-xl bg-[#F7F6F3]/60 dark:bg-[#171717]/40 border border-[#E8E6E2] dark:border-[#383633] space-y-4">
+                <div className="border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
+                  <h4 className="font-semibold text-xs uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
+                    <Shield className="w-3.5 h-3.5 text-[#B99A62]" />
                     <span>6. House Rules &amp; Cancellation Policy</span>
                   </h4>
                 </div>
 
                 {/* House Rules Tag Management */}
                 <div className="space-y-2">
-                  <span className="text-[10px] uppercase font-semibold text-[#6E685F] dark:text-[#A9A39A] block">
+                  <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block">
                     House Rules ({houseRulesList.length}):
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {houseRulesList.map((rule, idx) => (
                       <span
                         key={idx}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs text-[#171513] dark:text-[#F4EFE5]"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8]"
                       >
                         <span>{rule}</span>
                         <button
                           type="button"
                           onClick={() => removeHouseRule(rule)}
-                          className="ml-1 text-[#6E685F] hover:text-red-500"
+                          className="ml-1 text-[#66635F] dark:text-[#BDB8B0] hover:text-[#B84A4A]"
                         >
                           <X className="w-3.5 h-3.5" />
                         </button>
@@ -1536,8 +1536,8 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                         onClick={() => toggleHouseRule(rule)}
                         className={`px-2.5 py-1 rounded text-[10px] font-medium transition-colors ${
                           houseRulesList.includes(rule)
-                            ? "bg-[#C89B4A] text-[#0B0B0A] font-bold"
-                            : "bg-white dark:bg-[#151412] text-[#6E685F] dark:text-[#A9A39A] border border-[#DDD5C7] dark:border-[#302D28]"
+                            ? "bg-[#202020] text-white dark:bg-[#B99A62] dark:text-[#202020] font-bold"
+                            : "bg-white dark:bg-[#202020] text-[#66635F] dark:text-[#BDB8B0] border border-[#DAD7D1] dark:border-[#383633]"
                         }`}
                       >
                         {rule}
@@ -1557,12 +1557,12 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                         }
                       }}
                       placeholder="Add custom rule..."
-                      className="flex-1 px-3 py-1.5 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs"
+                      className="flex-1 px-3 py-1.5 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8]"
                     />
                     <button
                       type="button"
                       onClick={addCustomHouseRule}
-                      className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#F5F2EC] dark:bg-[#1C1A17] text-[#171513] dark:text-[#F4EFE5] border border-[#DDD5C7] dark:border-[#302D28]"
+                      className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#F7F6F3] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633]"
                     >
                       Add Rule
                     </button>
@@ -1571,7 +1571,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
 
                 {/* Cancellation Policy */}
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                     Cancellation Policy Statement
                   </label>
                   <textarea
@@ -1579,20 +1579,20 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                     value={formData.cancellationPolicy}
                     onChange={(e) => setFormData({ ...formData, cancellationPolicy: e.target.value })}
                     placeholder="Full refund 7 days prior to check-in. 50% refund between 7 days and 48 hours."
-                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs"
+                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8]"
                   />
                 </div>
               </div>
 
               {/* SECTION 7: LISTING STATUS */}
-              <div className="p-4 rounded-xl bg-[#F5F2EC]/40 dark:bg-[#1C1A17]/40 border border-[#DDD5C7]/60 dark:border-[#302D28]">
-                <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1">
+              <div className="p-4 rounded-xl bg-[#F7F6F3]/60 dark:bg-[#171717]/40 border border-[#E8E6E2] dark:border-[#383633]">
+                <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
                   Listing Status
                 </label>
                 <select
                   value={formData.status}
                   onChange={(e) => setFormData({ ...formData, status: e.target.value as "ACTIVE" | "INACTIVE" })}
-                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] text-xs font-semibold text-[#171513] dark:text-[#F4EFE5]"
+                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8]"
                 >
                   <option value="ACTIVE">ACTIVE (Visible on public customer website)</option>
                   <option value="INACTIVE">INACTIVE (Draft / Hidden from public website)</option>
@@ -1600,18 +1600,18 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
               </div>
 
               {/* Form Footer */}
-              <div className="pt-3 border-t border-[#DDD5C7]/70 dark:border-[#302D28] flex justify-end gap-3">
+              <div className="pt-3 border-t border-[#E8E6E2] dark:border-[#383633] flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 text-xs font-semibold rounded-lg bg-[#F5F2EC] dark:bg-[#1C1A17] text-[#171513] dark:text-[#F4EFE5] border border-[#DDD5C7] dark:border-[#302D28]"
+                  className="px-4 py-2 text-xs font-semibold rounded-lg bg-[#F7F6F3] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] hover:bg-[#E8E6E2] dark:hover:bg-[#383633]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting || uploadingImages}
-                  className="px-4 py-2 text-xs font-semibold rounded-lg bg-[#171513] dark:bg-[#C89B4A] text-white dark:text-[#0B0B0A] hover:bg-[#302D28] dark:hover:bg-[#b0853c] transition-colors"
+                  className="px-4 py-2 text-xs font-semibold rounded-lg bg-[#202020] hover:bg-[#171717] text-white dark:bg-[#B99A62] dark:text-[#202020] transition-colors"
                 >
                   {submitting ? "Saving..." : editingVilla ? "Save Changes" : "Create Villa"}
                 </button>
@@ -1631,7 +1631,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
             <Image src={previewImageUrl} alt="Full resolution preview" fill sizes="90vw" className="object-contain" />
             <button
               onClick={() => setPreviewImageUrl(null)}
-              className="absolute top-2 right-2 p-2 rounded-full bg-black/80 text-white hover:bg-[#C89B4A] hover:text-black transition-colors"
+              className="absolute top-2 right-2 p-2 rounded-full bg-black/80 text-white hover:bg-[#202020] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>

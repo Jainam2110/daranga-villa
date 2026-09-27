@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -66,17 +68,14 @@ export function VillaCard({ villa, onViewClick }: VillaCardProps) {
 
       if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 30) {
         if (diffX > 0) {
-          // swipe left -> next image
           handleNext();
         } else {
-          // swipe right -> prev image
           handlePrev();
         }
       }
     }
     touchStartX.current = null;
     touchStartY.current = null;
-    // Resume auto-sliding 2.5s after touch ends
     touchResumeTimeout.current = setTimeout(() => {
       setIsTouched(false);
     }, 2500);
@@ -90,13 +89,13 @@ export function VillaCard({ villa, onViewClick }: VillaCardProps) {
 
   return (
     <div
-      className="group/card flex flex-col bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-[8px] overflow-hidden card-luxury-hover transition-all duration-500 hover:border-[var(--accent)]/50 shadow-lg"
+      className="group/card flex flex-col bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[8px] overflow-hidden card-luxury-hover transition-all duration-500 hover:border-[#B99A62]/40 shadow-sm hover:shadow-md"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container with Interactive Multi-Image Slider */}
       <div
-        className="relative aspect-[16/10] w-full overflow-hidden bg-[#151412] select-none group/img"
+        className="relative aspect-[16/10] w-full overflow-hidden bg-[#171717] select-none group/img"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -128,7 +127,7 @@ export function VillaCard({ villa, onViewClick }: VillaCardProps) {
 
         {/* Tag Badge (Desktop only) */}
         <div className="hidden sm:block absolute top-3 sm:top-4 left-3 sm:left-4 z-20 pointer-events-none">
-          <span className="px-2.5 sm:px-3 py-1 bg-[var(--bg-primary)]/90 backdrop-blur-md text-[var(--accent)] text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-semibold border border-[var(--accent)]/30 rounded-[4px] shadow-sm">
+          <span className="px-2.5 sm:px-3 py-1 bg-white/90 dark:bg-[#202020]/90 backdrop-blur-md text-[#202020] dark:text-[#FCFBF8] text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-semibold border border-[#E8E6E2] dark:border-[#383633] rounded-[4px] shadow-xs">
             Exclusive Estate
           </span>
         </div>
@@ -148,7 +147,7 @@ export function VillaCard({ villa, onViewClick }: VillaCardProps) {
               type="button"
               onClick={handlePrev}
               aria-label="Previous photo"
-              className="hidden sm:flex absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-[#C89B4A] text-white hover:text-[#0B0B0A] border border-white/20 hover:border-[#C89B4A] items-center justify-center transition-all duration-200 shadow-md opacity-0 group-hover/img:opacity-100 hover:scale-110 active:scale-95 focus:opacity-100"
+              className="hidden sm:flex absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-[#202020] text-white border border-white/20 hover:border-white/40 items-center justify-center transition-all duration-200 shadow-md opacity-0 group-hover/img:opacity-100 hover:scale-110 active:scale-95 focus:opacity-100 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </button>
@@ -158,7 +157,7 @@ export function VillaCard({ villa, onViewClick }: VillaCardProps) {
               type="button"
               onClick={handleNext}
               aria-label="Next photo"
-              className="hidden sm:flex absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-[#C89B4A] text-white hover:text-[#0B0B0A] border border-white/20 hover:border-[#C89B4A] items-center justify-center transition-all duration-200 shadow-md opacity-0 group-hover/img:opacity-100 hover:scale-110 active:scale-95 focus:opacity-100"
+              className="hidden sm:flex absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-black/60 hover:bg-[#202020] text-white border border-white/20 hover:border-white/40 items-center justify-center transition-all duration-200 shadow-md opacity-0 group-hover/img:opacity-100 hover:scale-110 active:scale-95 focus:opacity-100 cursor-pointer"
             >
               <ChevronRight className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </button>
@@ -171,9 +170,9 @@ export function VillaCard({ villa, onViewClick }: VillaCardProps) {
                   type="button"
                   onClick={(e) => handleDotClick(e, idx)}
                   aria-label={`Go to slide ${idx + 1}`}
-                  className={`transition-all duration-300 rounded-full ${
+                  className={`transition-all duration-300 rounded-full cursor-pointer ${
                     idx === currentIdx
-                      ? "w-4 sm:w-5 h-1.5 bg-[#C89B4A]"
+                      ? "w-4 sm:w-5 h-1.5 bg-[#B99A62]"
                       : "w-1.5 h-1.5 bg-white/50 hover:bg-white"
                   }`}
                 />
@@ -184,53 +183,53 @@ export function VillaCard({ villa, onViewClick }: VillaCardProps) {
       </div>
 
       {/* Content */}
-      <div className="flex flex-col flex-1 p-4 sm:p-6 space-y-3 sm:space-y-4 text-[var(--text-primary)]">
+      <div className="flex flex-col flex-1 p-4 sm:p-6 space-y-3 sm:space-y-4 text-[#202020] dark:text-[#FCFBF8]">
         <div>
-          <div className="text-[var(--accent)] text-[10px] font-semibold uppercase tracking-[0.2em] mb-1 flex items-center gap-1">
-            <MapPin className="w-3 h-3 flex-shrink-0" />
+          <div className="text-[#66635F] dark:text-[#BDB8B0] text-[10px] font-semibold uppercase tracking-[0.2em] mb-1 flex items-center gap-1">
+            <MapPin className="w-3 h-3 text-[#B99A62] flex-shrink-0" />
             <span className="truncate">{getVillaAddress(villa.location, "Daranga Estate")}</span>
           </div>
 
           <Link href={`/villas/${villaSlug}`} onClick={() => onViewClick?.(villa.id)}>
-            <h3 className="font-serif text-xl sm:text-2xl font-normal text-[var(--text-primary)] group-hover/card:text-[var(--accent)] transition-colors">
+            <h3 className="font-serif text-xl sm:text-2xl font-normal text-[#202020] dark:text-[#FCFBF8] group-hover/card:text-[#B99A62] transition-colors">
               {villa.name}
             </h3>
           </Link>
         </div>
 
         {/* Property Specs with Lucide Icons */}
-        <div className="flex items-center justify-between text-xs text-[var(--text-secondary)] py-2.5 sm:py-3 border-y border-[var(--border-color)] font-medium">
+        <div className="flex items-center justify-between text-xs text-[#66635F] dark:text-[#BDB8B0] py-2.5 sm:py-3 border-y border-[#E8E6E2] dark:border-[#383633] font-medium">
           <span className="flex items-center gap-1.5">
-            <Users className="w-3.5 h-3.5 text-[var(--accent)]" />
+            <Users className="w-3.5 h-3.5 text-[#B99A62]" />
             <span>{guestCount} Guests</span>
           </span>
           <span>•</span>
           <span className="flex items-center gap-1.5">
-            <Bed className="w-3.5 h-3.5 text-[var(--accent)]" />
+            <Bed className="w-3.5 h-3.5 text-[#B99A62]" />
             <span>{villa.bedrooms || 1} BHK</span>
           </span>
           <span>•</span>
           <span className="flex items-center gap-1.5">
-            <Bath className="w-3.5 h-3.5 text-[var(--accent)]" />
+            <Bath className="w-3.5 h-3.5 text-[#B99A62]" />
             <span>{villa.bathrooms || 1} Baths</span>
           </span>
         </div>
 
-        <div className="pt-2 sm:pt-3 border-t border-[var(--border-color)]/60 flex items-center justify-between gap-3 mt-auto">
+        <div className="pt-2 sm:pt-3 border-t border-[#E8E6E2]/60 dark:border-[#383633]/60 flex items-center justify-between gap-3 mt-auto">
           <div>
-            <span className="text-[9px] uppercase tracking-widest text-[var(--text-secondary)] block font-medium">From</span>
+            <span className="text-[9px] uppercase tracking-widest text-[#66635F] dark:text-[#8A8782] block font-medium">From</span>
             <div className="flex items-baseline gap-1">
-              <span className="font-sans text-lg sm:text-2xl font-bold text-[var(--text-primary)]">
+              <span className="font-sans text-lg sm:text-2xl font-bold text-[#202020] dark:text-[#FCFBF8]">
                 ₹{villa.pricePerNight.toLocaleString("en-IN")}
               </span>
-              <span className="font-sans text-xs text-[var(--text-secondary)] font-normal">/ night</span>
+              <span className="font-sans text-xs text-[#66635F] dark:text-[#8A8782] font-normal">/ night</span>
             </div>
           </div>
 
           <Link
             href={`/villas/${villaSlug}`}
             onClick={() => onViewClick?.(villa.id)}
-            className="btn-luxury-shimmer text-center px-3.5 sm:px-4 py-2 sm:py-2.5 bg-[var(--bg-primary)] hover:bg-[var(--accent)] text-[var(--accent)] hover:text-[#0B0B0A] border border-[var(--border-color)] hover:border-[var(--accent)] text-[11px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] font-bold transition-all duration-300 rounded-[6px] flex items-center justify-center gap-1.5 flex-shrink-0 shadow-sm hover:scale-105 active:scale-95"
+            className="text-center px-4 py-2 sm:py-2.5 bg-[#202020] hover:bg-[#171717] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#171717] text-[11px] sm:text-xs uppercase tracking-[0.16em] sm:tracking-[0.2em] font-bold transition-all duration-300 rounded-[6px] flex items-center justify-center gap-1.5 flex-shrink-0 shadow-sm hover:scale-105 active:scale-95"
           >
             <span>EXPLORE</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -240,4 +239,3 @@ export function VillaCard({ villa, onViewClick }: VillaCardProps) {
     </div>
   );
 }
-

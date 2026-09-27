@@ -45,11 +45,11 @@ export default async function AdminVillasPage() {
 
   return (
     <AdminLayoutShell adminName={admin.name} adminEmail={admin.email} pageTitle="Villas">
-      <div className="border-b border-[#DDD5C7]/70 dark:border-[#302D28] pb-5">
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#171513] dark:text-[#F4EFE5]">
+      <div className="border-b border-[#E8E6E2] dark:border-[#383633] pb-5">
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#202020] dark:text-[#FCFBF8]">
           Villa Portfolio Management
         </h1>
-        <p className="text-xs sm:text-sm text-[#6E685F] dark:text-[#A9A39A] mt-0.5">
+        <p className="text-xs sm:text-sm text-[#66635F] dark:text-[#BDB8B0] mt-0.5">
           Manage luxury villa listings, Cloudinary media galleries, pricing rates, and public availability.
         </p>
       </div>

@@ -11,6 +11,8 @@ import { getVillaAddress } from "@/lib/utils/villa-location";
 interface FeaturedVillasSectionProps {
   villas: Villa[];
   onSelectVilla?: (villaId: string) => void;
+  activeFilter?: string | null;
+  onClearFilter?: () => void;
 }
 
 function FeaturedVillaHeroCard({
@@ -94,13 +96,13 @@ function FeaturedVillaHeroCard({
 
   return (
     <div
-      className="group/hero relative bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-[8px] overflow-hidden grid grid-cols-12 shadow-2xl card-luxury-hover hover:border-[var(--accent)]/50 transition-all duration-700"
+      className="group/hero relative bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[8px] overflow-hidden grid grid-cols-1 lg:grid-cols-12 shadow-md hover:shadow-xl transition-all duration-500"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* 7-Col Image Gallery / Slider */}
       <div
-        className="col-span-7 relative w-full min-h-[500px] bg-[var(--bg-primary)] overflow-hidden block select-none group/img"
+        className="lg:col-span-7 relative w-full min-h-[380px] sm:min-h-[460px] lg:min-h-[500px] bg-[#F7F6F3] dark:bg-[#171717] overflow-hidden block select-none group/img"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -132,7 +134,7 @@ function FeaturedVillaHeroCard({
 
         {/* Flagship Badge */}
         <div className="absolute top-6 left-6 z-20 pointer-events-none">
-          <span className="px-3.5 py-1.5 bg-[var(--bg-primary)]/90 text-[var(--accent)] text-[10px] uppercase tracking-[0.25em] font-semibold border border-[var(--accent)]/30 backdrop-blur-md rounded-[4px] shadow-sm">
+          <span className="px-3.5 py-1.5 bg-white/95 dark:bg-[#202020]/95 text-[#B99A62] text-[10px] uppercase tracking-[0.25em] font-semibold border border-[#B99A62]/30 backdrop-blur-md rounded-[4px] shadow-sm">
             Flagship Residence
           </span>
         </div>
@@ -152,7 +154,7 @@ function FeaturedVillaHeroCard({
               type="button"
               onClick={handlePrev}
               aria-label="Previous photo"
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-[#C89B4A] text-white hover:text-[#0B0B0A] border border-white/20 hover:border-[#C89B4A] flex items-center justify-center transition-all duration-200 shadow-lg opacity-0 group-hover/img:opacity-100 hover:scale-110 active:scale-95 focus:opacity-100"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-[#202020]/75 hover:bg-[#202020] text-white border border-white/20 flex items-center justify-center transition-all duration-200 shadow-lg opacity-0 group-hover/img:opacity-100 hover:scale-105 active:scale-95 focus:opacity-100"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -162,7 +164,7 @@ function FeaturedVillaHeroCard({
               type="button"
               onClick={handleNext}
               aria-label="Next photo"
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-[#C89B4A] text-white hover:text-[#0B0B0A] border border-white/20 hover:border-[#C89B4A] flex items-center justify-center transition-all duration-200 shadow-lg opacity-0 group-hover/img:opacity-100 hover:scale-110 active:scale-95 focus:opacity-100"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-[#202020]/75 hover:bg-[#202020] text-white border border-white/20 flex items-center justify-center transition-all duration-200 shadow-lg opacity-0 group-hover/img:opacity-100 hover:scale-105 active:scale-95 focus:opacity-100"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -177,7 +179,7 @@ function FeaturedVillaHeroCard({
                   aria-label={`Go to slide ${idx + 1}`}
                   className={`transition-all duration-300 rounded-full ${
                     idx === currentIdx
-                      ? "w-6 h-1.5 bg-[#C89B4A]"
+                      ? "w-6 h-1.5 bg-[#B99A62]"
                       : "w-1.5 h-1.5 bg-white/50 hover:bg-white"
                   }`}
                 />
@@ -188,52 +190,52 @@ function FeaturedVillaHeroCard({
       </div>
 
       {/* 5-Col Details Section */}
-      <div className="col-span-5 p-10 xl:p-12 flex flex-col justify-between space-y-6">
+      <div className="lg:col-span-5 p-8 sm:p-10 xl:p-12 flex flex-col justify-between space-y-6">
         <div className="space-y-4">
-          <div className="text-[10px] uppercase tracking-[0.25em] text-[var(--accent)] font-semibold flex items-center gap-1.5">
+          <div className="text-[10px] uppercase tracking-[0.25em] text-[#B99A62] font-semibold flex items-center gap-1.5">
             <MapPin className="w-3.5 h-3.5" />
             <span>{getVillaAddress(villa.location, "Daranga Sanctuary Estate")}</span>
           </div>
 
           <Link href={`/villas/${villa.slug || villa.id}`} onClick={() => onSelectVilla?.(villa.id)}>
-            <h3 className="font-serif text-3xl xl:text-4xl font-normal text-[var(--text-primary)] group-hover/hero:text-[var(--accent)] transition-colors">
+            <h3 className="font-serif text-3xl xl:text-4xl font-normal text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] transition-colors">
               {villa.name}
             </h3>
           </Link>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-[var(--text-secondary)] py-3 border-y border-[var(--border-color)]">
+          <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-[#66635F] dark:text-[#BDB8B0] py-3 border-y border-[#E8E6E2] dark:border-[#383633]">
             <span className="flex items-center gap-1.5">
-              <Users className="w-3.5 h-3.5 text-[var(--accent)]" />
+              <Users className="w-3.5 h-3.5 text-[#B99A62]" />
               <span>{villa.maxGuests || 6} Guests</span>
             </span>
             <span>•</span>
             <span className="flex items-center gap-1.5">
-              <Bed className="w-3.5 h-3.5 text-[var(--accent)]" />
+              <Bed className="w-3.5 h-3.5 text-[#B99A62]" />
               <span>{villa.bedrooms || 3} BHK</span>
             </span>
             <span>•</span>
             <span className="flex items-center gap-1.5">
-              <Bath className="w-3.5 h-3.5 text-[var(--accent)]" />
+              <Bath className="w-3.5 h-3.5 text-[#B99A62]" />
               <span>{villa.bathrooms || 3} Baths</span>
             </span>
           </div>
         </div>
 
-        <div className="pt-4 flex items-center justify-between gap-4 border-t border-[var(--border-color)]">
+        <div className="pt-4 flex items-center justify-between gap-4 border-t border-[#E8E6E2] dark:border-[#383633]">
           <div>
-            <span className="text-[9px] uppercase tracking-widest text-[var(--text-secondary)] block font-medium">Starting Rate</span>
+            <span className="text-[9px] uppercase tracking-widest text-[#66635F] dark:text-[#8A8782] block font-medium">Starting Rate</span>
             <div className="flex items-baseline gap-1">
-              <span className="font-sans text-3xl font-bold text-[var(--text-primary)]">
+              <span className="font-sans text-3xl font-bold text-[#202020] dark:text-[#FCFBF8]">
                 ₹{villa.pricePerNight.toLocaleString("en-IN")}
               </span>
-              <span className="font-sans text-xs text-[var(--text-secondary)] font-normal">/ night</span>
+              <span className="font-sans text-xs text-[#66635F] dark:text-[#8A8782] font-normal">/ night</span>
             </div>
           </div>
 
           <Link
             href={`/villas/${villa.slug || villa.id}`}
             onClick={() => onSelectVilla?.(villa.id)}
-            className="btn-luxury-shimmer text-center px-6 py-3.5 bg-[var(--accent)] hover:bg-[#b5893a] text-[#0B0B0A] text-xs uppercase tracking-[0.2em] font-bold transition-all rounded-[6px] shadow-lg hover:scale-105 active:scale-95 flex items-center gap-2"
+            className="text-center px-6 py-3.5 bg-[#202020] hover:bg-[#171717] text-white dark:bg-[#FCFBF8] dark:text-[#202020] dark:hover:bg-white text-xs uppercase tracking-[0.2em] font-bold transition-all rounded-[6px] shadow-sm hover:shadow-md flex items-center gap-2"
           >
             <span>EXPLORE VILLA</span>
             <ArrowRight className="w-4 h-4" />
@@ -247,45 +249,75 @@ function FeaturedVillaHeroCard({
 export function FeaturedVillasSection({
   villas,
   onSelectVilla,
+  activeFilter,
+  onClearFilter,
 }: FeaturedVillasSectionProps) {
   const featuredVilla = villas[0];
   const supportingVillas = villas.slice(1);
 
   return (
-    <section id="villas" className="pt-4 sm:pt-6 lg:py-36 bg-[var(--bg-primary)] text-[var(--text-primary)]">
+    <section id="villas" className="pt-8 sm:pt-12 lg:py-24 bg-[#FCFBF8] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8]">
       <Container>
         {/* Section Header (Desktop only) */}
-        <div className="hidden lg:flex flex-col md:flex-row md:items-end justify-between mb-12 lg:mb-16 gap-6 border-b border-[var(--border-color)] pb-8">
+        <div className="hidden lg:flex flex-col md:flex-row md:items-end justify-between mb-12 lg:mb-16 gap-6 border-b border-[#E8E6E2] dark:border-[#383633] pb-8">
           <div className="space-y-3">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[var(--accent)] block">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#B99A62] block">
               THE VILLAS
             </span>
-            <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--text-primary)] tracking-tight leading-tight">
+            <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-[#202020] dark:text-[#FCFBF8] tracking-tight leading-tight">
               Designed for the way<br />you want to live.
             </h2>
           </div>
 
-          <p className="text-[var(--text-secondary)] text-xs sm:text-sm font-light leading-relaxed max-w-md">
-            Each villa offers secluded grounds, private infinity pools, and dedicated 24/7 personal hospitality.
-          </p>
+          <div className="space-y-3 text-right">
+            <p className="text-[#66635F] dark:text-[#BDB8B0] text-xs sm:text-sm font-light leading-relaxed max-w-md">
+              Each villa offers secluded grounds, private infinity pools, and dedicated 24/7 personal hospitality.
+            </p>
+            {activeFilter && (
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#B99A62]/10 border border-[#B99A62]/30 text-xs text-[#202020] dark:text-[#FCFBF8]">
+                <span>Showing results for: <strong>{activeFilter}</strong></span>
+                {onClearFilter && (
+                  <button
+                    type="button"
+                    onClick={onClearFilter}
+                    className="text-[#B99A62] hover:underline font-bold text-[11px] uppercase tracking-wider cursor-pointer"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Empty State */}
         {villas.length === 0 ? (
-          <div className="p-16 rounded-[6px] bg-[var(--bg-secondary)] border border-[var(--border-color)] text-center max-w-xl mx-auto space-y-4">
-            <h3 className="font-serif text-2xl font-bold text-[var(--text-primary)]">
-              No Active Villa Residences Found
+          <div className="p-12 sm:p-16 rounded-[12px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] text-center max-w-xl mx-auto space-y-4 shadow-sm my-6">
+            <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#202020] dark:text-[#FCFBF8]">
+              {activeFilter ? `No Villas Found Matching "${activeFilter}"` : "No Active Villa Residences Found"}
             </h3>
-            <p className="text-[var(--text-secondary)] text-xs leading-relaxed font-light">
-              Our private estate collection is currently being updated. Please check back shortly.
+            <p className="text-[#66635F] dark:text-[#BDB8B0] text-xs sm:text-sm leading-relaxed font-light">
+              {activeFilter
+                ? "Try searching for another keyword or clear the current experience filter to view all available private sanctuaries in Udaipur."
+                : "Our private estate collection is currently being updated. Please check back shortly."}
             </p>
             <div className="pt-2">
-              <Link
-                href="/admin/villas"
-                className="px-6 py-2.5 bg-[var(--accent)] text-[var(--bg-primary)] text-xs uppercase tracking-[0.2em] font-bold inline-block rounded-[6px]"
-              >
-                Manage Villas
-              </Link>
+              {activeFilter && onClearFilter ? (
+                <button
+                  type="button"
+                  onClick={onClearFilter}
+                  className="px-6 py-2.5 bg-[#202020] hover:bg-[#171717] text-white dark:bg-[#FCFBF8] dark:text-[#202020] text-xs uppercase tracking-[0.2em] font-bold inline-block rounded-[6px] transition-all cursor-pointer"
+                >
+                  View All Udaipur Villas
+                </button>
+              ) : (
+                <Link
+                  href="/admin/villas"
+                  className="px-6 py-2.5 bg-[#202020] hover:bg-[#171717] text-white text-xs uppercase tracking-[0.2em] font-bold inline-block rounded-[6px]"
+                >
+                  Manage Villas
+                </Link>
+              )}
             </div>
           </div>
         ) : (
@@ -294,14 +326,14 @@ export function FeaturedVillasSection({
             <div className="block lg:hidden space-y-3.5 sm:space-y-4">
               {/* Mobile Intro Header between Hero Images and Villa Cards */}
               <div className="text-center space-y-1.5 px-2">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--accent)]/10 border border-[var(--accent)]/30 text-[var(--accent)] text-[9px] font-semibold uppercase tracking-[0.25em]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8A0A8]/10 border border-[#E8A0A8]/30 text-[#202020] dark:text-[#FCFBF8] text-[9px] font-semibold uppercase tracking-[0.25em]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#B99A62]" />
                   OUR PRIVATE SANCTUARIES
                 </div>
-                <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[var(--text-primary)] tracking-tight">
+                <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#202020] dark:text-[#FCFBF8] tracking-tight">
                   Explore Luxury Villas
                 </h2>
-                <p className="text-[var(--text-secondary)] text-[11px] sm:text-xs font-light leading-relaxed max-w-sm mx-auto">
+                <p className="text-[#66635F] dark:text-[#BDB8B0] text-[11px] sm:text-xs font-light leading-relaxed max-w-sm mx-auto">
                   Handcrafted private pool retreats with personalized hospitality and serene natural views.
                 </p>
               </div>

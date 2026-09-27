@@ -66,7 +66,7 @@ export function AdminPricingClient({ initialVillas }: AdminPricingClientProps) {
   return (
     <div className="space-y-6">
       {errorMsg && (
-        <div className="p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 text-rose-700 text-xs flex items-center justify-between">
+        <div className="p-3.5 rounded-xl bg-[#B84A4A]/10 border border-[#B84A4A]/30 text-[#B84A4A] text-xs flex items-center justify-between">
           <span>{errorMsg}</span>
           <button onClick={() => setErrorMsg("")}>
             <X className="w-4 h-4" />
@@ -82,22 +82,22 @@ export function AdminPricingClient({ initialVillas }: AdminPricingClientProps) {
           return (
             <div
               key={villa._id}
-              className="p-5 rounded-xl bg-white dark:bg-[#151412] border border-[#DDD5C7] dark:border-[#302D28] shadow-xs space-y-4 text-xs"
+              className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-4 text-xs"
             >
-              <div className="flex items-center justify-between border-b border-[#DDD5C7]/60 dark:border-[#302D28] pb-3">
+              <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-3">
                 <div>
-                  <h3 className="font-serif text-base font-bold text-[#171513] dark:text-[#F4EFE5]">
+                  <h3 className="font-serif text-base font-bold text-[#202020] dark:text-[#FCFBF8]">
                     {villa.name}
                   </h3>
-                  <p className="text-[11px] text-[#6E685F] dark:text-[#A9A39A]">
+                  <p className="text-[11px] text-[#66635F] dark:text-[#BDB8B0]">
                     {villa.location || "Daranga Estate"}
                   </p>
                 </div>
                 <span
-                  className={`px-2 py-0.5 text-[10px] font-semibold rounded-full uppercase tracking-wider ${
+                  className={`px-2 py-0.5 text-[10px] font-semibold rounded-full uppercase tracking-wider border ${
                     villa.status === "ACTIVE"
-                      ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400"
-                      : "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400"
+                      ? "bg-[#3F6B52]/10 text-[#3F6B52] border-[#3F6B52]/30"
+                      : "bg-[#8A8782]/10 text-[#66635F] border-[#DAD7D1]"
                   }`}
                 >
                   {villa.status}
@@ -105,26 +105,26 @@ export function AdminPricingClient({ initialVillas }: AdminPricingClientProps) {
               </div>
 
               {/* Price Box */}
-              <div className="p-4 rounded-lg bg-[#F5F2EC]/50 dark:bg-[#1C1A17]/50 border border-[#DDD5C7]/60 dark:border-[#302D28] space-y-2">
-                <span className="text-[10px] uppercase font-semibold text-[#6E685F] dark:text-[#A9A39A] tracking-wider block">
+              <div className="p-4 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] space-y-2">
+                <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] tracking-wider block">
                   Nightly Base Rate
                 </span>
 
                 {isEditing ? (
                   <div className="flex items-center gap-2">
-                    <span className="font-sans font-bold text-base text-[#171513] dark:text-[#F4EFE5]">₹</span>
+                    <span className="font-sans font-bold text-base text-[#202020] dark:text-[#FCFBF8]">₹</span>
                     <input
                       type="number"
                       min="1"
                       value={newPrice}
                       onChange={(e) => setNewPrice(Number(e.target.value))}
-                      className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-[#151412] border border-[#A8792E] dark:border-[#C89B4A] font-sans font-bold text-base text-[#171513] dark:text-[#F4EFE5]"
+                      className="w-full px-3 py-1.5 rounded-lg bg-white dark:bg-[#202020] border border-[#202020] dark:border-[#B99A62] font-sans font-bold text-base text-[#202020] dark:text-[#FCFBF8]"
                     />
                   </div>
                 ) : (
-                  <div className="font-sans text-2xl font-bold text-[#171513] dark:text-[#F4EFE5]">
+                  <div className="font-sans text-2xl font-bold text-[#202020] dark:text-[#FCFBF8]">
                     {formatCurrency(villa.pricePerNight)}
-                    <span className="text-xs font-normal text-[#6E685F] dark:text-[#A9A39A] ml-1">
+                    <span className="text-xs font-normal text-[#66635F] dark:text-[#BDB8B0] ml-1">
                       / night
                     </span>
                   </div>
@@ -133,7 +133,7 @@ export function AdminPricingClient({ initialVillas }: AdminPricingClientProps) {
 
               {/* Action Buttons */}
               <div className="flex items-center justify-between pt-1">
-                <span className="text-[11px] text-[#6E685F] dark:text-[#A9A39A]">
+                <span className="text-[11px] text-[#66635F] dark:text-[#BDB8B0]">
                   Max Capacity: <strong>{villa.maxGuests} Guests</strong>
                 </span>
 
@@ -141,14 +141,14 @@ export function AdminPricingClient({ initialVillas }: AdminPricingClientProps) {
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => setEditingId(null)}
-                      className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-[#F5F2EC] dark:bg-[#1C1A17] text-[#171513] dark:text-[#F4EFE5] border border-[#DDD5C7] dark:border-[#302D28]"
+                      className="px-2.5 py-1 text-xs font-semibold rounded-lg bg-[#F7F6F3] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633]"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={() => handleSavePrice(villa._id)}
                       disabled={saving}
-                      className="px-3 py-1 text-xs font-semibold rounded-lg bg-[#171513] dark:bg-[#C89B4A] text-white dark:text-[#0B0B0A] flex items-center gap-1"
+                      className="px-3 py-1 text-xs font-semibold rounded-lg bg-[#202020] hover:bg-[#171717] text-white flex items-center gap-1"
                     >
                       <Check className="w-3.5 h-3.5" />
                       <span>{saving ? "Saving..." : "Save"}</span>
@@ -157,9 +157,9 @@ export function AdminPricingClient({ initialVillas }: AdminPricingClientProps) {
                 ) : (
                   <button
                     onClick={() => handleStartEdit(villa)}
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-[#A8792E] dark:text-[#C89B4A] hover:underline"
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] transition-colors"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 className="w-3.5 h-3.5 text-[#B99A62]" />
                     <span>Edit Rate</span>
                   </button>
                 )}

@@ -48,21 +48,21 @@ export function AdminHeader({
   };
 
   return (
-    <header className="sticky top-0 z-20 h-16 bg-white/90 dark:bg-[#151412]/90 backdrop-blur-md border-b border-[#DDD5C7]/80 dark:border-[#302D28] px-4 sm:px-6 flex items-center justify-between transition-colors duration-200">
+    <header className="sticky top-0 z-20 h-16 bg-white/90 dark:bg-[#202020]/90 backdrop-blur-md border-b border-[#E8E6E2] dark:border-[#383633] px-4 sm:px-6 flex items-center justify-between transition-colors duration-200">
       {/* Left: Mobile hamburger + Page Breadcrumb */}
       <div className="flex items-center gap-3">
         <button
           onClick={onOpenMobileMenu}
-          className="md:hidden p-2 rounded-lg text-[#6E685F] dark:text-[#A9A39A] hover:bg-[#F5F2EC] dark:hover:bg-[#1C1A17] transition-colors"
+          className="md:hidden p-2 rounded-lg text-[#66635F] dark:text-[#BDB8B0] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] transition-colors"
           aria-label="Open sidebar menu"
         >
           <Menu className="w-5 h-5" />
         </button>
 
-        <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-[#6E685F] dark:text-[#A9A39A]">
+        <div className="flex items-center gap-2 text-xs sm:text-sm font-medium text-[#66635F] dark:text-[#BDB8B0]">
           <span>Admin</span>
           <span>/</span>
-          <span className="font-semibold text-[#171513] dark:text-[#F4EFE5]">
+          <span className="font-semibold text-[#202020] dark:text-[#FCFBF8]">
             {getBreadcrumbTitle()}
           </span>
         </div>
@@ -71,8 +71,8 @@ export function AdminHeader({
       {/* Right: Status indicator, Theme toggle, Profile & Logout */}
       <div className="flex items-center gap-3 sm:gap-4">
         {/* System Online Badge */}
-        <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40 text-[11px] font-medium text-emerald-700 dark:text-emerald-400">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+        <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3F6B52]/10 border border-[#3F6B52]/20 text-[11px] font-semibold text-[#3F6B52]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#3F6B52] animate-pulse" />
           <span>System Online</span>
         </div>
 
@@ -80,25 +80,25 @@ export function AdminHeader({
         {mounted && (
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-lg text-[#6E685F] dark:text-[#A9A39A] hover:text-[#171513] dark:hover:text-[#F4EFE5] hover:bg-[#F5F2EC] dark:hover:bg-[#1C1A17] transition-colors"
+            className="p-2 rounded-lg text-[#66635F] dark:text-[#BDB8B0] hover:text-[#202020] dark:hover:text-[#FCFBF8] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] transition-colors"
             title="Toggle theme"
           >
             {theme === "dark" ? (
-              <Sun className="w-4 h-4 text-[#C89B4A]" />
+              <Sun className="w-4 h-4 text-[#B99A62]" />
             ) : (
-              <Moon className="w-4 h-4 text-[#A8792E]" />
+              <Moon className="w-4 h-4 text-[#202020]" />
             )}
           </button>
         )}
 
-        <div className="h-4 w-px bg-[#DDD5C7] dark:bg-[#302D28] hidden sm:block" />
+        <div className="h-4 w-px bg-[#E8E6E2] dark:bg-[#383633] hidden sm:block" />
 
         {/* Profile Info */}
         <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-full bg-[#171513] dark:bg-[#C89B4A] text-white dark:text-[#0B0B0A] font-sans font-bold text-xs flex items-center justify-center shadow-xs">
+          <div className="w-7 h-7 rounded-full bg-[#202020] dark:bg-[#FFFFFF] text-white dark:text-[#202020] font-sans font-bold text-xs flex items-center justify-center shadow-xs">
             {adminName.charAt(0).toUpperCase()}
           </div>
-          <span className="hidden sm:inline text-xs font-semibold text-[#171513] dark:text-[#F4EFE5]">
+          <span className="hidden sm:inline text-xs font-semibold text-[#202020] dark:text-[#FCFBF8]">
             {adminName}
           </span>
         </div>
@@ -107,7 +107,7 @@ export function AdminHeader({
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg text-[#6E685F] dark:text-[#A9A39A] hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg text-[#66635F] dark:text-[#BDB8B0] hover:text-[#B84A4A] hover:bg-[#B84A4A]/10 transition-colors"
           title="Logout of admin panel"
         >
           <LogOut className="w-3.5 h-3.5" />

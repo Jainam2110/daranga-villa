@@ -187,21 +187,23 @@ export function HeroSection({
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="relative h-[50vh] sm:h-[55vh] lg:h-[100dvh] min-h-[300px] sm:min-h-[380px] lg:min-h-[100dvh] w-full flex items-center justify-center overflow-hidden bg-[#0B0B0A] text-[#F5F1E8] touch-pan-y"
+      className="relative h-[52vh] sm:h-[62vh] lg:h-[76vh] min-h-[400px] sm:min-h-[460px] lg:min-h-[540px] w-full flex items-center justify-center overflow-hidden rounded-b-[24px] sm:rounded-b-[32px] md:rounded-b-[36px] lg:rounded-b-[42px] bg-[#171717] text-white touch-pan-y shadow-[0_12px_32px_rgba(0,0,0,0.12)]"
     >
       {/* Background Slides with Ken Burns and Crossfade transitions */}
-      <div className="absolute inset-0 z-0 w-full h-full">
+      <div className="absolute inset-0 z-0 w-full h-full overflow-hidden rounded-b-[24px] sm:rounded-b-[32px] md:rounded-b-[36px] lg:rounded-b-[42px]">
         {slides.map((slide, idx) => {
           const isActive = idx === currentIndex;
           return (
             <div
               key={slide.url + idx}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
-                }`}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
+                isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+              }`}
             >
               <div
-                className={`relative w-full h-full ${isActive ? "animate-ken-burns" : "scale-100"
-                  }`}
+                className={`relative w-full h-full ${
+                  isActive ? "animate-ken-burns" : "scale-100"
+                }`}
               >
                 <Image
                   src={slide.url}
@@ -216,118 +218,79 @@ export function HeroSection({
           );
         })}
 
-        {/* Ambient Dark Vignette & Gradient Overlays */}
-        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/70 via-black/20 to-black/20 lg:from-black/90 lg:via-black/45 lg:to-black/30 pointer-events-none" />
-        <div className="absolute inset-0 z-20 bg-radial from-transparent via-black/10 to-black/40 lg:via-black/20 lg:to-black/70 pointer-events-none" />
-
-        {/* Subtle Ambient Golden Glow (Slow Pulse) */}
-        <div className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[var(--accent)]/10 blur-[120px] pointer-events-none animate-ambient-glow z-20" />
+        {/* Subtle Dark Vignette & Neutral Overlays for Text Legibility */}
+        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/80 via-black/30 to-black/35 pointer-events-none" />
+        <div className="absolute inset-0 z-20 bg-radial from-transparent via-black/15 to-black/45 pointer-events-none" />
       </div>
 
-      {/* Mobile Dead-Center Text (Pure clean text, no background, no border, exactly like reference) */}
-      <div className="block lg:hidden absolute inset-0 z-20 flex items-center justify-center pointer-events-none px-6 text-center">
+      {/* Center Headline & Explore Villa Pill CTA (Stay Vista Hero Style) */}
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center space-y-3 sm:space-y-5 pt-8 sm:pt-10 pb-6 sm:pb-8">
         <div
           key={currentIndex}
-          className="transition-all duration-700 animate-in fade-in zoom-in-95"
+          className="transition-all duration-700 animate-in fade-in zoom-in-95 max-w-xl mx-auto space-y-2.5 sm:space-y-3.5"
         >
-          <h2 className="font-serif text-3xl sm:text-4xl font-normal text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.95)] tracking-tight leading-[1.2] whitespace-pre-line select-none">
-            {slides[currentIndex]?.title}
-          </h2>
-        </div>
-      </div>
+          {/* Eyebrow / Tagline */}
+          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-black/40 backdrop-blur-md border border-[#B99A62]/40 text-[#FCFBF8] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#B99A62] animate-pulse" />
+            {slides[currentIndex]?.tagline || "DARANGA SANCTUARIES • UDAIPUR"}
+          </span>
 
-      {/* Mobile Subtle Left & Right Arrow Navigation (Like reference image) */}
-      <div className="flex lg:hidden absolute inset-y-0 left-2 right-2 z-20 items-center justify-between pointer-events-none">
-        <button
-          type="button"
-          onClick={prevSlide}
-          aria-label="Previous slide"
-          className="pointer-events-auto w-8 h-8 rounded-full flex items-center justify-center text-white/90 hover:text-white transition-transform active:scale-90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
-        >
-          <ChevronLeft className="w-6 h-6 stroke-[2.2]" />
-        </button>
-        <button
-          type="button"
-          onClick={nextSlide}
-          aria-label="Next slide"
-          className="pointer-events-auto w-8 h-8 rounded-full flex items-center justify-center text-white/90 hover:text-white transition-transform active:scale-90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)]"
-        >
-          <ChevronRight className="w-6 h-6 stroke-[2.2]" />
-        </button>
-      </div>
-
-      {/* Hero Central Editorial Content (Desktop only) */}
-      <Container className="hidden lg:flex relative z-30 text-center pt-20 sm:pt-24 lg:pt-28 justify-center">
-        <div className="max-w-4xl mx-auto flex flex-col items-center space-y-6 sm:space-y-8">
-          {/* Eyebrow Label with subtle float and golden glow */}
-          <div key={currentIndex} className="animate-in fade-in duration-500">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-[var(--accent)]/40 font-sans text-[11px] sm:text-xs font-semibold uppercase tracking-[0.3em] text-[var(--accent)] shadow-[0_0_20px_rgba(200,155,74,0.2)]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
-              {slides[currentIndex]?.tagline || "DARANGA VILLA SANCTUARIES"}
-            </span>
-          </div>
-
-          {/* Large Headline with Cormorant Garamond */}
-          <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-light sm:font-normal tracking-tight text-white drop-shadow-lg leading-[1.06] select-none">
-            PRIVATE.<br />
-            TIMELESS.<br />
-            <span className="italic font-light text-[#ECD5A8]">YOURS.</span>
+          {/* Primary Serif Headline (e.g. "Stay at Daranga Villa") */}
+          <h1 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)] tracking-tight leading-[1.15] select-none">
+            {slides[currentIndex]?.title?.includes("Living") || slides[currentIndex]?.title?.includes("Luxury")
+              ? "Stay at Daranga Villa"
+              : slides[currentIndex]?.title || "Stay at Daranga Villa"}
           </h1>
 
-          {/* Minimal Supporting Text */}
-          <p className="max-w-xl text-stone-200 text-sm sm:text-base font-light leading-relaxed tracking-wide px-4">
-            An exclusive private sanctuary designed for quiet elegance, architectural serenity, and uncompromised personal hospitality.
+          {/* Subtitle */}
+          <p className="text-stone-200 text-xs sm:text-sm font-light max-w-md mx-auto drop-shadow-md leading-relaxed hidden sm:block">
+            {slides[currentIndex]?.subtitle || "Private pool villas & bespoke hospitality amidst Udaipur's serene valleys."}
           </p>
-
-          {/* Action CTAs with Shimmer Animation */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2 w-full sm:w-auto">
-            <button
-              onClick={onExploreClick}
-              className="btn-luxury-shimmer w-full sm:w-auto px-8 py-3.5 rounded-[6px] bg-[#C89B4A] hover:bg-[#b5893a] text-[#0B0B0A] text-xs uppercase tracking-[0.2em] font-bold transition-all duration-300 shadow-2xl hover:scale-[1.03] active:scale-95"
-            >
-              EXPLORE VILLAS
-            </button>
-            <a
-              href="#about"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-[6px] bg-black/45 hover:bg-white/15 text-white border border-white/30 text-xs uppercase tracking-[0.2em] font-medium transition-all duration-300 backdrop-blur-md text-center hover:border-white/60 active:scale-95"
-            >
-              ABOUT US
-            </a>
-          </div>
         </div>
-      </Container>
 
-      {/* Desktop Prev / Next Slider Navigation Arrows */}
-      <div className="hidden lg:flex absolute inset-y-0 left-6 right-6 z-30 items-center justify-between pointer-events-none">
+        {/* Explore Villa Pill Button (Frosted glass outline style matching reference) */}
+        <div className="pt-1">
+          <button
+            onClick={onExploreClick}
+            type="button"
+            className="px-6 py-2 sm:px-8 sm:py-2.5 rounded-full border border-white/85 bg-white/15 hover:bg-white text-white hover:text-[#202020] text-xs sm:text-sm tracking-[0.14em] font-medium backdrop-blur-md transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.35)] hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            Explore Villa
+          </button>
+        </div>
+      </div>
+
+      {/* Subtle Left & Right Arrow Navigation (Visible across all screens) */}
+      <div className="absolute inset-y-0 left-2 sm:left-4 md:left-6 right-2 sm:right-4 md:right-6 z-20 flex items-center justify-between pointer-events-none">
         <button
           type="button"
           onClick={prevSlide}
           aria-label="Previous slide"
-          className="pointer-events-auto w-11 h-11 rounded-full bg-black/35 hover:bg-black/75 border border-white/20 hover:border-[var(--accent)] text-white/70 hover:text-[var(--accent)] flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg"
+          className="pointer-events-auto w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-white/90 hover:text-white bg-black/25 hover:bg-black/60 border border-white/20 backdrop-blur-xs transition-all hover:scale-110 active:scale-90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] cursor-pointer"
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.2]" />
         </button>
         <button
           type="button"
           onClick={nextSlide}
           aria-label="Next slide"
-          className="pointer-events-auto w-11 h-11 rounded-full bg-black/35 hover:bg-black/75 border border-white/20 hover:border-[var(--accent)] text-white/70 hover:text-[var(--accent)] flex items-center justify-center backdrop-blur-md transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg"
+          className="pointer-events-auto w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-white/90 hover:text-white bg-black/25 hover:bg-black/60 border border-white/20 backdrop-blur-xs transition-all hover:scale-110 active:scale-90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] cursor-pointer"
         >
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.2]" />
         </button>
       </div>
 
-      {/* Modern Luxury Progress Bar & Slide Controller (Bottom) */}
-      <div className="absolute bottom-2.5 sm:bottom-5 lg:bottom-10 left-1/2 -translate-x-1/2 z-30 w-full max-w-xl px-4 sm:px-6 flex flex-col items-center gap-1.5 sm:gap-3">
+      {/* Modern Progress Bar & Slide Controller (Bottom, positioned above search bar overlap) */}
+      <div className="absolute bottom-7 sm:bottom-9 lg:bottom-11 left-1/2 -translate-x-1/2 z-20 w-full max-w-md sm:max-w-xl px-6 flex flex-col items-center gap-1 sm:gap-2">
         {/* Slide Counter & Active Caption */}
-        <div className="flex items-center justify-between w-full text-[10px] sm:text-xs tracking-[0.2em] sm:tracking-[0.25em] text-white/80 uppercase font-medium">
-          <span className="font-mono text-[var(--accent)] font-semibold">
+        <div className="flex items-center justify-between w-full text-[9px] sm:text-xs tracking-[0.18em] sm:tracking-[0.25em] text-white/80 uppercase font-medium">
+          <span className="font-mono text-[#B99A62] font-semibold">
             {String(currentIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
           </span>
-          <span className="truncate max-w-[200px] sm:max-w-[320px] text-stone-200 font-serif italic text-xs normal-case tracking-normal">
+          <span className="truncate max-w-[180px] sm:max-w-[320px] text-stone-200 font-serif italic text-[11px] sm:text-xs normal-case tracking-normal">
             {slides[currentIndex]?.caption}
           </span>
-          <span className="text-[9px] text-[var(--accent)]/80 tracking-widest hidden sm:inline">
+          <span className="text-[9px] text-[#B99A62]/80 tracking-widest hidden sm:inline">
             5S AUTO
           </span>
         </div>
@@ -343,20 +306,20 @@ export function HeroSection({
                 type="button"
                 onClick={() => goToSlide(idx)}
                 aria-label={`Jump to slide ${idx + 1}`}
-                className="group relative flex-1 h-1.5 py-1 sm:py-2 cursor-pointer flex items-center"
+                className="group relative flex-1 h-1.5 py-1 sm:py-1.5 cursor-pointer flex items-center"
               >
                 <div className="w-full h-0.5 sm:h-1 bg-white/25 rounded-full overflow-hidden transition-colors group-hover:bg-white/40">
                   {isActive && (
                     <div
                       key={currentIndex}
-                      className="h-full bg-[var(--accent)] rounded-full animate-progress-5s shadow-[0_0_8px_rgba(200,155,74,0.8)]"
+                      className="h-full bg-[#B99A62] rounded-full animate-progress-5s shadow-[0_0_8px_rgba(185,154,98,0.8)]"
                       style={{
                         animationPlayState: isPaused ? "paused" : "running",
                       }}
                     />
                   )}
                   {isPassed && (
-                    <div className="w-full h-full bg-[var(--accent)]/70 rounded-full" />
+                    <div className="w-full h-full bg-[#B99A62]/70 rounded-full" />
                   )}
                 </div>
               </button>

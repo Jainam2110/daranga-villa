@@ -1,117 +1,132 @@
 import React from "react";
+import {
+  Waves,
+  Wind,
+  Flame,
+  Wifi,
+  Car,
+  Utensils,
+  UtensilsCrossed,
+  Coffee,
+  Tv,
+  Volume2,
+  Sparkles,
+  Bath,
+  ShowerHead,
+  Dumbbell,
+  Trees,
+  Sun,
+  Mountain,
+  BellRing,
+  ShieldCheck,
+  Zap,
+  Laptop,
+  PawPrint,
+  LucideIcon,
+} from "lucide-react";
 
-export function getAmenityEmoji(name: string): string {
+export function getAmenityLucideIcon(name: string): LucideIcon {
   const lower = (name || "").toLowerCase().trim();
 
   // Pool & Water
   if (lower.includes("pool") || lower.includes("swim") || lower.includes("jacuzzi") || lower.includes("hot tub")) {
-    return "🏊‍♂️";
+    return Waves;
   }
 
-  // Climate / AC
-  if (lower.includes("ac") || lower.includes("air condition") || lower.includes("climate") || lower.includes("cooling")) {
-    return "❄️";
+  // Climate / AC / Heating
+  if (lower.includes("ac") || lower.includes("air condition") || lower.includes("climate") || lower.includes("cooling") || lower.includes("fan")) {
+    return Wind;
   }
-  if (lower.includes("fan") || lower.includes("ventilation")) {
-    return "💨";
-  }
-  if (lower.includes("heater") || lower.includes("heating") || lower.includes("fireplace") || lower.includes("bonfire")) {
-    return "🔥";
+  if (lower.includes("heater") || lower.includes("heating") || lower.includes("fireplace") || lower.includes("bonfire") || lower.includes("fire")) {
+    return Flame;
   }
 
   // Internet & Connectivity
   if (lower.includes("wi-fi") || lower.includes("wifi") || lower.includes("internet") || lower.includes("broadband") || lower.includes("fiber")) {
-    return "📶";
+    return Wifi;
   }
 
   // Parking & Transport
   if (lower.includes("parking") || lower.includes("car") || lower.includes("valet") || lower.includes("garage") || lower.includes("ev charge")) {
-    return "🚗";
+    return Car;
   }
 
   // Kitchen & Dining
-  if (lower.includes("kitchen") || lower.includes("cook") || lower.includes("chef") || lower.includes("culinary")) {
-    return "🍳";
-  }
-  if (lower.includes("dining") || lower.includes("breakfast") || lower.includes("meal") || lower.includes("restaurant") || lower.includes("barbecue") || lower.includes("bbq")) {
-    return "🍽️";
-  }
-  if (lower.includes("fridge") || lower.includes("refrigerator")) {
-    return "🧊";
-  }
-  if (lower.includes("microwave") || lower.includes("oven")) {
-    return "♨️";
-  }
   if (lower.includes("coffee") || lower.includes("espresso") || lower.includes("tea") || lower.includes("bar")) {
-    return "☕";
+    return Coffee;
+  }
+  if (lower.includes("kitchen") || lower.includes("cook") || lower.includes("chef") || lower.includes("culinary")) {
+    return UtensilsCrossed;
+  }
+  if (lower.includes("dining") || lower.includes("breakfast") || lower.includes("meal") || lower.includes("restaurant") || lower.includes("barbecue") || lower.includes("bbq") || lower.includes("fridge") || lower.includes("microwave")) {
+    return Utensils;
   }
 
   // Entertainment
   if (lower.includes("tv") || lower.includes("television") || lower.includes("netflix") || lower.includes("cinema") || lower.includes("theater")) {
-    return "📺";
+    return Tv;
   }
   if (lower.includes("sound") || lower.includes("speaker") || lower.includes("audio") || lower.includes("music")) {
-    return "🔊";
-  }
-
-  // Laundry
-  if (lower.includes("washing") || lower.includes("laundry") || lower.includes("dryer") || lower.includes("iron")) {
-    return "🧺";
+    return Volume2;
   }
 
   // Bathroom & Wellness
-  if (lower.includes("hot water") || lower.includes("geyser") || lower.includes("shower") || lower.includes("water purifier")) {
-    return "🚿";
+  if (lower.includes("shower") || lower.includes("geyser") || lower.includes("hot water")) {
+    return ShowerHead;
   }
   if (lower.includes("bath") || lower.includes("spa") || lower.includes("tub") || lower.includes("toiletries")) {
-    return "🛁";
+    return Bath;
   }
   if (lower.includes("gym") || lower.includes("fitness") || lower.includes("workout") || lower.includes("yoga")) {
-    return "🧘";
+    return Dumbbell;
   }
 
   // Outdoor & Views
   if (lower.includes("garden") || lower.includes("lawn") || lower.includes("courtyard") || lower.includes("nature") || lower.includes("tree")) {
-    return "🌿";
+    return Trees;
   }
   if (lower.includes("balcony") || lower.includes("terrace") || lower.includes("deck") || lower.includes("patio") || lower.includes("sun")) {
-    return "🌅";
+    return Sun;
   }
   if (lower.includes("view") || lower.includes("scenic") || lower.includes("lake") || lower.includes("mountain") || lower.includes("sunset") || lower.includes("sunrise")) {
-    return "🌄";
+    return Mountain;
   }
 
-  // Security & Service
+  // Service & Security
   if (lower.includes("butler") || lower.includes("housekeeping") || lower.includes("room service") || lower.includes("service") || lower.includes("concierge")) {
-    return "🛎️";
+    return BellRing;
   }
   if (lower.includes("security") || lower.includes("cctv") || lower.includes("guard") || lower.includes("safe") || lower.includes("locker")) {
-    return "🛡️";
+    return ShieldCheck;
   }
   if (lower.includes("power") || lower.includes("backup") || lower.includes("generator") || lower.includes("electricity")) {
-    return "⚡";
+    return Zap;
   }
   if (lower.includes("desk") || lower.includes("workspace") || lower.includes("work")) {
-    return "💻";
+    return Laptop;
   }
   if (lower.includes("pet")) {
-    return "🐾";
+    return PawPrint;
   }
 
-  // Default Luxury Hospitality Real Emoji
-  return "✨";
+  return Sparkles;
 }
 
 interface AmenityIconProps {
   name: string;
   className?: string;
+  iconClassName?: string;
 }
 
-export function AmenityIcon({ name, className = "text-base inline-flex items-center justify-center leading-none" }: AmenityIconProps) {
-  const emoji = getAmenityEmoji(name);
+export function AmenityIcon({
+  name,
+  className = "inline-flex items-center justify-center",
+  iconClassName = "w-4 h-4 text-[#202020] dark:text-[#FCFBF8]",
+}: AmenityIconProps) {
+  const IconComponent = getAmenityLucideIcon(name);
   return (
-    <span role="img" aria-label={name} className={`select-none ${className}`}>
-      {emoji}
+    <span className={className} title={name}>
+      {React.createElement(IconComponent, { className: iconClassName })}
     </span>
   );
 }
@@ -137,4 +152,3 @@ export const STANDARD_LUXURY_AMENITIES = [
   "Dedicated Workspace",
   "Dining Pavilion & BBQ",
 ];
-

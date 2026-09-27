@@ -20,7 +20,7 @@ export function AdminLayoutShell({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F5F2EC] dark:bg-[#0B0B0A] text-[#171513] dark:text-[#F4EFE5] flex font-sans transition-colors duration-200">
+    <div className="min-h-screen bg-[#F7F6F3] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] flex font-sans transition-colors duration-200">
       {/* Left Sidebar */}
       <AdminSidebar
         adminName={adminName}

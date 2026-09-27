@@ -42,15 +42,15 @@ export function VillaAmenitiesModal({
       aria-label={`${villaName} Complete Amenities`}
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200"
     >
-      <div className="relative w-full max-w-2xl bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[12px] shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-200">
         {/* Modal Header */}
-        <div className="flex items-center justify-between p-5 sm:p-6 border-b border-[var(--border-color)] bg-[var(--bg-secondary)]">
+        <div className="flex items-center justify-between p-5 sm:p-6 border-b border-[#E8E6E2] dark:border-[#383633] bg-[#FCFBF8] dark:bg-[#171717]">
           <div className="space-y-1">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[var(--accent)] flex items-center gap-1.5">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#B99A62] flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
               <span>Full Amenities Collection</span>
             </span>
-            <h3 className="font-serif text-2xl font-light text-[var(--text-primary)]">
+            <h3 className="font-serif text-2xl font-light text-[#202020] dark:text-[#FCFBF8]">
               What this sanctuary offers
             </h3>
           </div>
@@ -59,7 +59,7 @@ export function VillaAmenitiesModal({
             type="button"
             onClick={onClose}
             aria-label="Close amenities modal"
-            className="p-2 rounded-full text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)] border border-[var(--border-color)] transition-colors"
+            className="p-2 rounded-full text-[#66635F] dark:text-[#8A8782] hover:text-[#202020] dark:hover:text-[#FCFBF8] hover:bg-[#F7F6F3] dark:hover:bg-[#383633] border border-[#E8E6E2] dark:border-[#383633] transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -71,16 +71,16 @@ export function VillaAmenitiesModal({
             {amenities.map((item, idx) => (
               <div
                 key={idx}
-                className="flex items-center gap-3.5 p-4 rounded-xl bg-[var(--bg-secondary)] border border-[var(--border-color)] hover:border-[var(--accent)]/40 transition-colors"
+                className="flex items-center gap-3.5 p-4 rounded-[8px] bg-[#FCFBF8] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] hover:border-[#B99A62]/40 transition-colors"
               >
-                <div className="w-9 h-9 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-color)] flex items-center justify-center flex-shrink-0 text-lg shadow-xs">
-                  <AmenityIcon name={item} className="text-lg" />
+                <div className="w-9 h-9 rounded-[6px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] flex items-center justify-center flex-shrink-0 text-[#202020] dark:text-[#FCFBF8] shadow-xs">
+                  <AmenityIcon name={item} className="w-4 h-4 text-[#B99A62]" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="text-xs font-semibold text-[var(--text-primary)] tracking-wide block truncate">
+                  <span className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] tracking-wide block truncate">
                     {item}
                   </span>
-                  <span className="text-[10px] text-[var(--text-secondary)] font-light">
+                  <span className="text-[10px] text-[#66635F] dark:text-[#8A8782] font-light">
                     Included with private residency
                   </span>
                 </div>
@@ -90,12 +90,12 @@ export function VillaAmenitiesModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 sm:p-5 border-t border-[var(--border-color)] bg-[var(--bg-secondary)] flex items-center justify-between text-xs text-[var(--text-secondary)]">
+        <div className="p-4 sm:p-5 border-t border-[#E8E6E2] dark:border-[#383633] bg-[#FCFBF8] dark:bg-[#171717] flex items-center justify-between text-xs text-[#66635F] dark:text-[#8A8782]">
           <span>{amenities.length} Verified Estate Amenities</span>
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 rounded-lg bg-[var(--accent)] text-[#0B0B0A] font-bold text-xs uppercase tracking-wider hover:opacity-90 transition-opacity"
+            className="px-5 py-2 rounded-[6px] bg-[#202020] hover:bg-[#171717] text-white font-bold text-xs uppercase tracking-wider transition-colors"
           >
             Done
           </button>

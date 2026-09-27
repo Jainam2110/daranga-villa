@@ -39,19 +39,19 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F5F2EC] dark:bg-[#0B0B0A] px-4 py-12 text-[#171513] dark:text-[#F4EFE5] transition-colors duration-200">
-      <div className="w-full max-w-md space-y-7 bg-white dark:bg-[#151412] p-8 sm:p-10 rounded-2xl border border-[#DDD5C7] dark:border-[#302D28] shadow-xl">
+    <div className="min-h-screen flex items-center justify-center bg-[#F7F6F3] dark:bg-[#171717] px-4 py-12 text-[#202020] dark:text-[#FCFBF8] transition-colors duration-200">
+      <div className="w-full max-w-md space-y-7 bg-white dark:bg-[#202020] p-8 sm:p-10 rounded-[14px] border border-[#E8E6E2] dark:border-[#383633] shadow-lg">
         {/* Brand Header */}
         <div className="text-center space-y-2 flex flex-col items-center">
           <DarangaLogo variant="stacked" size="lg" withTagline={false} asLink={true} />
-          <p className="text-[10px] font-sans uppercase tracking-[0.25em] text-[#A8792E] dark:text-[#C89B4A] font-semibold pt-1">
+          <p className="text-[10px] font-sans uppercase tracking-[0.25em] text-[#B99A62] font-semibold pt-1">
             Administrative Portal
           </p>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="p-3.5 rounded-lg bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/40 text-rose-700 dark:text-rose-300 text-xs flex items-center gap-2">
+          <div className="p-3.5 rounded-[6px] bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800/40 text-[#B84A4A] dark:text-red-300 text-xs flex items-center gap-2">
             <span>{error}</span>
           </div>
         )}
@@ -59,35 +59,35 @@ export default function AdminLoginPage() {
         {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-4 text-xs font-medium">
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1.5">
+            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#8A8782] mb-1.5">
               Admin Email
             </label>
             <div className="relative">
-              <Mail className="w-4 h-4 absolute left-3 top-3 text-[#6E685F] dark:text-[#A9A39A]" />
+              <Mail className="w-4 h-4 absolute left-3 top-3 text-[#66635F] dark:text-[#8A8782]" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@darangavilla.com"
-                className="w-full pl-9 pr-4 py-2.5 rounded-lg bg-[#F5F2EC]/40 dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs text-[#171513] dark:text-[#F4EFE5] placeholder-[#6E685F] dark:placeholder-[#A9A39A] focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                className="w-full pl-9 pr-4 py-2.5 rounded-[6px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#66635F] dark:placeholder-[#8A8782] focus:outline-none focus:border-[#B99A62]"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#6E685F] dark:text-[#A9A39A] mb-1.5">
+            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#8A8782] mb-1.5">
               Password
             </label>
             <div className="relative">
-              <Lock className="w-4 h-4 absolute left-3 top-3 text-[#6E685F] dark:text-[#A9A39A]" />
+              <Lock className="w-4 h-4 absolute left-3 top-3 text-[#66635F] dark:text-[#8A8782]" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••••••"
-                className="w-full pl-9 pr-4 py-2.5 rounded-lg bg-[#F5F2EC]/40 dark:bg-[#1C1A17] border border-[#DDD5C7] dark:border-[#302D28] text-xs text-[#171513] dark:text-[#F4EFE5] placeholder-[#6E685F] dark:placeholder-[#A9A39A] focus:outline-none focus:ring-1 focus:ring-[#A8792E] dark:focus:ring-[#C89B4A]"
+                className="w-full pl-9 pr-4 py-2.5 rounded-[6px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#66635F] dark:placeholder-[#8A8782] focus:outline-none focus:border-[#B99A62]"
               />
             </div>
           </div>
@@ -96,7 +96,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-lg bg-[#171513] dark:bg-[#C89B4A] text-white dark:text-[#0B0B0A] font-semibold text-xs hover:bg-[#302D28] dark:hover:bg-[#b0853c] transition-colors shadow-xs flex items-center justify-center gap-2"
+              className="w-full py-3 rounded-[6px] bg-[#202020] hover:bg-[#171717] text-white font-semibold text-xs transition-colors shadow-xs flex items-center justify-center gap-2"
             >
               <span>{loading ? "Authenticating..." : "Sign In to Admin Portal"}</span>
               <ArrowRight className="w-4 h-4" />
@@ -104,8 +104,8 @@ export default function AdminLoginPage() {
           </div>
         </form>
 
-        <div className="pt-2 border-t border-[#DDD5C7]/60 dark:border-[#302D28] text-center text-[11px] text-[#6E685F] dark:text-[#A9A39A] flex items-center justify-center gap-1.5">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#A8792E] dark:text-[#C89B4A]" />
+        <div className="pt-2 border-t border-[#E8E6E2] dark:border-[#383633] text-center text-[11px] text-[#66635F] dark:text-[#8A8782] flex items-center justify-center gap-1.5">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#B99A62]" />
           <span>Protected Administrative Access</span>
         </div>
       </div>
