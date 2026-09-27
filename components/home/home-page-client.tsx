@@ -6,15 +6,13 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { HeroSection } from "@/components/sections/hero-section";
 import { HeroSearchBar } from "@/components/sections/hero-search-bar";
-import {
-  ExperienceCategoriesSection,
-  EXPERIENCE_CATEGORIES,
-} from "@/components/sections/experience-categories-section";
+import { ExperienceCategoriesSection, EXPERIENCE_CATEGORIES } from "@/components/sections/experience-categories-section";
+import { TrustedPartnerSection } from "@/components/sections/trusted-partner-section";
+import { DarangaStandardSection } from "@/components/sections/daranga-standard-section";
 import { PromotionalStrip } from "@/components/ui/promotional-strip";
 import { FeaturedVillasSection } from "@/components/sections/featured-villas-section";
 import { AboutUsSection } from "@/components/sections/about-us-section";
 import { ExperiencesSection } from "@/components/sections/experiences-section";
-import { LocationSection } from "@/components/sections/location-section";
 import { BookingCtaSection } from "@/components/sections/booking-cta-section";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { Villa } from "@/types/villa";
@@ -212,24 +210,27 @@ export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps
           onClearFilter={handleClearAllFilters}
         />
 
-        {/* 7. Curated Resort Experiences */}
+        {/* 7. The Daranga Standard Showcase (Signature Hospitality Features) */}
+        <ScrollReveal delay={100} direction="up">
+          <DarangaStandardSection />
+        </ScrollReveal>
+
+        {/* 8. Curated Resort Experiences (3D Cube Auto-Slider) */}
         <ScrollReveal delay={100} direction="up">
           <ExperiencesSection />
         </ScrollReveal>
 
-        {/* 8. About Us Section (Story & Values) */}
+        {/* 9. Your Trusted Getaway Partner (3 Cards) */}
+        <ScrollReveal delay={100} direction="up">
+          <TrustedPartnerSection />
+        </ScrollReveal>
+
+        {/* 10. About Us Section (Story & Values) */}
         <ScrollReveal delay={100} direction="up">
           <AboutUsSection />
         </ScrollReveal>
 
-        {/* 9. Estate Locations & Map */}
-        {villas.length > 0 && (
-          <ScrollReveal delay={100} direction="up">
-            <LocationSection villas={villas} />
-          </ScrollReveal>
-        )}
-
-        {/* 10. Final Reservation CTA Banner */}
+        {/* 11. Final Reservation CTA Banner */}
         <ScrollReveal delay={100} direction="up">
           <BookingCtaSection
             onCheckAvailabilityClick={handleScrollToVillas}
