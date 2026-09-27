@@ -56,14 +56,14 @@ function InHouseChefIcon() {
 
 function ButlerServiceIcon() {
   return (
-    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#FFF5F2]/80 to-[#F5D0B5]/40 backdrop-blur-md flex items-center justify-center p-2 shadow-sm border border-white/25">
+    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#FFF5F2]/80 to-[#F6D2B8]/40 backdrop-blur-md flex items-center justify-center p-2 shadow-sm border border-white/25">
       <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Butler head with hair */}
         <path d="M25 24C25 20 28 17 32 17C36 17 39 20 39 24C39 28 36 30 32 30C28 30 25 28 25 24Z" fill="#FAD4D8" />
-        <path d="M25 22C25 18 28 16 32 16C36 16 39 18 39 20" stroke="#B99A62" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M25 22C25 18 28 16 32 16C36 16 39 18 39 20" stroke="#202020" strokeWidth="2.5" strokeLinecap="round" />
         {/* Suit & Bow tie */}
         <path d="M20 42C20 35 25 34 32 34C39 34 44 35 44 42V49H20V42Z" fill="#FFFFFF" fillOpacity="0.95" />
-        <path d="M29 36L32 38L35 36L32 40L29 36Z" fill="#E8A0A8" />
+        <path d="M29 36L32 38L35 36L32 40L29 36Z" fill="#EFA1AA" />
       </svg>
     </div>
   );
@@ -71,20 +71,20 @@ function ButlerServiceIcon() {
 
 function CaretakerOnsiteIcon() {
   return (
-    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#FFF5F2]/80 to-[#F5D0B5]/40 backdrop-blur-md flex items-center justify-center p-2 shadow-sm border border-white/25">
+    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#FFF5F2]/80 to-[#F6D2B8]/40 backdrop-blur-md flex items-center justify-center p-2 shadow-sm border border-white/25">
       <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Golden badge rosette with star sparkles */}
+        {/* Rosette with soft blush & peach sparkles */}
         <circle cx="32" cy="32" r="13" fill="url(#caretaker-sun)" />
         <circle cx="32" cy="32" r="9" fill="#FFF5F2" fillOpacity="0.8" />
         {/* Sparkles */}
-        <path d="M44 18L45 15L48 14L45 13L44 10L43 13L40 14L43 15L44 18Z" fill="#F5D0B5" />
-        <path d="M20 18L21 16L23 15L21 14L20 12L19 14L17 15L19 16L20 18Z" fill="#E8A0A8" />
-        <path d="M48 40L49 38L51 37L49 36L48 34L47 36L45 37L47 38L48 40Z" fill="#E8A0A8" />
+        <path d="M44 18L45 15L48 14L45 13L44 10L43 13L40 14L43 15L44 18Z" fill="#F6D2B8" />
+        <path d="M20 18L21 16L23 15L21 14L20 12L19 14L17 15L19 16L20 18Z" fill="#EFA1AA" />
+        <path d="M48 40L49 38L51 37L49 36L48 34L47 36L45 37L47 38L48 40Z" fill="#EFA1AA" />
         <defs>
           <linearGradient id="caretaker-sun" x1="19" y1="19" x2="45" y2="45" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#F5D0B5" />
-            <stop offset="0.6" stopColor="#E8A0A8" />
-            <stop offset="1" stopColor="#B99A62" />
+            <stop stopColor="#F6D2B8" />
+            <stop offset="0.6" stopColor="#EFA1AA" />
+            <stop offset="1" stopColor="#F6C7CA" />
           </linearGradient>
         </defs>
       </svg>
@@ -151,7 +151,7 @@ export function DarangaStandardSection() {
         <div
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
-          className="relative w-full h-[460px] sm:h-[500px] md:h-[540px] rounded-3xl overflow-hidden shadow-xl border border-[#E8E6E2]/60 dark:border-[#383633] bg-[#171717] group"
+          className="relative w-full h-[460px] sm:h-[500px] md:h-[540px] rounded-3xl overflow-hidden shadow-xl border border-[#E8E8E8] dark:border-[#383838] bg-[#171717] group"
         >
           {/* Background Image Carousel with Crossfade */}
           {DARANGA_STANDARD_SLIDES.map((s, idx) => (

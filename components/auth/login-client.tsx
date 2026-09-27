@@ -248,13 +248,13 @@ export function LoginClient() {
             </div>
 
             <div className="relative z-20 text-white space-y-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B99A62] block">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#EFA1AA] block">
                 Exclusive Sanctuary
               </span>
               <h2 className="font-serif text-2xl xl:text-3xl font-light leading-snug">
                 Welcome back to your private retreat.
               </h2>
-              <p className="text-xs text-stone-300 font-light leading-relaxed">
+              <p className="text-xs text-stone-300 font-normal leading-relaxed">
                 Sign in to manage your stays, access exclusive resident privileges, and curate your next experience.
               </p>
             </div>
@@ -273,12 +273,12 @@ export function LoginClient() {
                   asLink={true}
                 />
               </div>
-              <h1 className="font-serif text-2xl sm:text-3xl font-normal text-[#202020] dark:text-[#FCFBF8] tracking-tight">
+              <h1 className="font-serif text-2xl sm:text-3xl font-normal text-[#202020] dark:text-[#FCFBF9] tracking-tight">
                 {authMode === "email" && "Sign In"}
                 {authMode === "phone" && "Sign In with Phone"}
                 {authMode === "forgot" && "Reset Password"}
               </h1>
-              <p className="text-xs sm:text-sm text-[#66635F] dark:text-[#BDB8B0] mt-1 font-light">
+              <p className="text-xs sm:text-sm text-[#555555] dark:text-[#BDBDBD] mt-1 font-normal">
                 {authMode === "email" && "Sign in to continue your stay with Daranga Villa."}
                 {authMode === "phone" && "Enter your phone number to receive a secure one-time verification code."}
                 {authMode === "forgot" && "Enter your email address to receive password recovery instructions."}
@@ -287,8 +287,8 @@ export function LoginClient() {
 
             {/* Global Error Alert */}
             {errorMessage && (
-              <div className="mb-6 p-3.5 rounded-[8px] bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/50 text-[#B84A4A] dark:text-red-300 text-xs font-medium flex items-start gap-2 animate-in fade-in">
-                <svg className="w-4 h-4 text-[#B84A4A] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="mb-6 p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/50 text-[#C94A4A] dark:text-red-300 text-xs font-medium flex items-start gap-2 animate-in fade-in">
+                <svg className="w-4 h-4 text-[#C94A4A] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <span>{errorMessage}</span>
@@ -297,8 +297,8 @@ export function LoginClient() {
 
             {/* Global Success Alert */}
             {successMessage && (
-              <div className="mb-6 p-3.5 rounded-[8px] bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 text-[#3F6B52] dark:text-emerald-300 text-xs font-medium flex items-start gap-2 animate-in fade-in">
-                <svg className="w-4 h-4 text-[#3F6B52] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="mb-6 p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 text-[#3F7658] dark:text-emerald-300 text-xs font-medium flex items-start gap-2 animate-in fade-in">
+                <svg className="w-4 h-4 text-[#3F7658] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                 </svg>
                 <span>{successMessage}</span>
@@ -309,7 +309,7 @@ export function LoginClient() {
             {authMode === "email" && (
               <form onSubmit={handleEmailSignIn} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium uppercase tracking-wider text-[#66635F] dark:text-[#8A8782] mb-1.5">
+                  <label className="block text-xs font-medium uppercase tracking-wider text-[#555555] dark:text-[#BDBDBD] mb-1.5">
                     Email Address
                   </label>
                   <input
@@ -318,13 +318,13 @@ export function LoginClient() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@domain.com"
-                    className="w-full px-4 py-3 rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62] transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-sm text-[#202020] dark:text-[#FCFBF9] placeholder-[#888888] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA]/30 transition-colors"
                   />
                 </div>
 
                 <div>
                   <div className="flex items-center justify-between mb-1.5">
-                    <label className="block text-xs font-medium uppercase tracking-wider text-[#66635F] dark:text-[#8A8782]">
+                    <label className="block text-xs font-medium uppercase tracking-wider text-[#555555] dark:text-[#BDBDBD]">
                       Password
                     </label>
                     <button
@@ -334,7 +334,7 @@ export function LoginClient() {
                         setSuccessMessage("");
                         setAuthMode("forgot");
                       }}
-                      className="text-xs text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] hover:underline font-medium"
+                      className="text-xs text-[#202020] dark:text-[#FCFBF9] hover:text-[#EFA1AA] hover:underline font-medium"
                     >
                       Forgot password?
                     </button>
@@ -345,14 +345,14 @@ export function LoginClient() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-4 py-3 rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62] transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-sm text-[#202020] dark:text-[#FCFBF9] placeholder-[#888888] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA]/30 transition-colors"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 px-4 rounded-[8px] bg-[#202020] hover:bg-[#171717] text-white font-medium text-xs uppercase tracking-[0.2em] transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#202020] hover:bg-[#171717] text-white font-medium text-xs uppercase tracking-[0.2em] transition-all shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>
@@ -372,14 +372,14 @@ export function LoginClient() {
                 {!otpSent ? (
                   <form onSubmit={handleSendOtp} className="space-y-4">
                     <div>
-                      <label className="block text-xs font-medium uppercase tracking-wider text-[#66635F] dark:text-[#8A8782] mb-1.5">
+                      <label className="block text-xs font-medium uppercase tracking-wider text-[#555555] dark:text-[#BDBDBD] mb-1.5">
                         Phone Number
                       </label>
                       <div className="flex gap-2">
                         <select
                           value={countryCode}
                           onChange={(e) => setCountryCode(e.target.value)}
-                          className="px-3 py-3 rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62]"
+                          className="px-3 py-3 rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-sm text-[#202020] dark:text-[#FCFBF9] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA]/30"
                         >
                           <option value="+91">🇮🇳 +91 (IN)</option>
                           <option value="+1">🇺🇸 +1 (US)</option>
@@ -394,10 +394,10 @@ export function LoginClient() {
                           value={phoneNumber}
                           onChange={(e) => setPhoneNumber(e.target.value)}
                           placeholder="9876543210"
-                          className="flex-1 px-4 py-3 rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62]"
+                          className="flex-1 px-4 py-3 rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-sm text-[#202020] dark:text-[#FCFBF9] placeholder-[#888888] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA]/30"
                         />
                       </div>
-                      <p className="text-[11px] text-[#66635F] dark:text-[#8A8782] mt-1">
+                      <p className="text-[11px] text-[#777777] dark:text-[#BDBDBD] mt-1">
                         We will send a 6-digit SMS verification code to your phone.
                       </p>
                     </div>
@@ -405,7 +405,7 @@ export function LoginClient() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-3.5 px-4 rounded-[8px] bg-[#202020] hover:bg-[#171717] text-white font-medium text-xs uppercase tracking-[0.2em] transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                      className="w-full py-3.5 px-4 rounded-xl bg-[#202020] hover:bg-[#171717] text-white font-medium text-xs uppercase tracking-[0.2em] transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                       {isSubmitting ? (
                         <>
@@ -421,7 +421,7 @@ export function LoginClient() {
                   <form onSubmit={handleVerifyOtp} className="space-y-4">
                     <div>
                       <div className="flex items-center justify-between mb-1.5">
-                        <label className="block text-xs font-medium uppercase tracking-wider text-[#66635F] dark:text-[#8A8782]">
+                        <label className="block text-xs font-medium uppercase tracking-wider text-[#555555] dark:text-[#BDBDBD]">
                           Enter 6-Digit Code
                         </label>
                         <button
@@ -430,7 +430,7 @@ export function LoginClient() {
                             setOtpSent(false);
                             setOtpCode("");
                           }}
-                          className="text-xs text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] hover:underline"
+                          className="text-xs text-[#202020] dark:text-[#FCFBF9] hover:text-[#EFA1AA] hover:underline"
                         >
                           Change Number
                         </button>
@@ -442,14 +442,14 @@ export function LoginClient() {
                         value={otpCode}
                         onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ""))}
                         placeholder="123456"
-                        className="w-full px-4 py-3 text-center tracking-[0.4em] font-mono text-lg rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62]"
+                        className="w-full px-4 py-3 text-center tracking-[0.4em] font-mono text-lg rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-[#202020] dark:text-[#FCFBF9] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA]/30"
                       />
                     </div>
 
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full py-3.5 px-4 rounded-[8px] bg-[#202020] hover:bg-[#171717] text-white font-medium text-xs uppercase tracking-[0.2em] transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                      className="w-full py-3.5 px-4 rounded-xl bg-[#202020] hover:bg-[#171717] text-white font-medium text-xs uppercase tracking-[0.2em] transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                       {isSubmitting ? (
                         <>
@@ -469,7 +469,7 @@ export function LoginClient() {
             {authMode === "forgot" && (
               <form onSubmit={handleForgotPassword} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium uppercase tracking-wider text-[#66635F] dark:text-[#8A8782] mb-1.5">
+                  <label className="block text-xs font-medium uppercase tracking-wider text-[#555555] dark:text-[#BDBDBD] mb-1.5">
                     Account Email Address
                   </label>
                   <input
@@ -478,14 +478,14 @@ export function LoginClient() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@domain.com"
-                    className="w-full px-4 py-3 rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62]"
+                    className="w-full px-4 py-3 rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-sm text-[#202020] dark:text-[#FCFBF9] placeholder-[#888888] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA]/30"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-3.5 px-4 rounded-[8px] bg-[#202020] hover:bg-[#171717] text-white font-medium text-xs uppercase tracking-[0.2em] transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#202020] hover:bg-[#171717] text-white font-medium text-xs uppercase tracking-[0.2em] transition-all shadow-sm disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>
@@ -505,7 +505,7 @@ export function LoginClient() {
                       setSuccessMessage("");
                       setAuthMode("email");
                     }}
-                    className="text-xs text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] hover:underline font-medium"
+                    className="text-xs text-[#202020] dark:text-[#FCFBF9] hover:text-[#EFA1AA] hover:underline font-medium"
                   >
                     ← Back to Sign In
                   </button>
@@ -519,9 +519,9 @@ export function LoginClient() {
                 {/* Divider */}
                 <div className="relative my-6 text-center">
                   <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-[#E8E6E2] dark:border-[#383633]" />
+                    <div className="w-full border-t border-[#E8E8E8] dark:border-[#383838]" />
                   </div>
-                  <span className="relative px-3 bg-white dark:bg-[#202020] text-[11px] uppercase tracking-widest text-[#66635F] dark:text-[#8A8782]">
+                  <span className="relative px-3 bg-white dark:bg-[#202020] text-[11px] uppercase tracking-widest text-[#777777] dark:text-[#BDBDBD]">
                     OR
                   </span>
                 </div>
@@ -533,7 +533,7 @@ export function LoginClient() {
                     type="button"
                     onClick={handleGoogleSignIn}
                     disabled={isSubmitting}
-                    className="w-full py-3 px-4 rounded-[8px] bg-white dark:bg-[#202020] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] transition-colors flex items-center justify-center gap-3 shadow-xs"
+                    className="w-full py-3 px-4 rounded-xl bg-white dark:bg-[#202020] hover:bg-[#F7F7F6] dark:hover:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-xs font-semibold text-[#202020] dark:text-[#FCFBF9] transition-colors flex items-center justify-center gap-3 shadow-xs"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24">
                       <path
@@ -565,9 +565,9 @@ export function LoginClient() {
                         setSuccessMessage("");
                         setAuthMode("phone");
                       }}
-                      className="w-full py-3 px-4 rounded-[8px] bg-white dark:bg-[#202020] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] transition-colors flex items-center justify-center gap-2 shadow-xs"
+                      className="w-full py-3 px-4 rounded-xl bg-white dark:bg-[#202020] hover:bg-[#F7F7F6] dark:hover:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-xs font-semibold text-[#202020] dark:text-[#FCFBF9] transition-colors flex items-center justify-center gap-2 shadow-xs"
                     >
-                      <svg className="w-4 h-4 text-[#B99A62]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-4 h-4 text-[#202020] dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
                       </svg>
                       <span>Continue with Phone</span>
@@ -580,9 +580,9 @@ export function LoginClient() {
                         setSuccessMessage("");
                         setAuthMode("email");
                       }}
-                      className="w-full py-3 px-4 rounded-[8px] bg-white dark:bg-[#202020] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] transition-colors flex items-center justify-center gap-2 shadow-xs"
+                      className="w-full py-3 px-4 rounded-xl bg-white dark:bg-[#202020] hover:bg-[#F7F7F6] dark:hover:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-xs font-semibold text-[#202020] dark:text-[#FCFBF9] transition-colors flex items-center justify-center gap-2 shadow-xs"
                     >
-                      <svg className="w-4 h-4 text-[#B99A62]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-4 h-4 text-[#202020] dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                       </svg>
                       <span>Continue with Email & Password</span>
@@ -593,12 +593,12 @@ export function LoginClient() {
             )}
 
             {/* Footer switch to Signup */}
-            <div className="mt-8 pt-6 border-t border-[#E8E6E2] dark:border-[#383633] text-center">
-              <p className="text-xs text-[#66635F] dark:text-[#8A8782]">
+            <div className="mt-8 pt-6 border-t border-[#E8E8E8] dark:border-[#383838] text-center">
+              <p className="text-xs text-[#555555] dark:text-[#BDBDBD]">
                 Don&apos;t have an account?{" "}
                 <Link
                   href={`/signup${redirectUrl !== "/account" ? `?redirect=${encodeURIComponent(redirectUrl)}` : ""}`}
-                  className="font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] hover:underline"
+                  className="font-semibold text-[#202020] dark:text-[#FCFBF9] hover:text-[#EFA1AA] hover:underline"
                 >
                   Create account
                 </Link>

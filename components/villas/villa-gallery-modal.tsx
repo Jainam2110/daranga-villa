@@ -231,13 +231,13 @@ function VillaGalleryModalContent({
                 className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium uppercase tracking-wider transition-all duration-200 flex items-center gap-1.5 ${
                   isActive
                     ? "bg-white text-[#202020] font-bold shadow-md scale-105"
-                    : "bg-[#202020] text-[#BDB8B0] hover:text-[#FCFBF8] border border-[#383633] hover:border-[#B99A62]/50"
+                    : "bg-[#202020] text-[#BDBDBD] hover:text-[#FCFBF9] border border-[#383838] hover:border-white/40"
                 }`}
               >
                 <span>{cat.label}</span>
                 <span
                   className={`text-[10px] px-1.5 py-0.2 rounded-full ${
-                    isActive ? "bg-[#202020]/20 text-[#202020]" : "bg-[#171717] text-[#BDB8B0]"
+                    isActive ? "bg-[#202020]/20 text-[#202020]" : "bg-[#171717] text-[#BDBDBD]"
                   }`}
                 >
                   {cat.count}
@@ -301,13 +301,13 @@ function VillaGalleryModalContent({
             <div className="flex-shrink-0 pt-2 pb-1 text-center space-y-1 px-4 max-w-xl">
               <div className="flex items-center justify-center gap-2 flex-wrap">
                 {activeImage?.category && (
-                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#B99A62] bg-[#B99A62]/10 px-2.5 py-0.5 rounded border border-[#B99A62]/25">
+                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#EFA1AA] bg-[#EFA1AA]/15 px-2.5 py-0.5 rounded border border-[#EFA1AA]/30">
                     <Tag className="w-3 h-3" />
                     <span>{formatCategoryLabel(activeImage.category)}</span>
                   </span>
                 )}
                 {activeImage?.label && (
-                  <span className="text-xs sm:text-sm font-medium text-[#FCFBF8] tracking-wide">
+                  <span className="text-xs sm:text-sm font-medium text-[#FCFBF9] tracking-wide">
                     {activeImage.label}
                   </span>
                 )}
@@ -326,7 +326,7 @@ function VillaGalleryModalContent({
                     setCurrentIndex(idx);
                     setViewMode("cinema");
                   }}
-                  className="group/grid relative aspect-[4/3] rounded-xl overflow-hidden bg-[#202020] border border-[#383633] hover:border-[#B99A62] transition-all hover:scale-[1.02] shadow-lg text-left"
+                  className="group/grid relative aspect-[4/3] rounded-xl overflow-hidden bg-[#202020] border border-[#383838] hover:border-[#EFA1AA] transition-all hover:scale-[1.02] shadow-lg text-left"
                 >
                   <Image
                     src={img.url}
@@ -339,7 +339,7 @@ function VillaGalleryModalContent({
 
                   {/* Badges on Grid Item */}
                   <div className="absolute top-2 left-2">
-                    <span className="text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded bg-black/70 backdrop-blur-xs text-[#B99A62] border border-[#B99A62]/30">
+                    <span className="text-[9px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded bg-black/70 backdrop-blur-xs text-[#EFA1AA] border border-[#EFA1AA]/30">
                       {img.category ? formatCategoryLabel(img.category) : "Gallery"}
                     </span>
                   </div>
@@ -360,7 +360,7 @@ function VillaGalleryModalContent({
 
       {/* Bottom Thumbnail Filmstrip in Cinema Mode */}
       {viewMode === "cinema" && filteredImages.length > 1 && (
-        <footer className="flex-shrink-0 px-4 sm:px-8 py-3 bg-[#202020] border-t border-[#383633] overflow-hidden">
+        <footer className="flex-shrink-0 px-4 sm:px-8 py-3 bg-[#202020] border-t border-[#383838] overflow-hidden">
           <div
             ref={thumbnailStripRef}
             className="flex items-center gap-2 sm:gap-3 overflow-x-auto scrollbar-none py-1 scroll-touch-pan justify-start sm:justify-center"
@@ -375,8 +375,8 @@ function VillaGalleryModalContent({
                   aria-label={`Jump to photo ${idx + 1}`}
                   className={`relative flex-shrink-0 w-16 h-11 sm:w-20 sm:h-14 rounded-lg overflow-hidden transition-all duration-200 bg-[#171717] ${
                     isActive
-                      ? "ring-2 ring-[#B99A62] ring-offset-2 ring-offset-[#171717] scale-105 opacity-100 shadow-md"
-                      : "opacity-40 hover:opacity-100 border border-[#383633]"
+                      ? "ring-2 ring-[#EFA1AA] ring-offset-2 ring-offset-[#171717] scale-105 opacity-100 shadow-md"
+                      : "opacity-40 hover:opacity-100 border border-[#383838]"
                   }`}
                 >
                   <Image

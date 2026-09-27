@@ -96,10 +96,10 @@ export function GallerySection({ villas = [] }: GallerySectionProps) {
   };
 
   return (
-    <section id="gallery" className="py-24 lg:py-36 bg-[var(--bg-primary)] text-[var(--text-primary)]">
+    <section id="gallery" className="py-10 sm:py-14 lg:py-16 bg-[var(--bg-primary)] text-[var(--text-primary)]">
       <Container>
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-3">
           <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[var(--accent)] block">
             VISUAL PORTFOLIO
           </span>

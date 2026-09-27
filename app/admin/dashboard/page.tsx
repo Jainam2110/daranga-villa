@@ -114,10 +114,10 @@ export default async function AdminDashboardPage() {
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
         {/* Card 1: Total Villas */}
-        <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-2 transition-colors">
+        <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383633] shadow-xs space-y-2 transition-colors">
           <div className="flex items-center justify-between text-[#66635F] dark:text-[#BDB8B0]">
             <span className="text-[11px] uppercase font-semibold tracking-wider">Total Villas</span>
-            <Home className="w-4 h-4 text-[#B99A62]" />
+            <Home className="w-4 h-4 text-[#EFA1AA]" />
           </div>
           <div className="font-sans text-3xl font-bold tracking-tight text-[#202020] dark:text-[#FCFBF8]">
             {totalVillas}
@@ -128,12 +128,12 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Card 2: Active Villas */}
-        <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-2 transition-colors">
+        <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383633] shadow-xs space-y-2 transition-colors">
           <div className="flex items-center justify-between text-[#66635F] dark:text-[#BDB8B0]">
             <span className="text-[11px] uppercase font-semibold tracking-wider">Active Villas</span>
-            <Sparkles className="w-4 h-4 text-[#3F6B52]" />
+            <Sparkles className="w-4 h-4 text-[#3F7658]" />
           </div>
-          <div className="font-sans text-3xl font-bold tracking-tight text-[#3F6B52]">
+          <div className="font-sans text-3xl font-bold tracking-tight text-[#3F7658]">
             {activeVillas}
           </div>
           <p className="text-[11px] text-[#66635F] dark:text-[#BDB8B0]">
@@ -142,10 +142,10 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Card 3: Upcoming Bookings */}
-        <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-2 transition-colors">
+        <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383633] shadow-xs space-y-2 transition-colors">
           <div className="flex items-center justify-between text-[#66635F] dark:text-[#BDB8B0]">
             <span className="text-[11px] uppercase font-semibold tracking-wider">Upcoming Stays</span>
-            <CalendarCheck className="w-4 h-4 text-[#B99A62]" />
+            <CalendarCheck className="w-4 h-4 text-[#EFA1AA]" />
           </div>
           <div className="font-sans text-3xl font-bold tracking-tight text-[#202020] dark:text-[#FCFBF8]">
             {upcomingBookingsCount}
@@ -156,10 +156,10 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Card 4: Revenue */}
-        <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-2 transition-colors">
+        <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383633] shadow-xs space-y-2 transition-colors">
           <div className="flex items-center justify-between text-[#66635F] dark:text-[#BDB8B0]">
             <span className="text-[11px] uppercase font-semibold tracking-wider">Total Revenue</span>
-            <TrendingUp className="w-4 h-4 text-[#3F6B52]" />
+            <TrendingUp className="w-4 h-4 text-[#3F7658]" />
           </div>
           <div className="font-sans text-3xl font-bold tracking-tight text-[#202020] dark:text-[#FCFBF8]">
             {formatCurrency(totalRevenue)}
@@ -173,8 +173,8 @@ export default async function AdminDashboardPage() {
       {/* Main Grid: Upcoming Bookings (Left) + Villa Availability Overview (Right) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column (2/3): Upcoming Bookings */}
-        <div className="lg:col-span-2 bg-white dark:bg-[#202020] rounded-xl border border-[#E8E6E2] dark:border-[#383633] p-5 space-y-4 shadow-xs">
-          <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-3">
+        <div className="lg:col-span-2 bg-white dark:bg-[#202020] rounded-xl border border-[#E8E8E8] dark:border-[#383633] p-5 space-y-4 shadow-xs">
+          <div className="flex items-center justify-between border-b border-[#E8E8E8] dark:border-[#383633] pb-3">
             <div>
               <h2 className="font-serif text-lg font-bold text-[#202020] dark:text-[#FCFBF8]">
                 Upcoming Guest Stays
@@ -185,7 +185,7 @@ export default async function AdminDashboardPage() {
             </div>
             <Link
               href="/admin/bookings"
-              className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] transition-colors flex items-center gap-1"
+              className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#EFA1AA] transition-colors flex items-center gap-1"
             >
               <span>View All</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -204,7 +204,7 @@ export default async function AdminDashboardPage() {
               <div className="hidden sm:block overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-[#E8E6E2] dark:border-[#383633] text-[#66635F] dark:text-[#BDB8B0] uppercase text-[10px] font-semibold tracking-wider">
+                    <tr className="border-b border-[#E8E8E8] dark:border-[#383633] text-[#66635F] dark:text-[#BDB8B0] uppercase text-[10px] font-semibold tracking-wider">
                       <th className="pb-2.5 font-medium">Guest</th>
                       <th className="pb-2.5 font-medium">Villa</th>
                       <th className="pb-2.5 font-medium">Check-In</th>
@@ -213,7 +213,7 @@ export default async function AdminDashboardPage() {
                       <th className="pb-2.5 font-medium text-center">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E8E6E2]/60 dark:divide-[#383633] text-[#202020] dark:text-[#FCFBF8]">
+                  <tbody className="divide-y divide-[#E8E8E8]/60 dark:divide-[#383633] text-[#202020] dark:text-[#FCFBF8]">
                     {serializedUpcomingBookings.map((b) => (
                       <tr key={b._id} className="hover:bg-[#F7F6F3]/50 dark:hover:bg-[#171717]/50 transition-colors">
                         <td className="py-3 font-semibold text-[#202020] dark:text-[#FCFBF8]">{b.guestName}</td>
@@ -225,9 +225,9 @@ export default async function AdminDashboardPage() {
                           <span
                             className={`inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider ${
                               b.status === "CONFIRMED"
-                                ? "bg-[#3F6B52]/10 text-[#3F6B52] border border-[#3F6B52]/30"
+                                ? "bg-[#3F7658]/10 text-[#3F7658] border border-[#3F7658]/30"
                                 : b.status === "PENDING"
-                                ? "bg-[#F5D0B5]/30 text-[#B99A62] border border-[#B99A62]/30"
+                                ? "bg-[#D9822B]/10 text-[#D9822B] border border-[#D9822B]/30"
                                 : "bg-[#8A8782]/10 text-[#66635F] border border-[#DAD7D1]"
                             }`}
                           >
@@ -245,15 +245,15 @@ export default async function AdminDashboardPage() {
                 {serializedUpcomingBookings.map((b) => (
                   <div
                     key={b._id}
-                    className="p-3.5 rounded-lg border border-[#E8E6E2] dark:border-[#383633] bg-[#F7F6F3]/40 dark:bg-[#171717]/40 space-y-2 text-xs"
+                    className="p-3.5 rounded-lg border border-[#E8E8E8] dark:border-[#383633] bg-[#F7F6F3]/40 dark:bg-[#171717]/40 space-y-2 text-xs"
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-[#202020] dark:text-[#FCFBF8]">{b.guestName}</span>
                       <span
                         className={`px-2 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider ${
                           b.status === "CONFIRMED"
-                            ? "bg-[#3F6B52]/10 text-[#3F6B52] border border-[#3F6B52]/30"
-                            : "bg-[#F5D0B5]/30 text-[#B99A62] border border-[#B99A62]/30"
+                            ? "bg-[#3F7658]/10 text-[#3F7658] border border-[#3F7658]/30"
+                            : "bg-[#D9822B]/10 text-[#D9822B] border border-[#D9822B]/30"
                         }`}
                       >
                         {b.status}
@@ -276,8 +276,8 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Right Column (1/3): Villa Availability & Occupancy Summary */}
-        <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E6E2] dark:border-[#383633] p-5 space-y-4 shadow-xs">
-          <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-3">
+        <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E8E8] dark:border-[#383633] p-5 space-y-4 shadow-xs">
+          <div className="flex items-center justify-between border-b border-[#E8E8E8] dark:border-[#383633] pb-3">
             <div>
               <h2 className="font-serif text-lg font-bold text-[#202020] dark:text-[#FCFBF8]">
                 Villa Catalog
@@ -288,7 +288,7 @@ export default async function AdminDashboardPage() {
             </div>
             <Link
               href="/admin/availability"
-              className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] transition-colors"
+              className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#EFA1AA] transition-colors"
             >
               Calendar →
             </Link>
@@ -303,7 +303,7 @@ export default async function AdminDashboardPage() {
               {villasOverview.map((villa) => (
                 <div
                   key={villa._id.toString()}
-                  className="p-3 rounded-lg bg-[#F7F6F3]/50 dark:bg-[#171717]/50 border border-[#E8E6E2] dark:border-[#383633] flex items-center justify-between text-xs"
+                  className="p-3 rounded-lg bg-[#F7F6F3]/50 dark:bg-[#171717]/50 border border-[#E8E8E8] dark:border-[#383633] flex items-center justify-between text-xs"
                 >
                   <div>
                     <h4 className="font-semibold text-[#202020] dark:text-[#FCFBF8]">{villa.name}</h4>
@@ -314,7 +314,7 @@ export default async function AdminDashboardPage() {
                   <span
                     className={`px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider ${
                       villa.status === "ACTIVE"
-                        ? "bg-[#3F6B52]/10 text-[#3F6B52] border border-[#3F6B52]/30"
+                        ? "bg-[#3F7658]/10 text-[#3F7658] border border-[#3F7658]/30"
                         : "bg-[#8A8782]/10 text-[#66635F] border border-[#DAD7D1] dark:border-[#383633]"
                     }`}
                   >
@@ -328,8 +328,8 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Bottom Section: Recent Overall Bookings */}
-      <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E6E2] dark:border-[#383633] p-5 space-y-4 shadow-xs">
-        <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-3">
+      <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E8E8] dark:border-[#383633] p-5 space-y-4 shadow-xs">
+        <div className="flex items-center justify-between border-b border-[#E8E8E8] dark:border-[#383633] pb-3">
           <div>
             <h2 className="font-serif text-lg font-bold text-[#202020] dark:text-[#FCFBF8]">
               Recent Activity Log
@@ -340,7 +340,7 @@ export default async function AdminDashboardPage() {
           </div>
           <Link
             href="/admin/bookings"
-            className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] transition-colors"
+            className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#EFA1AA] transition-colors"
           >
             Manage All Bookings →
           </Link>
@@ -354,7 +354,7 @@ export default async function AdminDashboardPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-[#E8E6E2] dark:border-[#383633] text-[#66635F] dark:text-[#BDB8B0] uppercase text-[10px] font-semibold tracking-wider">
+                <tr className="border-b border-[#E8E8E8] dark:border-[#383633] text-[#66635F] dark:text-[#BDB8B0] uppercase text-[10px] font-semibold tracking-wider">
                   <th className="pb-2.5 font-medium">Guest</th>
                   <th className="pb-2.5 font-medium">Villa</th>
                   <th className="pb-2.5 font-medium">Dates</th>
@@ -363,7 +363,7 @@ export default async function AdminDashboardPage() {
                   <th className="pb-2.5 font-medium text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E8E6E2]/60 dark:divide-[#383633] text-[#202020] dark:text-[#FCFBF8]">
+              <tbody className="divide-y divide-[#E8E8E8]/60 dark:divide-[#383633] text-[#202020] dark:text-[#FCFBF8]">
                 {serializedRecentBookings.map((b) => (
                   <tr key={b._id} className="hover:bg-[#F7F6F3]/50 dark:hover:bg-[#171717]/50 transition-colors">
                     <td className="py-3 font-semibold text-[#202020] dark:text-[#FCFBF8]">{b.guestName}</td>
@@ -374,11 +374,11 @@ export default async function AdminDashboardPage() {
                       <span
                         className={`inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider ${
                           b.status === "CONFIRMED"
-                            ? "bg-[#3F6B52]/10 text-[#3F6B52] border border-[#3F6B52]/30"
+                            ? "bg-[#3F7658]/10 text-[#3F7658] border border-[#3F7658]/30"
                             : b.status === "PENDING"
-                            ? "bg-[#F5D0B5]/30 text-[#B99A62] border border-[#B99A62]/30"
+                            ? "bg-[#D9822B]/10 text-[#D9822B] border border-[#D9822B]/30"
                             : b.status === "CANCELLED"
-                            ? "bg-[#B84A4A]/10 text-[#B84A4A] border border-[#B84A4A]/30"
+                            ? "bg-[#C94A4A]/10 text-[#C94A4A] border border-[#C94A4A]/30"
                             : "bg-[#8A8782]/10 text-[#66635F] border border-[#DAD7D1]"
                         }`}
                       >
@@ -388,9 +388,9 @@ export default async function AdminDashboardPage() {
                     <td className="py-3 text-right">
                       <Link
                         href="/admin/bookings"
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] transition-colors"
+                        className="inline-flex items-center gap-1 text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#EFA1AA] transition-colors"
                       >
-                        <Eye className="w-3.5 h-3.5 text-[#B99A62]" />
+                        <Eye className="w-3.5 h-3.5 text-[#EFA1AA]" />
                         <span>Inspect</span>
                       </Link>
                     </td>

@@ -22,7 +22,7 @@ export function PromotionalStrip({
       aria-label="Promotional Announcement"
       className={`w-full py-2.5 px-4 text-center text-[#202020] text-xs font-medium tracking-wide flex items-center justify-center gap-2 sm:gap-3 transition-all ${className}`}
       style={{
-        background: "linear-gradient(90deg, #F3C5C8 0%, #F5D0B5 100%)",
+        background: "linear-gradient(90deg, #F6C7CA 0%, #F6D2B8 100%)",
         color: "#202020",
       }}
     >

@@ -182,15 +182,15 @@ export function LuxuryDatePicker({
             let cellClass = "h-9 w-full flex items-center justify-center text-xs font-medium transition-all rounded-[4px] ";
 
             if (isDisabled) {
-              cellClass += "bg-[#F1F0ED] dark:bg-[#202020]/50 text-[#8A8782] line-through cursor-not-allowed";
+              cellClass += "bg-[#F1F1F1] dark:bg-[#202020]/50 text-[#999999] line-through cursor-not-allowed";
             } else if (isCheckIn || isCheckOut) {
-              cellClass += "bg-[#202020] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:text-[#202020] font-bold shadow-md scale-105";
+              cellClass += "bg-[#202020] text-white dark:bg-white dark:text-[#202020] font-bold shadow-xs scale-105 rounded-full";
             } else if (isInRange) {
-              cellClass += "bg-[#F3C5C8] text-[#202020] rounded-none font-medium";
+              cellClass += "bg-[#F6C7CA] text-[#202020] rounded-none font-medium";
             } else if (isHoveredRange) {
-              cellClass += "bg-[#F3C5C8]/50 text-[#202020] rounded-none";
+              cellClass += "bg-[#FCE7E8] text-[#202020] rounded-none";
             } else {
-              cellClass += "bg-white dark:bg-[#202020] text-[#202020] dark:text-[#FCFBF8] hover:bg-[#F7F6F3] dark:hover:bg-[#2A2825] cursor-pointer";
+              cellClass += "bg-white dark:bg-[#202020] text-[#202020] dark:text-white hover:bg-[#F7F7F6] dark:hover:bg-[#2A2825] cursor-pointer";
             }
 
             return (
@@ -227,25 +227,25 @@ export function LuxuryDatePicker({
   return (
     <div
       ref={containerRef}
-      className="absolute top-full left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 mt-3 z-50 w-[calc(100vw-2rem)] max-w-[340px] sm:max-w-[360px] md:max-w-[640px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[12px] p-4 sm:p-5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 text-[#202020] dark:text-[#FCFBF8] overflow-x-auto min-w-0"
+      className="absolute top-full left-1/2 -translate-x-1/2 md:left-0 md:translate-x-0 mt-3 z-50 w-[calc(100vw-2rem)] max-w-[340px] sm:max-w-[360px] md:max-w-[640px] bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383838] rounded-[16px] p-4 sm:p-5 shadow-xl animate-in fade-in zoom-in-95 duration-150 text-[#202020] dark:text-white overflow-x-auto min-w-0"
     >
       {/* Month Navigation Bar */}
-      <div className="flex items-center justify-between pb-4 border-b border-[#E8E6E2] dark:border-[#383633] mb-4">
+      <div className="flex items-center justify-between pb-4 border-b border-[#E8E8E8] dark:border-[#383838] mb-4">
         <button
           type="button"
           onClick={handlePrevMonth}
-          className="p-2 text-[#202020] dark:text-[#FCFBF8] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] rounded-full transition-colors cursor-pointer"
+          className="p-2 text-[#202020] dark:text-white hover:bg-[#F7F7F6] dark:hover:bg-[#171717] rounded-full transition-colors cursor-pointer"
           title="Previous Month"
         >
           ‹
         </button>
-        <span className="text-xs uppercase tracking-[0.2em] font-semibold text-[#B99A62]">
+        <span className="text-xs uppercase tracking-[0.2em] font-semibold text-[#202020] dark:text-white">
           Select Dates
         </span>
         <button
           type="button"
           onClick={handleNextMonth}
-          className="p-2 text-[#202020] dark:text-[#FCFBF8] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] rounded-full transition-colors cursor-pointer"
+          className="p-2 text-[#202020] dark:text-white hover:bg-[#F7F7F6] dark:hover:bg-[#171717] rounded-full transition-colors cursor-pointer"
           title="Next Month"
         >
           ›
@@ -261,17 +261,17 @@ export function LuxuryDatePicker({
       </div>
 
       {/* Footer Info & Actions */}
-      <div className="flex items-center justify-between pt-4 border-t border-[#E8E6E2] dark:border-[#383633] mt-5 text-xs">
+      <div className="flex items-center justify-between pt-4 border-t border-[#E8E8E8] dark:border-[#383838] mt-5 text-xs">
         <div>
           {tempCheckIn && tempCheckOut ? (
-            <span className="text-[#202020] dark:text-[#FCFBF8] font-medium">
+            <span className="text-[#202020] dark:text-white font-medium">
               {formatShortDate(tempCheckIn)} – {formatShortDate(tempCheckOut)}{" "}
-              <span className="text-[#B99A62]">({numberOfNights} {numberOfNights === 1 ? "night" : "nights"})</span>
+              <span className="text-[#555555] dark:text-[#BDBDBD] font-semibold">({numberOfNights} {numberOfNights === 1 ? "night" : "nights"})</span>
             </span>
           ) : tempCheckIn ? (
-            <span className="text-[#66635F] dark:text-[#BDB8B0]">Select Check-Out Date</span>
+            <span className="text-[#777777] dark:text-[#BDBDBD]">Select Check-Out Date</span>
           ) : (
-            <span className="text-[#66635F] dark:text-[#BDB8B0]">Select Check-In Date</span>
+            <span className="text-[#777777] dark:text-[#BDBDBD]">Select Check-In Date</span>
           )}
         </div>
 
@@ -280,7 +280,7 @@ export function LuxuryDatePicker({
             <button
               type="button"
               onClick={handleClear}
-              className="text-[#66635F] dark:text-[#BDB8B0] hover:underline font-medium text-xs transition-colors cursor-pointer"
+              className="text-[#777777] dark:text-[#BDBDBD] hover:underline font-medium text-xs transition-colors cursor-pointer"
             >
               Clear
             </button>
@@ -288,7 +288,7 @@ export function LuxuryDatePicker({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 bg-[#202020] hover:bg-[#171717] text-[#FFFFFF] dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#202020] font-semibold text-xs uppercase tracking-wider rounded-[4px] transition-colors cursor-pointer"
+            className="px-4 py-2 bg-[#202020] hover:bg-[#171717] text-white dark:bg-white dark:hover:bg-stone-200 dark:text-[#202020] font-semibold text-xs uppercase tracking-wider rounded-[8px] transition-colors cursor-pointer"
           >
             Done
           </button>

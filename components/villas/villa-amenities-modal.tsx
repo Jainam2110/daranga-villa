@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { X, Sparkles } from "lucide-react";
-import { AmenityIcon } from "@/components/ui/amenity-icon";
+import { X } from "lucide-react";
+import { renderAmenityIcon, getAmenityPricing } from "@/components/ui/amenity-icon";
 
 interface VillaAmenitiesModalProps {
   isOpen: boolean;
@@ -42,17 +42,19 @@ export function VillaAmenitiesModal({
       aria-label={`${villaName} Complete Amenities`}
       className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200"
     >
-      <div className="relative w-full max-w-2xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[12px] shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-200">
         {/* Modal Header */}
         <div className="flex items-center justify-between p-5 sm:p-6 border-b border-[#E8E6E2] dark:border-[#383633] bg-[#FCFBF8] dark:bg-[#171717]">
-          <div className="space-y-1">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#B99A62] flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Full Amenities Collection</span>
-            </span>
-            <h3 className="font-serif text-2xl font-light text-[#202020] dark:text-[#FCFBF8]">
-              What this sanctuary offers
-            </h3>
+          <div className="flex items-center gap-3">
+            <div className="w-1.5 h-6 bg-[#E8A0A8] rounded-full flex-shrink-0" />
+            <div>
+              <h3 className="text-xl font-bold text-[#202020] dark:text-[#FCFBF8]">
+                Villa Amenities
+              </h3>
+              <p className="text-xs text-[#66635F] dark:text-[#A8A49E] font-light">
+                All features &amp; inclusions for {villaName}
+              </p>
+            </div>
           </div>
 
           <button
@@ -65,27 +67,43 @@ export function VillaAmenitiesModal({
           </button>
         </div>
 
-        {/* Modal Body: Amenity Grid */}
-        <div className="p-5 sm:p-8 overflow-y-auto space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-            {amenities.map((item, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-3.5 p-4 rounded-[8px] bg-[#FCFBF8] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] hover:border-[#B99A62]/40 transition-colors"
-              >
-                <div className="w-9 h-9 rounded-[6px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] flex items-center justify-center flex-shrink-0 text-[#202020] dark:text-[#FCFBF8] shadow-xs">
-                  <AmenityIcon name={item} className="w-4 h-4 text-[#B99A62]" />
+        {/* Modal Body: Amenity Grid matching reference layout */}
+        <div className="p-5 sm:p-8 overflow-y-auto">
+          <div className="grid grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-5 sm:gap-y-6">
+            {amenities.map((item, idx) => {
+              const pricing = getAmenityPricing(item);
+              return (
+                <div key={idx} className="flex items-center gap-3 sm:gap-3.5 group">
+                  {/* Square Outline Box */}
+                  <div className="relative w-13 h-13 sm:w-14 sm:h-14 rounded-lg border border-[#D1D5DB] dark:border-[#383633] bg-white dark:bg-[#1E1E1E] flex items-center justify-center p-2 flex-shrink-0 shadow-2xs group-hover:border-[#202020] dark:group-hover:border-[#FCFBF8] transition-colors">
+                    {pricing.isPaid && (
+                      <span className="absolute -top-1.5 -right-1.5 w-4.5 h-4.5 rounded-full bg-white dark:bg-[#202020] border border-[#16A34A] text-[#16A34A] text-[9px] font-bold flex items-center justify-center shadow-xs">
+                        ₹
+                      </span>
+                    )}
+                    <div className="text-[#374151] dark:text-[#E5E7EB]">
+                      {renderAmenityIcon(item, "w-7 h-7 sm:w-8 sm:h-8")}
+                    </div>
+                  </div>
+
+                  {/* Name & Pricing */}
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-xs sm:text-sm font-normal text-[#202020] dark:text-[#FCFBF8] leading-snug line-clamp-2">
+                      {item}
+                    </span>
+                    {pricing.isPaid && pricing.price ? (
+                      <span className="text-xs font-semibold text-[#16A34A] mt-0.5">
+                        {pricing.price}
+                      </span>
+                    ) : (
+                      <span className="text-[10px] text-[#8A8782] font-light mt-0.5">
+                        Included
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="min-w-0 flex-1">
-                  <span className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] tracking-wide block truncate">
-                    {item}
-                  </span>
-                  <span className="text-[10px] text-[#66635F] dark:text-[#8A8782] font-light">
-                    Included with private residency
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -95,9 +113,9 @@ export function VillaAmenitiesModal({
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2 rounded-[6px] bg-[#202020] hover:bg-[#171717] text-white font-bold text-xs uppercase tracking-wider transition-colors"
+            className="px-6 py-2 rounded-full bg-[#202020] hover:bg-[#171717] text-white font-semibold text-xs uppercase tracking-wider transition-colors cursor-pointer"
           >
-            Done
+            Close
           </button>
         </div>
       </div>

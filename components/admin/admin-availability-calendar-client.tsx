@@ -191,7 +191,7 @@ export function AdminAvailabilityCalendarClient({
   return (
     <div className="space-y-5">
       {/* Top Controls Bar */}
-      <div className="p-4 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-3 sm:space-y-0 sm:flex sm:items-center sm:gap-3 justify-between text-xs">
+      <div className="p-4 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383633] shadow-xs space-y-3 sm:space-y-0 sm:flex sm:items-center sm:gap-3 justify-between text-xs">
         <div className="flex flex-col sm:flex-row items-center gap-3 flex-1">
           <label className="font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] text-[11px] whitespace-nowrap">
             Select Villa Residence:
@@ -199,7 +199,7 @@ export function AdminAvailabilityCalendarClient({
           <select
             value={selectedVillaId}
             onChange={(e) => setSelectedVillaId(e.target.value)}
-            className="w-full sm:w-72 px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
+            className="w-full sm:w-72 px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
           >
             {villas.map((v) => (
               <option key={v.id} value={v.id}>
@@ -222,9 +222,9 @@ export function AdminAvailabilityCalendarClient({
       </div>
 
       {/* Main Calendar Card */}
-      <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E6E2] dark:border-[#383633] p-5 sm:p-6 space-y-5 shadow-xs">
+      <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E8E8] dark:border-[#383633] p-5 sm:p-6 space-y-5 shadow-xs">
         {/* Navigation Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8E6E2] dark:border-[#383633] pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E8E8E8] dark:border-[#383633] pb-4">
           <div className="flex items-center gap-3">
             <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#202020] dark:text-[#FCFBF8]">
               {monthName} {year}
@@ -270,12 +270,12 @@ export function AdminAvailabilityCalendarClient({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#B99A62]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#D9822B]" />
             <span className="text-[#66635F] dark:text-[#BDB8B0]">Pending Hold</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#3F6B52]" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#3F7658]" />
             <span className="text-[#66635F] dark:text-[#BDB8B0]">Confirmed Stay</span>
           </div>
 
@@ -329,11 +329,11 @@ export function AdminAvailabilityCalendarClient({
                 className={`min-h-[60px] sm:h-24 p-1 sm:p-1.5 rounded-lg border flex flex-col justify-between transition-colors ${
                   activeBooking
                     ? isPendingHold
-                      ? "bg-[#F5D0B5]/30 dark:bg-[#F5D0B5]/15 border-[#B99A62]/40 text-[#B99A62]"
-                      : "bg-[#3F6B52]/15 dark:bg-[#3F6B52]/20 border-[#3F6B52]/40 text-[#3F6B52]"
+                      ? "bg-[#D9822B]/10 dark:bg-[#D9822B]/20 border-[#D9822B]/40 text-[#D9822B]"
+                      : "bg-[#3F7658]/15 dark:bg-[#3F7658]/20 border-[#3F7658]/40 text-[#3F7658]"
                     : activeBlock
                     ? "bg-[#8A8782]/15 dark:bg-[#8A8782]/25 border-[#DAD7D1] dark:border-[#383633]"
-                    : "bg-white dark:bg-[#202020] border-[#E8E6E2] dark:border-[#383633] hover:border-[#202020] dark:hover:border-[#B99A62]"
+                    : "bg-white dark:bg-[#202020] border-[#E8E8E8] dark:border-[#383633] hover:border-[#202020] dark:hover:border-[#EFA1AA]"
                 }`}
               >
                 <div className="flex items-center justify-between text-xs font-bold font-sans">
@@ -341,8 +341,8 @@ export function AdminAvailabilityCalendarClient({
                     className={
                       activeBooking
                         ? isPendingHold
-                          ? "text-[#B99A62]"
-                          : "text-[#3F6B52]"
+                          ? "text-[#D9822B]"
+                          : "text-[#3F7658]"
                         : activeBlock
                         ? "text-[#66635F] dark:text-[#BDB8B0]"
                         : "text-[#202020] dark:text-[#FCFBF8]"
@@ -358,8 +358,8 @@ export function AdminAvailabilityCalendarClient({
                       onClick={() => setSelectedBooking(activeBooking)}
                       className={`w-full text-left p-1 rounded text-white text-[10px] truncate transition-colors flex items-center gap-1 ${
                         isPendingHold
-                          ? "bg-[#B99A62] hover:bg-[#a6864d]"
-                          : "bg-[#3F6B52] hover:bg-[#355a45]"
+                          ? "bg-[#D9822B] hover:bg-[#c27324]"
+                          : "bg-[#3F7658] hover:bg-[#346349]"
                       }`}
                       title={`${activeBooking.guestName} (${isPendingHold ? "PENDING HOLD" : activeBooking.status})`}
                     >
@@ -575,7 +575,7 @@ export function AdminAvailabilityCalendarClient({
                 </div>
               </div>
 
-              <div className="flex items-center justify-between p-3 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633]">
+              <div className="flex items-center justify-between p-3 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#383633]">
                 <div>
                   <span className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] uppercase font-semibold">Total Price</span>
                   <div className="font-sans text-lg font-bold text-[#202020] dark:text-[#FCFBF8]">
@@ -585,8 +585,8 @@ export function AdminAvailabilityCalendarClient({
                 <span
                   className={`px-2.5 py-0.5 text-[10px] font-semibold rounded-full uppercase tracking-wider border ${
                     selectedBooking.status === "PENDING"
-                      ? "bg-[#F5D0B5]/30 text-[#B99A62] border-[#B99A62]/30"
-                      : "bg-[#3F6B52]/10 text-[#3F6B52] border-[#3F6B52]/30"
+                      ? "bg-[#D9822B]/10 text-[#D9822B] border-[#D9822B]/30"
+                      : "bg-[#3F7658]/10 text-[#3F7658] border-[#3F7658]/30"
                   }`}
                 >
                   {selectedBooking.status === "PENDING" ? "⏳ PENDING HOLD" : selectedBooking.status}
@@ -594,8 +594,8 @@ export function AdminAvailabilityCalendarClient({
               </div>
 
               {selectedBooking.status === "PENDING" && selectedBooking.paymentHoldExpiresAt && (
-                <div className="p-2.5 rounded-lg bg-[#F5D0B5]/20 border border-[#B99A62]/30 text-[11px] space-y-0.5">
-                  <div className="font-semibold text-[#B99A62]">
+                <div className="p-2.5 rounded-lg bg-[#D9822B]/10 border border-[#D9822B]/30 text-[11px] space-y-0.5">
+                  <div className="font-semibold text-[#D9822B]">
                     Payment Hold Expiry:
                   </div>
                   <div className="text-[#66635F] dark:text-[#BDB8B0]">

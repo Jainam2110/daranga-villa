@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Container } from "@/components/ui/container";
 
 export interface HeroSlideItem {
   _id?: string;
@@ -223,23 +222,23 @@ export function HeroSection({
         <div className="absolute inset-0 z-20 bg-radial from-transparent via-black/15 to-black/45 pointer-events-none" />
       </div>
 
-      {/* Center Headline & Explore Villa Pill CTA (Stay Vista Hero Style) */}
+      {/* Center Headline & Explore Villa Pill CTA */}
       <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center space-y-3 sm:space-y-5 pt-8 sm:pt-10 pb-6 sm:pb-8">
         <div
           key={currentIndex}
           className="transition-all duration-700 animate-in fade-in zoom-in-95 max-w-xl mx-auto space-y-2.5 sm:space-y-3.5"
         >
           {/* Eyebrow / Tagline */}
-          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-black/40 backdrop-blur-md border border-[#B99A62]/40 text-[#FCFBF8] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#B99A62] animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#EFA1AA] animate-pulse" />
             {slides[currentIndex]?.tagline || "DARANGA SANCTUARIES • UDAIPUR"}
           </span>
 
-          {/* Primary Serif Headline (e.g. "Stay at Daranga Villa") */}
-          <h1 className="font-serif text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)] tracking-tight leading-[1.15] select-none">
+          {/* Primary Editorial Serif Headline */}
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)] tracking-tight leading-[1.15] select-none">
             {slides[currentIndex]?.title?.includes("Living") || slides[currentIndex]?.title?.includes("Luxury")
-              ? "Stay at Daranga Villa"
-              : slides[currentIndex]?.title || "Stay at Daranga Villa"}
+              ? "Escape to Daranga"
+              : slides[currentIndex]?.title || "Escape to Daranga"}
           </h1>
 
           {/* Subtitle */}
@@ -248,7 +247,7 @@ export function HeroSection({
           </p>
         </div>
 
-        {/* Explore Villa Pill Button (Frosted glass outline style matching reference) */}
+        {/* Explore Villa Pill Button */}
         <div className="pt-1">
           <button
             onClick={onExploreClick}
@@ -260,7 +259,7 @@ export function HeroSection({
         </div>
       </div>
 
-      {/* Subtle Left & Right Arrow Navigation (Visible across all screens) */}
+      {/* Subtle Left & Right Arrow Navigation */}
       <div className="absolute inset-y-0 left-2 sm:left-4 md:left-6 right-2 sm:right-4 md:right-6 z-20 flex items-center justify-between pointer-events-none">
         <button
           type="button"
@@ -280,49 +279,37 @@ export function HeroSection({
         </button>
       </div>
 
-      {/* Modern Progress Bar & Slide Controller (Bottom, positioned above search bar overlap) */}
-      <div className="absolute bottom-7 sm:bottom-9 lg:bottom-11 left-1/2 -translate-x-1/2 z-20 w-full max-w-md sm:max-w-xl px-6 flex flex-col items-center gap-1 sm:gap-2">
+      {/* Slide Indicators & Caption Controller */}
+      <div className="absolute bottom-7 sm:bottom-9 lg:bottom-11 left-1/2 -translate-x-1/2 z-20 w-full max-w-md sm:max-w-xl px-6 flex flex-col items-center gap-2">
         {/* Slide Counter & Active Caption */}
         <div className="flex items-center justify-between w-full text-[9px] sm:text-xs tracking-[0.18em] sm:tracking-[0.25em] text-white/80 uppercase font-medium">
-          <span className="font-mono text-[#B99A62] font-semibold">
+          <span className="font-mono text-white font-semibold">
             {String(currentIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
           </span>
-          <span className="truncate max-w-[180px] sm:max-w-[320px] text-stone-200 font-serif italic text-[11px] sm:text-xs normal-case tracking-normal">
+          <span className="truncate max-w-[200px] sm:max-w-[360px] text-stone-200 font-serif italic text-[11px] sm:text-xs normal-case tracking-normal">
             {slides[currentIndex]?.caption}
           </span>
-          <span className="text-[9px] text-[#B99A62]/80 tracking-widest hidden sm:inline">
-            5S AUTO
+          <span className="font-mono text-[9px] text-white/60 tracking-widest hidden sm:inline">
+            SANCTUARY
           </span>
         </div>
 
-        {/* Multi-segment Progress Bars */}
-        <div className="flex items-center gap-1.5 sm:gap-2 w-full">
+        {/* Clean Slide Indicator Dots */}
+        <div className="flex items-center justify-center gap-2 w-full pt-0.5">
           {slides.map((_, idx) => {
             const isActive = idx === currentIndex;
-            const isPassed = idx < currentIndex;
             return (
               <button
                 key={idx}
                 type="button"
                 onClick={() => goToSlide(idx)}
                 aria-label={`Jump to slide ${idx + 1}`}
-                className="group relative flex-1 h-1.5 py-1 sm:py-1.5 cursor-pointer flex items-center"
-              >
-                <div className="w-full h-0.5 sm:h-1 bg-white/25 rounded-full overflow-hidden transition-colors group-hover:bg-white/40">
-                  {isActive && (
-                    <div
-                      key={currentIndex}
-                      className="h-full bg-[#B99A62] rounded-full animate-progress-5s shadow-[0_0_8px_rgba(185,154,98,0.8)]"
-                      style={{
-                        animationPlayState: isPaused ? "paused" : "running",
-                      }}
-                    />
-                  )}
-                  {isPassed && (
-                    <div className="w-full h-full bg-[#B99A62]/70 rounded-full" />
-                  )}
-                </div>
-              </button>
+                className={`transition-all duration-300 rounded-full cursor-pointer ${
+                  isActive
+                    ? "w-8 sm:w-10 h-1.5 bg-white shadow-xs"
+                    : "w-2 sm:w-2.5 h-1.5 bg-white/40 hover:bg-white/70"
+                }`}
+              />
             );
           })}
         </div>

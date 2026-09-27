@@ -2,7 +2,6 @@
 
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   MapPin,
   Navigation,
@@ -143,23 +142,23 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
   return (
     <section
       id="location"
-      className="py-20 lg:py-32 bg-[#F7F6F3] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] border-t border-[#E8E6E2] dark:border-[#383633] relative overflow-hidden"
+      className="py-12 sm:py-16 lg:py-20 bg-[#F7F7F6] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF9] border-t border-[#E8E8E8] dark:border-[#383838] relative overflow-hidden"
     >
       <Container>
         {/* Section Editorial Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-12 lg:mb-16 gap-6 border-b border-[#E8E6E2] dark:border-[#383633] pb-8">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between mb-8 lg:mb-10 gap-6 border-b border-[#E8E8E8] dark:border-[#383838] pb-5">
           <div className="space-y-3 max-w-2xl">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-[#B99A62] flex items-center gap-2">
-              <Compass className="w-3.5 h-3.5 text-[#B99A62] animate-spin-slow" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-[#EFA1AA] flex items-center gap-2">
+              <Compass className="w-3.5 h-3.5 text-[#EFA1AA]" />
               <span>ESTATE LOCATIONS • UDAIPUR, RAJASTHAN</span>
             </span>
-            <h2 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-[#202020] dark:text-[#FCFBF8] tracking-tight leading-[1.08]">
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#202020] dark:text-[#FCFBF9] tracking-tight leading-[1.1]">
               Sanctuaries Across Udaipur. <br className="hidden sm:inline" />
-              <span className="italic font-light text-[#B99A62]">One Timeless Legacy.</span>
+              <span className="font-light text-[#555555] dark:text-[#BDBDBD]">One Timeless Experience.</span>
             </h2>
           </div>
 
-          <p className="text-[#66635F] dark:text-[#BDB8B0] text-xs sm:text-sm font-light leading-relaxed max-w-md">
+          <p className="text-[#555555] dark:text-[#BDBDBD] text-xs sm:text-sm font-normal leading-relaxed max-w-md">
             Discover our collection of private luxury estates strategically nestled across Udaipur’s iconic lakes, royal valleys, and serene Aravalli mountain foothills.
           </p>
         </div>
@@ -173,23 +172,23 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
                 key={loc.id}
                 type="button"
                 onClick={() => setSelectedId(loc.id)}
-                className={`text-left p-3.5 sm:p-4 rounded-[8px] border transition-all duration-300 relative group flex-1 min-w-[220px] max-w-full ${
+                className={`text-left p-3.5 sm:p-4 rounded-xl border transition-all duration-300 relative group flex-1 min-w-[220px] max-w-full ${
                   isSelected
-                    ? "bg-[#202020] text-white border-[#202020] shadow-md dark:bg-[#FCFBF8] dark:text-[#202020]"
-                    : "bg-white dark:bg-[#202020] hover:bg-[#FCFBF8] text-[#202020] dark:text-[#FCFBF8] border-[#E8E6E2] dark:border-[#383633] hover:border-[#B99A62]/50"
+                    ? "bg-[#202020] text-white border-[#202020] shadow-md dark:bg-[#FCFBF9] dark:text-[#202020]"
+                    : "bg-white dark:bg-[#202020] hover:bg-[#FCFBF9] text-[#202020] dark:text-[#FCFBF9] border-[#E8E8E8] dark:border-[#383838] hover:border-[#202020]/30"
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
                   <span
                     className={`font-mono text-[10px] font-bold tracking-widest ${
-                      isSelected ? "text-[#B99A62]" : "text-[#B99A62]"
+                      isSelected ? "text-[#EFA1AA]" : "text-[#777777]"
                     }`}
                   >
                     ESTATE {loc.number}
                   </span>
                   <MapPin
                     className={`w-3.5 h-3.5 ${
-                      isSelected ? "text-[#B99A62]" : "text-[#66635F] dark:text-[#8A8782]"
+                      isSelected ? "text-[#EFA1AA]" : "text-[#777777]"
                     }`}
                   />
                 </div>
@@ -197,8 +196,8 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
                   {loc.name.replace("Daranga ", "")}
                 </div>
                 <div
-                  className={`text-[10px] sm:text-[11px] font-light mt-0.5 truncate ${
-                    isSelected ? "text-stone-300 dark:text-stone-600" : "text-[#66635F] dark:text-[#8A8782]"
+                  className={`text-[10px] sm:text-[11px] font-normal mt-0.5 truncate ${
+                    isSelected ? "text-stone-300 dark:text-stone-600" : "text-[#555555] dark:text-[#BDBDBD]"
                   }`}
                 >
                   {loc.zone}
@@ -212,7 +211,7 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
           {/* Left Column: Real Interactive Google Maps Udaipur Map (7 Cols) */}
           <div className="lg:col-span-7 flex flex-col">
-            <div className="w-full h-[440px] sm:h-[500px] lg:h-[600px] rounded-[12px] overflow-hidden border border-[#E8E6E2] dark:border-[#383633] bg-white dark:bg-[#202020] shadow-md flex-1 flex flex-col">
+            <div className="w-full h-[440px] sm:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden border border-[#E8E8E8] dark:border-[#383838] bg-white dark:bg-[#202020] shadow-sm flex-1 flex flex-col">
               <RealUdaipurMap
                 locations={allLocations}
                 selectedLocation={selectedLocation}
@@ -224,9 +223,9 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
           {/* Right Column: Selected Sanctuary Details & Transits (5 Cols) */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
             {/* Active Sanctuary Editorial Showcase Card */}
-            <div className="p-6 sm:p-7 rounded-[12px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-md relative overflow-hidden space-y-5">
+            <div className="p-6 sm:p-7 rounded-2xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383838] shadow-sm relative overflow-hidden space-y-5">
               {/* Photo Preview Thumbnail */}
-              <div className="relative h-44 sm:h-52 w-full rounded-[8px] overflow-hidden border border-[#E8E6E2] dark:border-[#383633] group">
+              <div className="relative h-44 sm:h-52 w-full rounded-xl overflow-hidden border border-[#E8E8E8] dark:border-[#383838] group">
                 <Image
                   src={selectedLocation.imageUrl}
                   alt={selectedLocation.name}
@@ -238,13 +237,13 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
 
                 {/* Location Badges */}
                 <div className="absolute top-3 left-3">
-                  <span className="px-2.5 py-1 rounded-[4px] bg-[#202020] text-white text-[10px] font-mono font-bold tracking-widest shadow-md">
+                  <span className="px-2.5 py-1 rounded-full bg-[#202020] text-white text-[10px] font-mono font-bold tracking-widest shadow-sm">
                     ESTATE {selectedLocation.number}
                   </span>
                 </div>
 
                 <div className="absolute bottom-3 left-3 right-3">
-                  <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B99A62]">
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#F6C7CA]">
                     {selectedLocation.zone}
                   </div>
                   <div className="font-serif text-lg sm:text-xl text-white font-medium truncate">
@@ -255,7 +254,7 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
 
               {/* Narrative Description & Highlights */}
               <div className="space-y-3">
-                <p className="text-xs sm:text-sm font-light text-[#66635F] dark:text-[#BDB8B0] leading-relaxed">
+                <p className="text-xs sm:text-sm font-normal text-[#555555] dark:text-[#BDBDBD] leading-relaxed">
                   {selectedLocation.description}
                 </p>
 
@@ -264,9 +263,9 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
                   {selectedLocation.highlights.map((h, i) => (
                     <div
                       key={i}
-                      className="flex items-center gap-1.5 text-[11px] text-[#202020] dark:text-[#FCFBF8] font-medium"
+                      className="flex items-center gap-1.5 text-[11px] text-[#202020] dark:text-[#FCFBF9] font-medium"
                     >
-                      <CheckCircle2 className="w-3.5 h-3.5 text-[#B99A62] flex-shrink-0" />
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#3F7658] flex-shrink-0" />
                       <span className="truncate">{h}</span>
                     </div>
                   ))}
@@ -274,26 +273,26 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
               </div>
 
               {/* Transit Distances from this Sanctuary */}
-              <div className="pt-3 border-t border-[#E8E6E2] dark:border-[#383633] space-y-2">
-                <div className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#B99A62]">
+              <div className="pt-3 border-t border-[#E8E8E8] dark:border-[#383838] space-y-2">
+                <div className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#555555] dark:text-[#BDBDBD]">
                   TRANSIT PROXIMITY
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-center">
-                  <div className="p-2 rounded-[6px] bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633]">
-                    <div className="text-[9px] text-[#66635F] dark:text-[#8A8782] uppercase font-medium">Airport</div>
-                    <div className="font-mono text-xs font-bold text-[#202020] dark:text-[#FCFBF8] mt-0.5">
+                  <div className="p-2.5 rounded-xl bg-[#F7F7F6] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#383838]">
+                    <div className="text-[9px] text-[#777777] uppercase font-medium">Airport</div>
+                    <div className="font-mono text-xs font-bold text-[#202020] dark:text-[#FCFBF9] mt-0.5">
                       {selectedLocation.distanceToAirport.split(" ")[0]}
                     </div>
                   </div>
-                  <div className="p-2 rounded-[6px] bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633]">
-                    <div className="text-[9px] text-[#66635F] dark:text-[#8A8782] uppercase font-medium">City Palace</div>
-                    <div className="font-mono text-xs font-bold text-[#202020] dark:text-[#FCFBF8] mt-0.5">
+                  <div className="p-2.5 rounded-xl bg-[#F7F7F6] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#383838]">
+                    <div className="text-[9px] text-[#777777] uppercase font-medium">City Palace</div>
+                    <div className="font-mono text-xs font-bold text-[#202020] dark:text-[#FCFBF9] mt-0.5">
                       {selectedLocation.distanceToCityPalace.split(" ")[0]}
                     </div>
                   </div>
-                  <div className="p-2 rounded-[6px] bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633]">
-                    <div className="text-[9px] text-[#66635F] dark:text-[#8A8782] uppercase font-medium">Station</div>
-                    <div className="font-mono text-xs font-bold text-[#202020] dark:text-[#FCFBF8] mt-0.5">
+                  <div className="p-2.5 rounded-xl bg-[#F7F7F6] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#383838]">
+                    <div className="text-[9px] text-[#777777] uppercase font-medium">Station</div>
+                    <div className="font-mono text-xs font-bold text-[#202020] dark:text-[#FCFBF9] mt-0.5">
                       {selectedLocation.distanceToStation.split(" ")[0]}
                     </div>
                   </div>
@@ -302,28 +301,31 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
 
               {/* Action Buttons */}
               <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
-                <Link
-                  href={selectedLocation.slug ? `/villas/${selectedLocation.slug}` : "/villas"}
-                  className="w-full sm:flex-1 py-3 px-4 rounded-[6px] bg-[#202020] hover:bg-[#171717] text-white text-xs uppercase tracking-[0.18em] font-bold text-center transition-all shadow-xs hover:shadow-md"
-                >
-                  EXPLORE RESIDENCE
-                </Link>
                 <a
                   href={selectedLocation.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto py-3 px-4 rounded-[6px] bg-white dark:bg-[#202020] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] text-xs uppercase tracking-[0.16em] font-medium flex items-center justify-center gap-2 transition-all hover:bg-[#F7F6F3]"
+                  className="w-full sm:flex-1 py-3 px-4 rounded-xl bg-[#202020] hover:bg-[#171717] text-white text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 transition-all shadow-sm"
                 >
-                  <Navigation className="w-3.5 h-3.5 text-[#B99A62]" />
-                  <span>DIRECTIONS</span>
+                  <MapPin className="w-3.5 h-3.5 text-white" />
+                  <span>OPEN IN GOOGLE MAPS</span>
+                </a>
+                <a
+                  href={`https://www.google.com/maps/dir/?api=1&destination=${selectedLocation.coordinates.lat},${selectedLocation.coordinates.lng}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto py-3 px-4 rounded-xl bg-white dark:bg-[#202020] text-[#202020] dark:text-[#FCFBF9] border border-[#DCDCDC] dark:border-[#383838] text-xs uppercase tracking-wider font-semibold flex items-center justify-center gap-2 transition-all hover:bg-[#F7F7F6]"
+                >
+                  <Navigation className="w-3.5 h-3.5 text-[#202020] dark:text-white" />
+                  <span>GET DIRECTIONS</span>
                 </a>
               </div>
             </div>
 
             {/* General Transit Hubs in Udaipur */}
-            <div className="p-4 sm:p-5 rounded-[12px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] space-y-3 shadow-xs">
-              <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#B99A62] flex items-center gap-2">
-                <Sparkles className="w-3 h-3 text-[#B99A62]" />
+            <div className="p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383838] space-y-3 shadow-sm">
+              <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#555555] dark:text-[#BDBDBD] flex items-center gap-2">
+                <Sparkles className="w-3 h-3 text-[#EFA1AA]" />
                 <span>UDAIPUR CONNECTIVITY</span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -331,14 +333,14 @@ export function LocationSection({ villas = [] }: LocationSectionProps) {
                   const Icon = hub.icon;
                   return (
                     <div key={i} className="flex items-start gap-2.5">
-                      <div className="p-2 rounded-[6px] bg-[#F7F6F3] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] border border-[#E8E6E2] dark:border-[#383633] flex-shrink-0">
-                        <Icon className="w-3.5 h-3.5 text-[#B99A62]" />
+                      <div className="p-2 rounded-lg bg-[#DDEEFF] text-[#202020] border border-[#DDEEFF] flex-shrink-0">
+                        <Icon className="w-3.5 h-3.5 text-[#202020]" />
                       </div>
                       <div className="min-w-0">
-                        <div className="text-[11px] font-semibold text-[#202020] dark:text-[#FCFBF8] leading-tight truncate">
+                        <div className="text-[11px] font-semibold text-[#202020] dark:text-[#FCFBF9] leading-tight truncate">
                           {hub.title.split("(")[0]}
                         </div>
-                        <div className="text-[10px] font-mono text-[#66635F] dark:text-[#8A8782] mt-0.5">
+                        <div className="text-[10px] font-mono text-[#555555] dark:text-[#BDBDBD] mt-0.5">
                           {hub.time}
                         </div>
                       </div>

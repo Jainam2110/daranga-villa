@@ -13,9 +13,9 @@ export function Card({
 }: CardProps) {
   return (
     <div
-      className={`bg-white dark:bg-[#202020] rounded-[8px] border border-[#E8E6E2] dark:border-[#383633] p-6 text-[#202020] dark:text-[#FCFBF8] ${
+      className={`bg-white dark:bg-[#202020] rounded-2xl border border-[#E8E8E8] dark:border-[#383838] p-6 text-[#202020] dark:text-[#FCFBF9] ${
         hoverable
-          ? "transition-all duration-300 hover:border-[#B99A62]/50 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/30 hover:-translate-y-0.5"
+          ? "transition-all duration-300 hover:border-[#202020]/30 hover:shadow-lg hover:shadow-black/5 dark:hover:shadow-black/30 hover:-translate-y-0.5"
           : ""
       } ${className}`}
       {...props}
@@ -44,7 +44,7 @@ export function CardTitle({
 }) {
   return (
     <h3
-      className={`text-xl font-serif font-semibold text-[#202020] dark:text-[#FCFBF8] tracking-tight ${className}`}
+      className={`text-xl font-serif font-semibold text-[#202020] dark:text-[#FCFBF9] tracking-tight ${className}`}
     >
       {children}
     </h3>
@@ -59,7 +59,7 @@ export function CardDescription({
   className?: string;
 }) {
   return (
-    <p className={`text-[#66635F] dark:text-[#BDB8B0] text-sm leading-relaxed ${className}`}>
+    <p className={`text-[#555555] dark:text-[#BDBDBD] text-sm leading-relaxed ${className}`}>
       {children}
     </p>
   );

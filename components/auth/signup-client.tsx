@@ -108,9 +108,9 @@ export function SignupClient() {
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#FCFBF8] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] flex flex-col justify-between">
+    <div className="min-h-screen w-full bg-[#FCFBF9] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] flex flex-col justify-between">
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6 lg:p-12 my-auto">
-        <div className="w-full max-w-5xl rounded-[16px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[640px]">
+        <div className="w-full max-w-5xl rounded-2xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383838] shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 min-h-[640px]">
           
           {/* LEFT COLUMN: VISUAL (Desktop) */}
           <div className="hidden lg:flex lg:col-span-5 relative bg-[#171717] p-8 flex-col justify-between overflow-hidden">
@@ -133,7 +133,7 @@ export function SignupClient() {
             </div>
 
             <div className="relative z-20 text-white space-y-3">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B99A62] block">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#EFA1AA] block">
                 Begin Your Journey
               </span>
               <h2 className="font-serif text-2xl xl:text-3xl font-light leading-snug">
@@ -161,15 +161,15 @@ export function SignupClient() {
               <h1 className="font-serif text-2xl sm:text-3xl font-normal text-[#202020] dark:text-[#FCFBF8] tracking-tight">
                 Create Account
               </h1>
-              <p className="text-xs sm:text-sm text-[#66635F] dark:text-[#BDB8B0] mt-1 font-light">
+              <p className="text-xs sm:text-sm text-[#555555] dark:text-[#BDBDBD] mt-1 font-light">
                 Join Daranga Villa to start planning your stays.
               </p>
             </div>
 
             {/* Error Alert */}
             {errorMessage && (
-              <div className="mb-6 p-3.5 rounded-[8px] bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/50 text-[#B84A4A] dark:text-red-300 text-xs font-medium flex items-start gap-2 animate-in fade-in">
-                <svg className="w-4 h-4 text-[#B84A4A] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="mb-6 p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/50 text-[#C94A4A] dark:text-red-300 text-xs font-medium flex items-start gap-2 animate-in fade-in">
+                <svg className="w-4 h-4 text-[#C94A4A] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
                 <span>{errorMessage}</span>
@@ -178,7 +178,7 @@ export function SignupClient() {
 
             <form onSubmit={handleSignup} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium uppercase tracking-wider text-[#66635F] dark:text-[#8A8782] mb-1">
+                <label className="block text-xs font-medium uppercase tracking-wider text-[#555555] dark:text-[#999999] mb-1">
                   Full Name
                 </label>
                 <input
@@ -187,13 +187,13 @@ export function SignupClient() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Jainam Kothari"
-                  className="w-full px-4 py-2.5 rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62]"
+                  className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA] transition-colors"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium uppercase tracking-wider text-[#66635F] dark:text-[#8A8782] mb-1">
+                  <label className="block text-xs font-medium uppercase tracking-wider text-[#555555] dark:text-[#999999] mb-1">
                     Email Address
                   </label>
                   <input
@@ -202,12 +202,12 @@ export function SignupClient() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="name@domain.com"
-                    className="w-full px-4 py-2.5 rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62]"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA] transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium uppercase tracking-wider text-[#66635F] dark:text-[#8A8782] mb-1">
+                  <label className="block text-xs font-medium uppercase tracking-wider text-[#555555] dark:text-[#999999] mb-1">
                     Phone Number <span className="text-stone-400 font-normal lowercase">(optional)</span>
                   </label>
                   <input
@@ -215,14 +215,14 @@ export function SignupClient() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 98765 43210"
-                    className="w-full px-4 py-2.5 rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62]"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA] transition-colors"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-medium uppercase tracking-wider text-[#66635F] dark:text-[#8A8782] mb-1">
+                  <label className="block text-xs font-medium uppercase tracking-wider text-[#555555] dark:text-[#999999] mb-1">
                     Password
                   </label>
                   <input
@@ -231,12 +231,12 @@ export function SignupClient() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Min 6 characters"
-                    className="w-full px-4 py-2.5 rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62]"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA] transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium uppercase tracking-wider text-[#66635F] dark:text-[#8A8782] mb-1">
+                  <label className="block text-xs font-medium uppercase tracking-wider text-[#555555] dark:text-[#999999] mb-1">
                     Confirm Password
                   </label>
                   <input
@@ -245,7 +245,7 @@ export function SignupClient() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="Re-enter password"
-                    className="w-full px-4 py-2.5 rounded-[8px] bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#B99A62]"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-sm text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA] transition-colors"
                   />
                 </div>
               </div>
@@ -253,7 +253,7 @@ export function SignupClient() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 px-4 mt-2 rounded-[8px] bg-[#202020] hover:bg-[#171717] text-white font-medium text-xs uppercase tracking-[0.2em] transition-all shadow-sm hover:shadow-md disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-3.5 px-4 mt-2 rounded-xl bg-[#202020] hover:bg-[#171717] text-white font-medium text-xs uppercase tracking-[0.2em] transition-all shadow-sm hover:shadow-md disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
@@ -270,9 +270,9 @@ export function SignupClient() {
             <div className="mt-5">
               <div className="relative mb-4 text-center">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-[#E8E6E2] dark:border-[#383633]" />
+                  <div className="w-full border-t border-[#E8E8E8] dark:border-[#383838]" />
                 </div>
-                <span className="relative px-3 bg-white dark:bg-[#202020] text-[11px] uppercase tracking-widest text-[#66635F] dark:text-[#8A8782]">
+                <span className="relative px-3 bg-white dark:bg-[#202020] text-[11px] uppercase tracking-widest text-[#777777] dark:text-[#999999]">
                   OR
                 </span>
               </div>
@@ -281,7 +281,7 @@ export function SignupClient() {
                 type="button"
                 onClick={handleGoogleSignup}
                 disabled={isSubmitting}
-                className="w-full py-3 px-4 rounded-[8px] bg-white dark:bg-[#202020] hover:bg-[#F7F6F3] dark:hover:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] transition-colors flex items-center justify-center gap-3 shadow-xs"
+                className="w-full py-3 px-4 rounded-xl bg-white dark:bg-[#202020] hover:bg-[#F7F7F6] dark:hover:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] transition-colors flex items-center justify-center gap-3 shadow-xs cursor-pointer"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24">
                   <path
@@ -306,12 +306,12 @@ export function SignupClient() {
             </div>
 
             {/* Footer link */}
-            <div className="mt-6 pt-5 border-t border-[#E8E6E2] dark:border-[#383633] text-center">
-              <p className="text-xs text-[#66635F] dark:text-[#8A8782]">
+            <div className="mt-6 pt-5 border-t border-[#E8E8E8] dark:border-[#383838] text-center">
+              <p className="text-xs text-[#555555] dark:text-[#999999]">
                 Already have an account?{" "}
                 <Link
                   href={`/login${redirectUrl !== "/account" ? `?redirect=${encodeURIComponent(redirectUrl)}` : ""}`}
-                  className="font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] hover:underline"
+                  className="font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#EFA1AA] hover:underline"
                 >
                   Sign In
                 </Link>

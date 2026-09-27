@@ -89,7 +89,7 @@ export function AdminSidebar({
             <span className="font-serif text-sm sm:text-base font-normal tracking-[0.2em] text-[#FFFFFF] leading-tight">
               DARANGA VILLA
             </span>
-            <span className="text-[9.5px] font-sans font-semibold uppercase text-[#B99A62] tracking-wider">
+            <span className="text-[9.5px] font-sans font-semibold uppercase text-[#EFA1AA] tracking-wider">
               Admin Portal
             </span>
           </div>
@@ -124,11 +124,11 @@ export function AdminSidebar({
                     onClick={onClose}
                     className={`flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg transition-all ${
                       isActive
-                        ? "bg-white/10 text-white font-semibold border-l-2 border-[#E8A0A8]"
+                        ? "bg-white/10 text-white font-semibold border-l-2 border-[#EFA1AA]"
                         : "text-[#DAD7D1] hover:text-white hover:bg-white/5"
                     }`}
                   >
-                    <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-[#E8A0A8]" : "text-[#8A8782]"}`} />
+                    <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-[#EFA1AA]" : "text-[#8A8782]"}`} />
                     <span>{item.name}</span>
                   </Link>
                 );
@@ -142,7 +142,7 @@ export function AdminSidebar({
       <div className="p-3 border-t border-[#383633] bg-black/20">
         <div className="flex items-center justify-between gap-2 p-2 rounded-lg bg-white/5 border border-[#383633]">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-7 h-7 rounded-full bg-[#B99A62]/20 text-[#B99A62] font-sans font-semibold text-xs flex items-center justify-center flex-shrink-0">
+            <div className="w-7 h-7 rounded-full bg-[#EFA1AA]/20 text-[#EFA1AA] font-sans font-semibold text-xs flex items-center justify-center flex-shrink-0">
               {adminName.charAt(0).toUpperCase()}
             </div>
             <div className="flex flex-col min-w-0">

@@ -40,10 +40,16 @@ export function WhatsAppButton({ villaName }: WhatsAppButtonProps) {
     message
   )}`;
 
+  const isVillaDetail = pathname.startsWith("/villas/") && pathname !== "/villas";
+
   return (
     <aside
       aria-label="WhatsApp Contact"
-      className="fixed z-30 bottom-20 sm:bottom-24 md:bottom-8 right-4 sm:right-6 md:right-8 group select-none pointer-events-auto"
+      className={`fixed z-30 right-4 sm:right-6 md:right-8 group select-none pointer-events-auto transition-all duration-300 ${
+        isVillaDetail
+          ? "bottom-[calc(8.5rem+env(safe-area-inset-bottom,0px))] md:bottom-8"
+          : "bottom-[calc(4.8rem+env(safe-area-inset-bottom,0px))] md:bottom-8"
+      }`}
     >
       <a
         href={whatsappUrl}

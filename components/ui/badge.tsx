@@ -1,12 +1,12 @@
 import React from "react";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: "charcoal" | "gold" | "blush" | "peach" | "success" | "neutral";
+  variant?: "charcoal" | "gold" | "blush" | "peach" | "blue" | "success" | "neutral";
   children: React.ReactNode;
 }
 
 export function Badge({
-  variant = "gold",
+  variant = "blush",
   children,
   className = "",
   ...props
@@ -16,16 +16,18 @@ export function Badge({
 
   const variants = {
     charcoal:
-      "bg-[#202020] text-[#FFFFFF] border-[#202020] dark:bg-[#FCFBF8] dark:text-[#202020]",
-    gold: "bg-[#B99A62]/10 text-[#B99A62] border-[#B99A62]/30 dark:bg-[#B99A62]/15 dark:text-[#B99A62]",
+      "bg-[#202020] text-[#FFFFFF] border-[#202020] dark:bg-[#FCFBF9] dark:text-[#202020]",
+    gold: "bg-[#EFA1AA]/15 text-[#202020] dark:text-[#FCFBF9] border-[#EFA1AA]/40",
     blush:
-      "bg-[#E8A0A8]/15 text-[#202020] dark:text-[#FCFBF8] border-[#E8A0A8]/40",
+      "bg-[#EFA1AA]/15 text-[#202020] dark:text-[#FCFBF9] border-[#EFA1AA]/40",
     peach:
-      "bg-[#F5D0B5]/25 text-[#202020] dark:text-[#FCFBF8] border-[#F5D0B5]/50",
+      "bg-[#F6D2B8]/25 text-[#202020] dark:text-[#FCFBF9] border-[#F6D2B8]/50",
+    blue:
+      "bg-[#DDEEFF] text-[#202020] border-[#DDEEFF] dark:bg-[#202020] dark:text-[#DDEEFF] dark:border-[#383838]",
     success:
-      "bg-[#3F6B52]/10 text-[#3F6B52] border-[#3F6B52]/30 dark:bg-[#528C6C]/15 dark:text-[#528C6C]",
+      "bg-[#3F7658]/10 text-[#3F7658] border-[#3F7658]/30 dark:bg-[#3F7658]/20 dark:text-[#528C6C]",
     neutral:
-      "bg-[#F7F6F3] text-[#66635F] border-[#E8E6E2] dark:bg-[#202020] dark:text-[#BDB8B0] dark:border-[#383633]",
+      "bg-[#F7F7F6] text-[#555555] border-[#E8E8E8] dark:bg-[#202020] dark:text-[#BDBDBD] dark:border-[#383838]",
   };
 
   return (

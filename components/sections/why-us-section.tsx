@@ -43,7 +43,7 @@ export function WhyUsSection() {
   ];
 
   return (
-    <section id="experience" className="py-24 lg:py-36 bg-[var(--bg-secondary)] text-[var(--text-primary)] border-y border-[var(--border-color)]">
+    <section id="experience" className="py-10 sm:py-14 lg:py-16 bg-[var(--bg-secondary)] text-[var(--text-primary)] border-y border-[var(--border-color)]">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left Column: Magazine Typography & Editorial Pillars */}

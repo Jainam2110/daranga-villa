@@ -872,7 +872,7 @@ export function VillaCalendar() {
   };
 
   return (
-    <div id="booking-widget" className="w-full min-w-0 bg-white dark:bg-[#202020] p-3.5 sm:p-6 md:p-8 border border-[#E8E6E2] dark:border-[#383633] rounded-[12px] shadow-sm text-[#202020] dark:text-[#FCFBF8] space-y-5">
+    <div id="booking-widget" className="w-full min-w-0 bg-white dark:bg-[#202020] p-3.5 sm:p-5 md:p-6 border border-[#E8E6E2] dark:border-[#383633] rounded-[12px] shadow-sm text-[#202020] dark:text-[#FCFBF8] space-y-4">
       {/* Calendar Grid */}
       <div className="space-y-4 w-full min-w-0">
         <div className="flex items-center justify-between px-1">
@@ -1064,22 +1064,22 @@ export function VillaBookingCard() {
           <div
             className={`w-14 h-14 rounded-full flex items-center justify-center mx-auto border ${
               isPaidAndConfirmed
-                ? "bg-[#3F6B52]/10 text-[#3F6B52] border-[#3F6B52]/30"
+                ? "bg-[#3F7658]/10 text-[#3F7658] border-[#3F7658]/30"
                 : isHoldExpired
-                ? "bg-[#B84A4A]/10 text-[#B84A4A] border-[#B84A4A]/30"
-                : "bg-[#B99A62]/10 text-[#B99A62] border-[#B99A62]/30"
+                ? "bg-[#C94A4A]/10 text-[#C94A4A] border-[#C94A4A]/30"
+                : "bg-[#D9822B]/10 text-[#D9822B] border-[#D9822B]/30"
             }`}
           >
             {isPaidAndConfirmed ? (
-              <svg className="w-7 h-7 text-[#3F6B52]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-7 h-7 text-[#3F7658]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
               </svg>
             ) : isHoldExpired ? (
-              <svg className="w-7 h-7 text-[#B84A4A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-7 h-7 text-[#C94A4A]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg className="w-7 h-7 text-[#B99A62]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="w-7 h-7 text-[#D9822B]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             )}
@@ -1088,10 +1088,10 @@ export function VillaBookingCard() {
           <span
             className={`text-[10px] font-semibold uppercase tracking-[0.2em] block ${
               isPaidAndConfirmed
-                ? "text-[#3F6B52]"
+                ? "text-[#3F7658]"
                 : isHoldExpired
-                ? "text-[#B84A4A]"
-                : "text-[#B99A62]"
+                ? "text-[#C94A4A]"
+                : "text-[#D9822B]"
             }`}
           >
             {isPaidAndConfirmed
@@ -1101,7 +1101,7 @@ export function VillaBookingCard() {
               : "RESERVATION PENDING"}
           </span>
 
-          <h3 className="font-serif text-2xl font-bold text-[#202020] dark:text-[#FCFBF8]">
+          <h3 className="font-serif text-2xl font-bold text-[#202020] dark:text-[#FCFBF9]">
             {isPaidAndConfirmed
               ? "Your Stay is Confirmed!"
               : isHoldExpired
@@ -1109,7 +1109,7 @@ export function VillaBookingCard() {
               : "Booking Request Pending Payment"}
           </h3>
 
-          <p className="text-xs text-[#66635F] dark:text-[#BDB8B0] font-light leading-relaxed">
+          <p className="text-xs text-[#555555] dark:text-[#BDBDBD] font-normal leading-relaxed">
             {isPaidAndConfirmed
               ? `Your reservation at ${villa.name} has been verified and fully confirmed.`
               : isHoldExpired
@@ -1119,7 +1119,7 @@ export function VillaBookingCard() {
 
           {!isPaidAndConfirmed && !isHoldExpired && confirmedBooking.paymentHoldExpiresAt && (
             <div className="pt-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#B99A62]/10 border border-[#B99A62]/30 rounded-full text-xs font-semibold text-[#B99A62]">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#D9822B]/10 border border-[#D9822B]/30 rounded-full text-xs font-semibold text-[#D9822B]">
                 ⏳ Dates held for {formattedTimer}
               </span>
             </div>
@@ -1128,52 +1128,52 @@ export function VillaBookingCard() {
 
         {/* Inline Error Display */}
         {bookingError && (
-          <div className="p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-[6px] text-xs text-[#B84A4A] font-medium animate-in fade-in duration-200">
+          <div className="p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-xl text-xs text-[#C94A4A] font-medium animate-in fade-in duration-200">
             {bookingError}
           </div>
         )}
 
-        <div className="bg-[#FCFBF8] dark:bg-[#171717] p-4 rounded-[8px] border border-[#E8E6E2] dark:border-[#383633] space-y-3 text-xs">
-          <div className="flex justify-between items-center pb-2 border-b border-[#E8E6E2] dark:border-[#383633]">
-            <span className="text-[#66635F] dark:text-[#BDB8B0] text-[10px] font-semibold uppercase tracking-wider">Booking Reference</span>
-            <span className="font-mono font-semibold text-[#202020] dark:text-[#FCFBF8] text-xs">
+        <div className="bg-[#FCFBF9] dark:bg-[#171717] p-4 rounded-xl border border-[#E8E8E8] dark:border-[#383838] space-y-3 text-xs">
+          <div className="flex justify-between items-center pb-2 border-b border-[#E8E8E8] dark:border-[#383838]">
+            <span className="text-[#555555] dark:text-[#BDBDBD] text-[10px] font-semibold uppercase tracking-wider">Booking Reference</span>
+            <span className="font-mono font-semibold text-[#202020] dark:text-[#FCFBF9] text-xs">
               #{(confirmedBooking._id || confirmedBooking.id || "").slice(-8).toUpperCase()}
             </span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-[#66635F] dark:text-[#BDB8B0]">Residence</span>
-            <span className="font-semibold text-[#202020] dark:text-[#FCFBF8]">{villa.name}</span>
+            <span className="text-[#555555] dark:text-[#BDBDBD]">Residence</span>
+            <span className="font-semibold text-[#202020] dark:text-[#FCFBF9]">{villa.name}</span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-[#66635F] dark:text-[#BDB8B0]">Dates</span>
-            <span className="font-medium text-[#202020] dark:text-[#FCFBF8]">
+            <span className="text-[#555555] dark:text-[#BDBDBD]">Dates</span>
+            <span className="font-medium text-[#202020] dark:text-[#FCFBF9]">
               {formatDateDisplay(confirmedBooking.checkIn?.split("T")[0])} &rarr; {formatDateDisplay(confirmedBooking.checkOut?.split("T")[0])}
             </span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-[#66635F] dark:text-[#BDB8B0]">Guests</span>
-            <span className="font-medium text-[#202020] dark:text-[#FCFBF8]">{confirmedBooking.guests} Guests</span>
+            <span className="text-[#555555] dark:text-[#BDBDBD]">Guests</span>
+            <span className="font-medium text-[#202020] dark:text-[#FCFBF9]">{confirmedBooking.guests} Guests</span>
           </div>
 
-          <div className="flex justify-between items-center pt-2 border-t border-[#E8E6E2] dark:border-[#383633]">
-            <span className="text-[#66635F] dark:text-[#BDB8B0]">Total Amount</span>
-            <span className="font-sans text-base font-bold text-[#202020] dark:text-[#FCFBF8]">
+          <div className="flex justify-between items-center pt-2 border-t border-[#E8E8E8] dark:border-[#383838]">
+            <span className="text-[#555555] dark:text-[#BDBDBD]">Total Amount</span>
+            <span className="font-sans text-base font-bold text-[#202020] dark:text-[#FCFBF9]">
               ₹{confirmedBooking.totalAmount?.toLocaleString("en-IN")}
             </span>
           </div>
 
-          <div className="flex justify-between items-center pt-2 border-t border-[#E8E6E2] dark:border-[#383633]">
-            <span className="text-[#66635F] dark:text-[#BDB8B0] text-[10px]">Payment Status</span>
+          <div className="flex justify-between items-center pt-2 border-t border-[#E8E8E8] dark:border-[#383838]">
+            <span className="text-[#555555] dark:text-[#BDBDBD] text-[10px]">Payment Status</span>
             <span
               className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
                 isPaidAndConfirmed
-                  ? "bg-[#3F6B52]/10 text-[#3F6B52] border-[#3F6B52]/30"
+                  ? "bg-[#3F7658]/10 text-[#3F7658] border-[#3F7658]/30"
                   : isHoldExpired
-                  ? "bg-[#B84A4A]/10 text-[#B84A4A] border-[#B84A4A]/30"
-                  : "bg-[#B99A62]/10 text-[#B99A62] border-[#B99A62]/30"
+                  ? "bg-[#C94A4A]/10 text-[#C94A4A] border-[#C94A4A]/30"
+                  : "bg-[#D9822B]/10 text-[#D9822B] border-[#D9822B]/30"
               }`}
             >
               {isPaidAndConfirmed ? "PAID" : isHoldExpired ? "EXPIRED" : "UNPAID"}
@@ -1259,7 +1259,7 @@ export function VillaBookingCard() {
   );
 
   return (
-    <div className="bg-white dark:bg-[#202020] p-4 sm:p-7 rounded-[12px] border border-[#E8E6E2] dark:border-[#383633] shadow-sm space-y-6 text-[#202020] dark:text-[#FCFBF8]">
+    <div className="bg-white dark:bg-[#202020] p-4 sm:p-5.5 rounded-[12px] border border-[#E8E6E2] dark:border-[#383633] shadow-sm space-y-5 text-[#202020] dark:text-[#FCFBF8]">
       {/* Stepper Header */}
       <div className="flex items-center justify-between pb-4 border-b border-[#E8E6E2] dark:border-[#383633] text-xs font-semibold uppercase tracking-[0.2em]">
         {/* Step 01 */}
@@ -1311,7 +1311,7 @@ export function VillaBookingCard() {
 
       {/* STEP 1 VIEW */}
       {currentStep === 1 && (
-        <div className="space-y-6 animate-in fade-in duration-200">
+        <div className="space-y-4 sm:space-y-5 animate-in fade-in duration-200">
           {/* Pricing Header */}
           <div className="space-y-1">
             <span className="text-[9px] uppercase tracking-widest text-[#66635F] dark:text-[#BDB8B0] font-semibold block">
@@ -1491,14 +1491,14 @@ export function VillaBookingCard() {
                   if (bookingError) setBookingError(null);
                 }}
                 placeholder="Enter your full name"
-                className="w-full px-3.5 py-2.5 bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] rounded-[6px] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#E8A0A8] dark:focus:border-[#B99A62] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] rounded-xl text-xs text-[#202020] dark:text-[#FCFBF9] placeholder-[#888888] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA]/30 dark:focus:border-[#EFA1AA] transition-colors"
               />
             </div>
 
             <div>
               <label
                 htmlFor="guestEmail"
-                className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-1"
+                className="text-[10px] uppercase font-semibold text-[#555555] dark:text-[#BDBDBD] block mb-1"
               >
                 Email Address *
               </label>
@@ -1512,14 +1512,14 @@ export function VillaBookingCard() {
                   if (bookingError) setBookingError(null);
                 }}
                 placeholder="Enter your email"
-                className="w-full px-3.5 py-2.5 bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] rounded-[6px] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#E8A0A8] dark:focus:border-[#B99A62] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] rounded-xl text-xs text-[#202020] dark:text-[#FCFBF9] placeholder-[#888888] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA]/30 dark:focus:border-[#EFA1AA] transition-colors"
               />
             </div>
 
             <div>
               <label
                 htmlFor="guestPhone"
-                className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-1"
+                className="text-[10px] uppercase font-semibold text-[#555555] dark:text-[#BDBDBD] block mb-1"
               >
                 Phone Number *
               </label>
@@ -1533,14 +1533,14 @@ export function VillaBookingCard() {
                   if (bookingError) setBookingError(null);
                 }}
                 placeholder="+91 XXXXX XXXXX"
-                className="w-full px-3.5 py-2.5 bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] rounded-[6px] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#E8A0A8] dark:focus:border-[#B99A62] transition-colors"
+                className="w-full px-3.5 py-2.5 bg-white dark:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] rounded-xl text-xs text-[#202020] dark:text-[#FCFBF9] placeholder-[#888888] focus:outline-none focus:border-[#EFA1AA] focus:ring-1 focus:ring-[#EFA1AA]/30 dark:focus:border-[#EFA1AA] transition-colors"
               />
             </div>
           </div>
 
           {/* PRICE SUMMARY Box */}
-          <div className="p-4 bg-[#FCFBF8] dark:bg-[#171717] rounded-[8px] border border-[#E8E6E2] dark:border-[#383633] space-y-2 text-xs">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-[#202020] dark:text-[#FCFBF8] block border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
+          <div className="p-4 bg-[#FCFBF9] dark:bg-[#171717] rounded-xl border border-[#E8E8E8] dark:border-[#383838] space-y-2 text-xs">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-[#202020] dark:text-[#FCFBF9] block border-b border-[#E8E8E8] dark:border-[#383838] pb-2">
               PRICE SUMMARY
             </span>
 

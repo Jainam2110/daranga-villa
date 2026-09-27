@@ -135,14 +135,14 @@ export function VillaCardsCarousel({
             onClick={handlePrev}
             disabled={activeIndex === 0}
             aria-label="Previous villa"
-            className="w-10 h-10 rounded-full border border-[#E8E6E2] dark:border-[#383633] bg-white dark:bg-[#202020] flex items-center justify-center text-[#202020] dark:text-[#FCFBF8] disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#202020] dark:hover:border-[#FCFBF8] active:scale-95 transition-all shadow-xs flex-shrink-0 cursor-pointer"
+            className="w-10 h-10 rounded-full border border-[#E8E8E8] dark:border-[#383838] bg-white dark:bg-[#202020] flex items-center justify-center text-[#202020] dark:text-white disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#202020] dark:hover:border-white active:scale-95 transition-all shadow-xs flex-shrink-0 cursor-pointer"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
 
           {/* Center Indicator: Counter & Dots */}
           <div className="flex flex-col items-center gap-1.5">
-            <span className="font-mono text-[11px] font-semibold tracking-widest text-[#B99A62] uppercase">
+            <span className="font-mono text-[11px] font-semibold tracking-widest text-[#202020] dark:text-white uppercase">
               {String(activeIndex + 1).padStart(2, "0")} / {String(villas.length).padStart(2, "0")}
             </span>
             <div className="flex items-center gap-1.5">
@@ -154,8 +154,8 @@ export function VillaCardsCarousel({
                   aria-label={`Go to villa ${idx + 1}`}
                   className={`transition-all duration-300 rounded-full cursor-pointer ${
                     idx === activeIndex
-                      ? "w-6 h-1.5 bg-[#B99A62]"
-                      : "w-1.5 h-1.5 bg-[#E8E6E2] dark:bg-[#383633] hover:bg-[#66635F]"
+                      ? "w-6 h-1.5 bg-[#202020] dark:bg-white"
+                      : "w-1.5 h-1.5 bg-[#E8E8E8] dark:bg-[#383838] hover:bg-[#777777]"
                   }`}
                 />
               ))}
@@ -168,7 +168,7 @@ export function VillaCardsCarousel({
             onClick={handleNext}
             disabled={activeIndex === villas.length - 1}
             aria-label="Next villa"
-            className="w-10 h-10 rounded-full border border-[#E8E6E2] dark:border-[#383633] bg-white dark:bg-[#202020] flex items-center justify-center text-[#202020] dark:text-[#FCFBF8] disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#202020] dark:hover:border-[#FCFBF8] active:scale-95 transition-all shadow-xs flex-shrink-0 cursor-pointer"
+            className="w-10 h-10 rounded-full border border-[#E8E8E8] dark:border-[#383838] bg-white dark:bg-[#202020] flex items-center justify-center text-[#202020] dark:text-white disabled:opacity-30 disabled:cursor-not-allowed hover:border-[#202020] dark:hover:border-white active:scale-95 transition-all shadow-xs flex-shrink-0 cursor-pointer"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

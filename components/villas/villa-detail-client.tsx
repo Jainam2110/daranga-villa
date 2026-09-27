@@ -12,15 +12,17 @@ import {
   Bed,
   Bath,
   MapPin,
-  Sparkles,
   CheckCircle2,
   Shield,
   Tag,
   Compass,
   Car,
   ExternalLink,
-  Globe,
   Navigation,
+  Star,
+  Clock,
+  FileText,
+  Sparkles,
 } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -33,7 +35,7 @@ import {
 } from "@/components/villas/villa-booking-widget";
 import { VillaGalleryModal } from "@/components/villas/villa-gallery-modal";
 import { VillaAmenitiesModal } from "@/components/villas/villa-amenities-modal";
-import { AmenityIcon } from "@/components/ui/amenity-icon";
+import { renderAmenityIcon, getAmenityPricing } from "@/components/ui/amenity-icon";
 import { VillaCardsCarousel } from "@/components/ui/villa-cards-carousel";
 import { RealUdaipurMap } from "@/components/maps/real-udaipur-map";
 import { UdaipurLocation } from "@/components/sections/location-section";
@@ -54,6 +56,7 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
   const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const [isAmenitiesModalOpen, setIsAmenitiesModalOpen] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [isRulesExpanded, setIsRulesExpanded] = useState(false);
 
   // Mapped locations for interactive map
   const allLocationVillas = useMemo<Villa[]>(() => [villa, ...relatedVillas], [villa, relatedVillas]);
@@ -215,16 +218,58 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
   const hasMoreAmenities = villa.amenities && villa.amenities.length > 8;
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#FCFBF8] dark:bg-[#171717] font-sans text-[#202020] dark:text-[#FCFBF8] selection:bg-[#E8A0A8] selection:text-[#202020]">
+    <div className="flex min-h-screen flex-col bg-[#FCFBF9] dark:bg-[#171717] font-sans text-[#202020] dark:text-[#FCFBF9] selection:bg-[#EFA1AA] selection:text-[#202020]">
       <Navbar transparentOnTop={false} />
 
-      <main className="flex-1 pt-16 sm:pt-20 pb-32 sm:pb-36 lg:pb-20">
-        {/* Villa Title Section */}
-        <div className="pt-6 sm:pt-8 pb-2 sm:pb-3">
+      <main className="flex-1 pt-20 sm:pt-24 lg:pt-28 pb-20 sm:pb-24 lg:pb-16">
+        {/* Villa Title & Meta Header Section (StayVista Reference Style) */}
+        <div className="pt-2 sm:pt-4 pb-2 sm:pb-3">
           <Container>
-            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-light text-[#202020] dark:text-[#FCFBF8] tracking-tight leading-tight break-words">
-              {villa.name}
-            </h1>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4">
+              <div className="space-y-1.5">
+                <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold text-[#202020] dark:text-[#FCFBF9] tracking-tight leading-tight break-words font-serif">
+                  {villa.name}
+                </h1>
+                <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[#555555] dark:text-[#BDBDBD]">
+                  <MapPin className="w-3.5 h-3.5 text-[#202020] dark:text-white" />
+                  <span>{getVillaAddress(villa.location, "Udaipur, Rajasthan")}</span>
+                </div>
+                {/* Ratings line with laurels & reviews link matching reference */}
+                <div className="flex items-center gap-2 pt-0.5 text-xs sm:text-sm text-[#555555] dark:text-[#BDBDBD] flex-wrap">
+                  <span className="font-semibold text-[#202020] dark:text-[#FCFBF9]">
+                    🌿 Luxury Sanctuary 🌿
+                  </span>
+                  <span className="text-[#999999]">•</span>
+                  <span className="flex items-center gap-1 font-bold text-[#202020] dark:text-[#FCFBF9]">
+                    <Star className="w-3.5 h-3.5 fill-[#EFA1AA] text-[#EFA1AA]" />
+                    <span>{villa.rating || "4.9"}/5</span>
+                  </span>
+                  <span className="text-[#999999]">•</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const el = document.getElementById("select-dates");
+                      el?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="text-[#2563EB] hover:underline font-medium cursor-pointer"
+                  >
+                    {villa.reviewsCount || 48} Reviews
+                  </button>
+                </div>
+              </div>
+
+              {/* View Brochure Action Button */}
+              <div className="flex items-center gap-2 flex-shrink-0 pt-1 md:pt-0">
+                <button
+                  type="button"
+                  onClick={() => setIsAmenitiesModalOpen(true)}
+                  className="px-4 py-2 rounded-xl border border-[#DCDCDC] dark:border-[#383838] bg-white dark:bg-[#202020] hover:bg-[#F7F7F6] text-xs font-semibold text-[#202020] dark:text-[#FCFBF9] flex items-center gap-2 shadow-xs transition-all cursor-pointer"
+                >
+                  <FileText className="w-4 h-4 text-[#EFA1AA]" />
+                  <span>View Brochure</span>
+                </button>
+              </div>
+            </div>
           </Container>
         </div>
 
@@ -233,7 +278,7 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
           <div className="space-y-3.5">
             {/* Main Stage Cinema Showcase */}
             <div
-              className="relative w-full h-[320px] sm:h-[420px] md:h-[500px] lg:h-[560px] xl:h-[620px] rounded-[12px] sm:rounded-[16px] overflow-hidden border border-[#E8E6E2] dark:border-[#383633] bg-[#171717] shadow-lg group/stage select-none cursor-pointer"
+              className="relative w-full h-[320px] sm:h-[420px] md:h-[500px] lg:h-[560px] xl:h-[620px] rounded-2xl overflow-hidden border border-[#E8E8E8] dark:border-[#383838] bg-[#171717] shadow-md group/stage select-none cursor-pointer"
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
               onMouseEnter={() => setIsStageHovered(true)}
@@ -264,42 +309,31 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
 
               {/* Top Left Tag Badge (Desktop only) */}
               <div className="hidden sm:block absolute top-4 sm:top-6 left-4 sm:left-6 z-20 pointer-events-none">
-                <span className="px-3.5 py-1.5 bg-white/90 dark:bg-[#202020]/90 text-[#B99A62] text-[10px] sm:text-xs uppercase tracking-[0.25em] font-semibold border border-[#B99A62]/30 backdrop-blur-md rounded-[4px] shadow-sm">
+                <span className="px-3.5 py-1.5 bg-white/95 dark:bg-[#202020]/95 text-[#202020] dark:text-white text-[10px] sm:text-xs uppercase tracking-[0.2em] font-semibold border border-white/20 backdrop-blur-md rounded-full shadow-sm">
                   Exclusive Sanctuary • {getVillaAddress(villa.location, "Daranga Estate")}
                 </span>
               </div>
 
               {/* Top Right Counter Badge (Desktop only) */}
               <div className="hidden sm:block absolute top-4 sm:top-6 right-4 sm:right-6 z-20 pointer-events-none">
-                <span className="px-3 py-1 sm:py-1.5 bg-black/60 backdrop-blur-md text-stone-200 text-xs sm:text-sm font-mono tracking-wider font-medium rounded-[6px] border border-white/15 shadow-md flex items-center gap-1.5">
+                <span className="px-3 py-1 sm:py-1.5 bg-black/60 backdrop-blur-md text-stone-200 text-xs sm:text-sm font-mono tracking-wider font-medium rounded-full border border-white/15 shadow-md flex items-center gap-1.5">
                   <span>
                     {activeImageIndex + 1} / {galleryImages.length}
                   </span>
                 </span>
               </div>
 
-              {/* Auto-Slide Micro Progress Bar */}
-              {galleryImages.length > 1 && !isGalleryOpen && (
-                <div className="absolute bottom-0 left-0 right-0 h-[2.5px] sm:h-[3px] bg-black/50 z-20 overflow-hidden pointer-events-none">
-                  <div
-                    key={activeImageIndex}
-                    className={`h-full bg-gradient-to-r from-[#B99A62]/60 via-[#B99A62] to-[#DFB76C] ${isStageHovered || isStageTouched ? "opacity-30" : "animate-progress-5s opacity-90"
-                      }`}
-                  />
-                </div>
-              )}
-
               {/* Bottom Left: Category & Subtle Image Label (Desktop only) */}
               <div className="hidden sm:block absolute bottom-4 sm:bottom-6 left-4 sm:left-6 z-20 pointer-events-none max-w-sm sm:max-w-md">
                 <div className="flex items-center gap-2 flex-wrap">
                   {activeImage?.category && (
-                    <span className="px-2.5 py-1 bg-black/70 backdrop-blur-md text-[#B99A62] text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold rounded-[4px] border border-[#B99A62]/30 flex items-center gap-1">
+                    <span className="px-2.5 py-1 bg-black/70 backdrop-blur-md text-[#EFA1AA] text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold rounded-full border border-[#EFA1AA]/30 flex items-center gap-1">
                       <Tag className="w-3 h-3" />
                       <span>{formatCategoryLabel(activeImage.category)}</span>
                     </span>
                   )}
                   {activeImage?.label && (
-                    <span className="px-2.5 py-1 bg-black/60 backdrop-blur-md text-white text-xs sm:text-sm font-medium tracking-wide rounded-[4px] border border-white/15 drop-shadow-md">
+                    <span className="px-2.5 py-1 bg-black/60 backdrop-blur-md text-white text-xs sm:text-sm font-medium tracking-wide rounded-full border border-white/15 drop-shadow-md">
                       {activeImage.label}
                     </span>
                   )}
@@ -336,7 +370,7 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
                   type="button"
                   onClick={(e) => handleOpenGallery(activeImageIndex, e)}
                   aria-label={`View all ${galleryImages.length} photos`}
-                  className="px-2.5 py-1.5 sm:px-4 sm:py-2.5 bg-[#202020]/90 hover:bg-[#202020] text-white border border-white/20 rounded-[6px] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.14em] sm:tracking-[0.16em] transition-all shadow-md flex items-center gap-1.5 sm:gap-2 backdrop-blur-md active:scale-95"
+                  className="px-2.5 py-1.5 sm:px-4 sm:py-2.5 bg-[#202020]/90 hover:bg-[#202020] text-white border border-white/20 rounded-xl text-[10px] sm:text-xs font-semibold uppercase tracking-[0.14em] sm:tracking-[0.16em] transition-all shadow-md flex items-center gap-1.5 sm:gap-2 backdrop-blur-md active:scale-95"
                 >
                   <Maximize2 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                   <span className="hidden sm:inline">View All Photos ({galleryImages.length})</span>
@@ -354,7 +388,7 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
                       onClick={(e) => handleSelectImage(idx, e)}
                       aria-label={`Jump to slide ${idx + 1}`}
                       className={`transition-all duration-300 rounded-full ${idx === activeImageIndex
-                          ? "w-6 sm:w-8 h-1.5 bg-[#B99A62]"
+                          ? "w-6 sm:w-8 h-1.5 bg-white"
                           : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/50 hover:bg-white"
                         }`}
                     />
@@ -377,9 +411,9 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
                       type="button"
                       onClick={(e) => handleSelectImage(idx, e)}
                       aria-label={`Select photo ${idx + 1}`}
-                      className={`relative flex-shrink-0 w-20 h-14 sm:w-28 sm:h-18 md:w-32 md:h-20 rounded-[8px] overflow-hidden transition-all duration-300 bg-[#F7F6F3] dark:bg-[#202020] ${isActive
-                          ? "ring-2 ring-[#B99A62] ring-offset-2 ring-offset-[#FCFBF8] dark:ring-offset-[#171717] opacity-100 scale-[1.03] shadow-md"
-                          : "opacity-60 hover:opacity-100 border border-[#E8E6E2] dark:border-[#383633]"
+                      className={`relative flex-shrink-0 w-20 h-14 sm:w-28 sm:h-18 md:w-32 md:h-20 rounded-xl overflow-hidden transition-all duration-300 bg-[#F7F7F6] dark:bg-[#202020] ${isActive
+                          ? "ring-2 ring-[#202020] dark:ring-white ring-offset-2 ring-offset-[#FCFBF9] dark:ring-offset-[#171717] opacity-100 scale-[1.03] shadow-md"
+                          : "opacity-60 hover:opacity-100 border border-[#E8E8E8] dark:border-[#383838]"
                         }`}
                     >
                       <Image
@@ -390,7 +424,7 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
                         className="object-cover"
                       />
                       {isActive && (
-                        <div className="absolute inset-0 bg-[#B99A62]/10 pointer-events-none" />
+                        <div className="absolute inset-0 bg-[#202020]/10 pointer-events-none" />
                       )}
                     </button>
                   );
@@ -402,17 +436,17 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
 
         {/* 4. Main Content Grid & Integrated Booking Provider */}
         <VillaBookingProvider villa={villa}>
-          <Container className="pt-12">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <Container className="pt-6 sm:pt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
               {/* Left Column (8 Cols): Villa Sections + Calendar Focal Point */}
-              <div className="lg:col-span-8 space-y-16">
+              <div className="lg:col-span-8 space-y-8 sm:space-y-10">
                 {/* 5. Villa Overview & Description Section */}
-                <div className="space-y-6">
+                <div className="space-y-4 pb-8 sm:pb-10 border-b border-[#E8E8E8] dark:border-[#383838]">
                   <div className="space-y-2">
-                    <span className="text-[10px] uppercase font-semibold text-[#B99A62] tracking-[0.25em]">
+                    <span className="text-[10px] uppercase font-semibold text-[#EFA1AA] tracking-[0.25em]">
                       RESIDENCE OVERVIEW
                     </span>
-                    <h2 className="font-serif text-3xl sm:text-4xl font-light text-[#202020] dark:text-[#FCFBF8]">
+                    <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#202020] dark:text-[#FCFBF9]">
                       Private Sanctuary at {villa.name}
                     </h2>
                   </div>
@@ -438,7 +472,7 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
                         <button
                           type="button"
                           onClick={() => setIsDescriptionExpanded(!isDescriptionExpanded)}
-                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#B99A62] hover:text-[#202020] uppercase tracking-[0.16em] transition-colors group cursor-pointer"
+                          className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#202020] dark:text-[#FCFBF9] hover:text-[#EFA1AA] uppercase tracking-wider transition-colors group cursor-pointer"
                         >
                           <span>{isDescriptionExpanded ? "Show Less" : "Read More"}</span>
                           {isDescriptionExpanded ? (
@@ -454,7 +488,7 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
                 {/* 5.5 DIRECTLY AFTER DESCRIPTION: Interactive Availability Calendar & Number of Guests Section */}
                 <div
                   id="select-dates"
-                  className="space-y-6 pb-12 border-b border-[#E8E6E2] dark:border-[#383633] scroll-mt-24 sm:scroll-mt-28"
+                  className="space-y-5 pb-8 sm:pb-10 border-b border-[#E8E8E8] dark:border-[#383838] scroll-mt-24 sm:scroll-mt-28"
                 >
                   <VillaCalendar />
                   {/* Mobile Layout: Responsive Booking Card directly beneath calendar */}
@@ -463,142 +497,344 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
                   </div>
                 </div>
 
-                {/* Quick Property Stats Strip with Lucide Icons */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 sm:p-6 bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[8px] text-center shadow-xs">
-                  <div className="space-y-1.5 flex flex-col items-center justify-center">
-                    <Users className="w-5 h-5 text-[#B99A62]" />
-                    <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#8A8782] tracking-[0.2em]">
-                      Max Guests
-                    </span>
-                    <p className="font-serif text-lg sm:text-xl font-light text-[#202020] dark:text-[#FCFBF8]">
-                      {villa.maxGuests} Guests
-                    </p>
-                  </div>
+                {/* Residence Key Highlights Strip (Pastel Blue Information Pills) */}
+                <div className="pb-8 sm:pb-10 border-b border-[#E8E8E8] dark:border-[#383838]">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                    {/* Max Guests */}
+                    <div className="p-3.5 sm:p-4 rounded-2xl bg-[#DDEEFF] dark:bg-[#1E293B]/70 border border-[#DDEEFF] dark:border-[#334155] flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#0F172A] flex items-center justify-center text-[#202020] dark:text-white flex-shrink-0 shadow-2xs">
+                        <Users className="w-5 h-5 text-[#202020] dark:text-white" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[10px] uppercase font-bold text-[#555555] dark:text-[#94A3B8] tracking-wider block">
+                          CAPACITY
+                        </span>
+                        <span className="font-sans text-xs sm:text-sm font-bold text-[#202020] dark:text-white truncate block">
+                          Up to {villa.maxGuests} Guests
+                        </span>
+                      </div>
+                    </div>
 
-                  <div className="space-y-1.5 flex flex-col items-center justify-center">
-                    <Bed className="w-5 h-5 text-[#B99A62]" />
-                    <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#8A8782] tracking-[0.2em]">
-                      Bedrooms
-                    </span>
-                    <p className="font-serif text-lg sm:text-xl font-light text-[#202020] dark:text-[#FCFBF8]">
-                      {villa.bedrooms || 1} Bedrooms
-                    </p>
-                  </div>
+                    {/* Bedrooms */}
+                    <div className="p-3.5 sm:p-4 rounded-2xl bg-[#DDEEFF] dark:bg-[#1E293B]/70 border border-[#DDEEFF] dark:border-[#334155] flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#0F172A] flex items-center justify-center text-[#202020] dark:text-white flex-shrink-0 shadow-2xs">
+                        <Bed className="w-5 h-5 text-[#202020] dark:text-white" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[10px] uppercase font-bold text-[#555555] dark:text-[#94A3B8] tracking-wider block">
+                          BEDROOMS
+                        </span>
+                        <span className="font-sans text-xs sm:text-sm font-bold text-[#202020] dark:text-white truncate block">
+                          {villa.bedrooms || 1} Bedrooms
+                        </span>
+                      </div>
+                    </div>
 
-                  <div className="space-y-1.5 flex flex-col items-center justify-center">
-                    <Bath className="w-5 h-5 text-[#B99A62]" />
-                    <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#8A8782] tracking-[0.2em]">
-                      Bathrooms
-                    </span>
-                    <p className="font-serif text-lg sm:text-xl font-light text-[#202020] dark:text-[#FCFBF8]">
-                      {villa.bathrooms || 1} Bathrooms
-                    </p>
-                  </div>
+                    {/* Bathrooms */}
+                    <div className="p-3.5 sm:p-4 rounded-2xl bg-[#DDEEFF] dark:bg-[#1E293B]/70 border border-[#DDEEFF] dark:border-[#334155] flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#0F172A] flex items-center justify-center text-[#202020] dark:text-white flex-shrink-0 shadow-2xs">
+                        <Bath className="w-5 h-5 text-[#202020] dark:text-white" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[10px] uppercase font-bold text-[#555555] dark:text-[#94A3B8] tracking-wider block">
+                          BATHROOMS
+                        </span>
+                        <span className="font-sans text-xs sm:text-sm font-bold text-[#202020] dark:text-white truncate block">
+                          {villa.bathrooms || 1} Bathrooms
+                        </span>
+                      </div>
+                    </div>
 
-                  <div className="space-y-1.5 flex flex-col items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-[#B99A62]" />
-                    <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#8A8782] tracking-[0.2em]">
-                      Hospitality
-                    </span>
-                    <p className="font-serif text-lg sm:text-xl font-light text-[#202020] dark:text-[#FCFBF8]">
-                      24/7 Concierge
-                    </p>
+                    {/* Hospitality */}
+                    <div className="p-3.5 sm:p-4 rounded-2xl bg-[#DDEEFF] dark:bg-[#1E293B]/70 border border-[#DDEEFF] dark:border-[#334155] flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#0F172A] flex items-center justify-center text-[#202020] dark:text-white flex-shrink-0 shadow-2xs">
+                        <Sparkles className="w-5 h-5 text-[#202020] dark:text-white" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[10px] uppercase font-bold text-[#555555] dark:text-[#94A3B8] tracking-wider block">
+                          HOSPITALITY
+                        </span>
+                        <span className="font-sans text-xs sm:text-sm font-bold text-[#202020] dark:text-white truncate block">
+                          24/7 Concierge
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* 6. Residence Amenities with Professional Icons & View All Modal */}
-                <div className="space-y-6 pb-12 border-b border-[#E8E6E2] dark:border-[#383633]">
+                {/* 6. Residence Amenities (Matching Reference Screenshot) */}
+                <div className="space-y-5 pb-8 sm:pb-10 border-b border-[#E8E8E8] dark:border-[#383838]">
+                  {/* Header */}
                   <div className="space-y-2">
-                    <span className="text-[10px] uppercase font-semibold text-[#B99A62] tracking-[0.25em]">
-                      AMENITIES &amp; COMFORT
-                    </span>
-                    <h2 className="font-serif text-3xl font-light text-[#202020] dark:text-[#FCFBF8]">
-                      What this villa offers
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] uppercase font-semibold text-[#EFA1AA] tracking-[0.25em]">
+                        ESTATE AMENITIES &amp; SERVICES
+                      </span>
+                    </div>
+                    <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#202020] dark:text-[#FCFBF9]">
+                      Villa Amenities
                     </h2>
                   </div>
 
                   {displayedAmenities.length === 0 ? (
-                    <p className="text-xs text-[#66635F] dark:text-[#8A8782] italic">
+                    <p className="text-xs text-[#555555] dark:text-[#BDBDBD] italic">
                       Amenities will be updated soon for this private residence.
                     </p>
                   ) : (
-                    <div className="space-y-6">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
-                        {displayedAmenities.map((item, idx) => (
+                    <div className="grid grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-5 sm:gap-y-6 pt-1">
+                      {displayedAmenities.map((item, idx) => {
+                        const pricing = getAmenityPricing(item);
+                        return (
                           <div
                             key={idx}
-                            className="flex items-center gap-3.5 p-3.5 sm:p-4 bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[8px] hover:border-[#B99A62]/40 transition-colors shadow-xs"
+                            className="flex items-center gap-3 sm:gap-3.5 group"
                           >
-                            <div className="w-8 h-8 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] flex items-center justify-center flex-shrink-0 text-[#202020] dark:text-[#FCFBF8] shadow-xs">
-                              <AmenityIcon name={item} className="w-4 h-4 text-[#B99A62]" />
+                            {/* Square Icon Box with rounded corners and border */}
+                            <div className="relative w-13 h-13 sm:w-15 sm:h-15 rounded-xl border border-[#E8E8E8] dark:border-[#383838] bg-white dark:bg-[#1E1E1E] flex items-center justify-center p-2 flex-shrink-0 shadow-2xs group-hover:border-[#202020] dark:group-hover:border-white transition-colors">
+                              {pricing.isPaid && (
+                                <span className="absolute -top-1.5 -right-1.5 w-4.5 h-4.5 rounded-full bg-white dark:bg-[#202020] border border-[#3F7658] text-[#3F7658] text-[10px] font-bold flex items-center justify-center shadow-xs">
+                                  ₹
+                                </span>
+                              )}
+                              <div className="text-[#202020] dark:text-[#FCFBF9]">
+                                {renderAmenityIcon(item, "w-7 h-7 sm:w-8 sm:h-8")}
+                              </div>
                             </div>
-                            <span className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] tracking-wide">
-                              {item}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
 
+                            {/* Name and Optional Green Price Tag */}
+                            <div className="flex flex-col min-w-0">
+                              <span className="text-xs sm:text-sm font-normal text-[#202020] dark:text-[#FCFBF9] leading-snug line-clamp-2">
+                                {item}
+                              </span>
+                              {pricing.isPaid && pricing.price && (
+                                <span className="text-xs font-semibold text-[#3F7658] mt-0.5">
+                                  {pricing.price}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* +X more blue text link matching screenshot */}
                       {hasMoreAmenities && (
-                        <button
-                          type="button"
-                          onClick={() => setIsAmenitiesModalOpen(true)}
-                          className="px-5 py-2.5 bg-white dark:bg-[#202020] hover:bg-[#F7F6F3] border border-[#DAD7D1] dark:border-[#383633] hover:border-[#B99A62] rounded-[6px] text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] uppercase tracking-wider transition-colors flex items-center gap-2 shadow-xs"
-                        >
-                          <Sparkles className="w-3.5 h-3.5 text-[#B99A62]" />
-                          <span>View All Amenities ({villa.amenities?.length})</span>
-                        </button>
+                        <div className="flex items-center">
+                          <button
+                            type="button"
+                            onClick={() => setIsAmenitiesModalOpen(true)}
+                            className="text-[#2563EB] hover:text-[#1D4ED8] font-semibold text-xs sm:text-sm underline underline-offset-4 transition-colors cursor-pointer text-left"
+                          >
+                            +{(villa.amenities?.length || 0) - displayedAmenities.length} more
+                          </button>
+                        </div>
                       )}
                     </div>
                   )}
                 </div>
 
-
-
-                {/* 8. House Rules */}
-                {villa.houseRules && villa.houseRules.length > 0 && (
-                  <div className="space-y-6 pb-12 border-b border-[#E8E6E2] dark:border-[#383633]">
-                    <div className="space-y-2">
-                      <span className="text-[10px] uppercase font-semibold text-[#B99A62] tracking-[0.25em]">
-                        RESIDENCE POLICIES
-                      </span>
-                      <h2 className="font-serif text-3xl font-light text-[#202020] dark:text-[#FCFBF8]">
-                        House Rules
-                      </h2>
-                    </div>
-
-                    <ul className="space-y-3 text-[#66635F] dark:text-[#BDB8B0] text-xs font-medium">
-                      {villa.houseRules.map((rule, idx) => (
-                        <li
-                          key={idx}
-                          className="flex items-start gap-3 p-3.5 bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[6px]"
+                {/* 8. House Rules (Compact Amenities Grid Design Style) */}
+                {(() => {
+                  const baseRules = [
+                    {
+                      id: "checkin",
+                      icon: <Clock className="w-6 h-6 sm:w-7 sm:h-7" />,
+                      title: "Check-In",
+                      subtitle: "02:00 PM onwards",
+                      isPrimary: true,
+                    },
+                    {
+                      id: "checkout",
+                      icon: <Clock className="w-6 h-6 sm:w-7 sm:h-7" />,
+                      title: "Check-Out",
+                      subtitle: "11:00 AM sharp",
+                      isPrimary: true,
+                    },
+                    {
+                      id: "nosmoking",
+                      icon: (
+                        <svg
+                          className="w-6 h-6 sm:w-7 sm:h-7"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
                         >
-                          <CheckCircle2 className="w-4 h-4 text-[#B99A62] flex-shrink-0 mt-0.5" />
-                          <span className="text-[#202020] dark:text-[#FCFBF8] leading-relaxed">{rule}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                          <line x1="2" y1="2" x2="22" y2="22" />
+                          <path d="M18 8a3 3 0 0 0-3-3H6a3 3 0 0 0-3 3v8a3 3 0 0 0 3 3h9a3 3 0 0 0 3-3" />
+                          <path d="M22 12v3a3 3 0 0 1-3 3" />
+                          <line x1="7" y1="12" x2="7.01" y2="12" />
+                        </svg>
+                      ),
+                      title: "No Indoor Smoking",
+                      subtitle: "Permitted in outdoor verandas",
+                      isPrimary: false,
+                    },
+                    {
+                      id: "quiethours",
+                      icon: (
+                        <svg
+                          className="w-6 h-6 sm:w-7 sm:h-7"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                          <path d="M19 3v4" />
+                          <path d="M21 5h-4" />
+                        </svg>
+                      ),
+                      title: "Quiet Hours Observed",
+                      subtitle: "Post 10:00 PM loud music restricted",
+                      isPrimary: false,
+                    },
+                    {
+                      id: "govt-id",
+                      icon: (
+                        <svg
+                          className="w-6 h-6 sm:w-7 sm:h-7"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect width="18" height="14" x="3" y="5" rx="2" />
+                          <circle cx="9" cy="11" r="2" />
+                          <path d="M15 9h2" />
+                          <path d="M15 13h2" />
+                          <path d="M6 16a3 3 0 0 1 6 0" />
+                        </svg>
+                      ),
+                      title: "Govt ID Mandatory",
+                      subtitle: "Required for all adult guests",
+                      isPrimary: false,
+                    },
+                    {
+                      id: "pet-guest",
+                      icon: (
+                        <svg
+                          className="w-6 h-6 sm:w-7 sm:h-7"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.6"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+                          <path d="m9 12 2 2 4-4" />
+                        </svg>
+                      ),
+                      title: "Prior Concierge Notice",
+                      subtitle: "For pets & day visitors",
+                      isPrimary: false,
+                    },
+                  ];
+
+                  if (villa.houseRules && Array.isArray(villa.houseRules)) {
+                    villa.houseRules.forEach((rule, idx) => {
+                      baseRules.push({
+                        id: `custom-rule-${idx}`,
+                        icon: <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 text-[#3F7658]" />,
+                        title: rule,
+                        subtitle: "Estate Policy",
+                        isPrimary: false,
+                      });
+                    });
+                  }
+
+                  const displayedRules = isRulesExpanded ? baseRules : baseRules.slice(0, 3);
+                  const remainingRulesCount = baseRules.length - 3;
+
+                  return (
+                    <div className="space-y-5 pb-8 sm:pb-10 border-b border-[#E8E8E8] dark:border-[#383838]">
+                      {/* Header */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] uppercase font-semibold text-[#EFA1AA] tracking-[0.25em]">
+                            ESTATE PROTOCOLS &amp; GUIDELINES
+                          </span>
+                        </div>
+                        <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#202020] dark:text-[#FCFBF9]">
+                          House Rules
+                        </h2>
+                      </div>
+
+                      {/* 2-Column Grid matching Amenities section design */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-4 sm:gap-y-5 pt-1">
+                        {displayedRules.map((rule) => (
+                          <div key={rule.id} className="flex items-center gap-3 sm:gap-3.5 group">
+                            <div
+                              className={`relative w-13 h-13 sm:w-15 sm:h-15 rounded-xl border border-[#E8E8E8] dark:border-[#383838] bg-white dark:bg-[#1E1E1E] flex items-center justify-center p-2 flex-shrink-0 shadow-2xs group-hover:border-[#202020] dark:group-hover:border-white transition-colors ${
+                                rule.isPrimary ? "text-[#202020] dark:text-white" : "text-[#555555] dark:text-[#BDBDBD]"
+                              }`}
+                            >
+                              {rule.icon}
+                            </div>
+                            <div className="flex flex-col min-w-0">
+                              <span
+                                className={`text-xs sm:text-sm leading-snug ${
+                                  rule.isPrimary
+                                    ? "text-[10px] uppercase font-bold text-[#202020] dark:text-white tracking-wider"
+                                    : "font-normal text-[#202020] dark:text-[#FCFBF9]"
+                                }`}
+                              >
+                                {rule.title}
+                              </span>
+                              <span
+                                className={`${
+                                  rule.isPrimary
+                                    ? "text-xs sm:text-sm font-semibold text-[#202020] dark:text-[#FCFBF9]"
+                                    : "text-[11px] text-[#555555] dark:text-[#BDBDBD] font-normal"
+                                }`}
+                              >
+                                {rule.subtitle}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+
+                        {/* +X more blue text link matching Amenities screenshot */}
+                        {remainingRulesCount > 0 && (
+                          <div className="flex items-center">
+                            <button
+                              type="button"
+                              onClick={() => setIsRulesExpanded(!isRulesExpanded)}
+                              className="text-[#2563EB] hover:text-[#1D4ED8] font-semibold text-xs sm:text-sm underline underline-offset-4 transition-colors cursor-pointer text-left"
+                            >
+                              {isRulesExpanded ? "Show less rules" : `+${remainingRulesCount} more`}
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* 9. Cancellation Policy */}
                 {villa.cancellationPolicy && (
-                  <div className="space-y-4 p-6 sm:p-8 bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[8px] shadow-xs">
-                    <div className="flex items-center gap-2 text-[10px] uppercase font-semibold text-[#B99A62] tracking-[0.25em]">
-                      <Shield className="w-3.5 h-3.5" />
+                  <div className="p-5 sm:p-6 rounded-2xl bg-white dark:bg-[#1E1E1E] border border-[#E8E8E8] dark:border-[#383838] shadow-xs space-y-2">
+                    <div className="flex items-center gap-2 text-[10px] uppercase font-semibold text-[#555555] dark:text-[#BDBDBD] tracking-[0.25em]">
+                      <Shield className="w-4 h-4 text-[#3F7658]" />
                       <span>TERMS &amp; CANCELLATION</span>
                     </div>
-                    <h3 className="font-serif text-2xl font-light text-[#202020] dark:text-[#FCFBF8]">
+                    <h3 className="font-serif text-xl sm:text-2xl font-normal text-[#202020] dark:text-[#FCFBF9]">
                       Cancellation Policy
                     </h3>
-                    <p className="text-[#66635F] dark:text-[#BDB8B0] text-xs sm:text-sm leading-relaxed font-light">
+                    <p className="text-[#555555] dark:text-[#BDBDBD] text-xs sm:text-sm leading-relaxed font-normal">
                       {villa.cancellationPolicy}
                     </p>
                   </div>
                 )}
 
                 {/* 10. Dedicated Interactive Map & Surroundings Section */}
-                <div className="space-y-6 pb-12 border-b border-[#E8E6E2] dark:border-[#383633]" id="villa-location">
+                <div className="space-y-5 pb-8 sm:pb-10 border-b border-[#E8E8E8] dark:border-[#383838]" id="villa-location">
                   {(() => {
                     const addressText =
                       typeof villa.location === "object" && villa.location !== null
@@ -641,124 +877,115 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
                       ? `https://www.google.com/maps/search/?api=1&query=${exactLat},${exactLng}`
                       : "https://www.google.com/maps";
 
-                    const directionsUrl = hasValidCoordinates
-                      ? `https://www.google.com/maps/dir/?api=1&destination=${exactLat},${exactLng}`
-                      : "https://www.google.com/maps";
-
                     return (
-                      <>
-                        <div className="space-y-2">
-                          <span className="text-[10px] uppercase font-semibold text-[#B99A62] tracking-[0.25em] flex items-center gap-2">
-                            <Compass className="w-3.5 h-3.5 text-[#B99A62]" />
-                            <span>LOCATION &amp; SURROUNDINGS • UDAIPUR</span>
-                          </span>
-                          <h2 className="font-serif text-3xl font-light text-[#202020] dark:text-[#FCFBF8]">
-                            {addressText}
-                          </h2>
+                      <div className="space-y-5">
+                        {/* Header with Clean Google Maps Link */}
+                        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2.5">
+                          <div className="space-y-1.5">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] uppercase font-semibold text-[#EFA1AA] tracking-[0.25em]">
+                                LOCATION &amp; SURROUNDINGS
+                              </span>
+                            </div>
+                            <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#202020] dark:text-[#FCFBF9]">
+                              Where You’ll Be
+                            </h2>
+                            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[#555555] dark:text-[#BDBDBD] pt-0.5">
+                              <MapPin className="w-3.5 h-3.5 text-[#202020] dark:text-white flex-shrink-0" />
+                              <span>{addressText}</span>
+                            </div>
+                          </div>
+
+                          {/* Clean Google Maps Link */}
                           {hasValidCoordinates && (
-                            <p className="text-[11px] text-[#66635F] dark:text-[#8A8782] font-mono">
-                              Exact Coordinates: {exactLat.toFixed(5)}, {exactLng.toFixed(5)}
-                            </p>
+                            <a
+                              href={googleMapsOpenUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#2563EB] hover:text-[#1D4ED8] hover:underline flex-shrink-0 cursor-pointer pt-1 sm:pt-0"
+                            >
+                              <span>Open in Google Maps</span>
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
                           )}
                         </div>
 
-                        {/* Real Interactive Google Maps Container with Street & Satellite Layers */}
+                        {/* 100% Clean Interactive Google Map (Zero Overlays) */}
                         {hasValidCoordinates ? (
                           <div className="space-y-4">
-                            <div className="w-full h-[320px] sm:h-[420px] md:h-[500px] lg:h-[540px] rounded-[12px] overflow-hidden border border-[#E8E6E2] dark:border-[#383633] bg-white dark:bg-[#202020] shadow-md relative">
+                            <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E8E8E8] dark:border-[#383838] bg-[#F7F7F6] dark:bg-[#1E1E1E] shadow-2xs">
                               <RealUdaipurMap
                                 locations={mappedLocations}
                                 selectedLocation={selectedLocation}
                                 onSelectLocation={(loc) => setSelectedMapLocationId(loc.id)}
+                                showControls={false}
+                                showActivePill={false}
+                                showEstateSwitcher={false}
                               />
                             </div>
 
-                            {/* Location Action Card: Address & Action CTAs */}
-                            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-[8px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs">
-                              <div className="flex items-center gap-2.5 min-w-0">
-                                <MapPin className="w-4 h-4 text-[#B99A62] flex-shrink-0" />
-                                <span className="truncate text-xs font-medium text-[#202020] dark:text-[#FCFBF8]">
-                                  {addressText}
-                                </span>
+                            {/* Clean 3-Column Transit Proximity Cards */}
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-1">
+                              {/* Airport */}
+                              <div className="p-4 rounded-2xl bg-white dark:bg-[#1E1E1E] border border-[#E8E8E8] dark:border-[#383838] shadow-xs flex items-center gap-3 hover:border-[#202020]/30 transition-colors">
+                                <div className="w-10 h-10 rounded-xl bg-[#DDEEFF] flex items-center justify-center text-[#202020] flex-shrink-0">
+                                  <Car className="w-5 h-5 text-[#202020]" />
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="text-[10px] uppercase font-semibold text-[#777777] block tracking-wider truncate">
+                                    Airport (UDR)
+                                  </span>
+                                  <span className="text-xs sm:text-sm font-semibold text-[#202020] dark:text-[#FCFBF9] block">
+                                    ~ 32 km • 45 min
+                                  </span>
+                                </div>
                               </div>
 
-                              <div className="flex items-center gap-2.5 flex-shrink-0">
-                                {/* Open in Google Maps Button */}
-                                <a
-                                  href={googleMapsOpenUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex-1 sm:flex-initial px-4 py-2.5 rounded-[6px] bg-[#202020] hover:bg-[#171717] text-white text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-xs transition-all"
-                                >
-                                  <Globe className="w-3.5 h-3.5" />
-                                  <span>Open in Maps</span>
-                                  <ExternalLink className="w-3.5 h-3.5" />
-                                </a>
+                              {/* City Palace & Lake Pichola */}
+                              <div className="p-4 rounded-2xl bg-white dark:bg-[#1E1E1E] border border-[#E8E8E8] dark:border-[#383838] shadow-xs flex items-center gap-3 hover:border-[#202020]/30 transition-colors">
+                                <div className="w-10 h-10 rounded-xl bg-[#DDEEFF] flex items-center justify-center text-[#202020] flex-shrink-0">
+                                  <Compass className="w-5 h-5 text-[#202020]" />
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="text-[10px] uppercase font-semibold text-[#777777] block tracking-wider truncate">
+                                    City Palace &amp; Lake
+                                  </span>
+                                  <span className="text-xs sm:text-sm font-semibold text-[#202020] dark:text-[#FCFBF9] block">
+                                    ~ 6 km • 15 min
+                                  </span>
+                                </div>
+                              </div>
 
-                                {/* Get Directions Button */}
-                                <a
-                                  href={directionsUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex-1 sm:flex-initial px-4 py-2.5 rounded-[6px] bg-white dark:bg-[#202020] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all hover:bg-[#F7F6F3]"
-                                >
-                                  <Navigation className="w-3.5 h-3.5 text-[#B99A62]" />
-                                  <span>Directions</span>
-                                </a>
+                              {/* Railway Station */}
+                              <div className="p-4 rounded-2xl bg-white dark:bg-[#1E1E1E] border border-[#E8E8E8] dark:border-[#383838] shadow-xs flex items-center gap-3 hover:border-[#202020]/30 transition-colors">
+                                <div className="w-10 h-10 rounded-xl bg-[#DDEEFF] flex items-center justify-center text-[#202020] flex-shrink-0">
+                                  <Navigation className="w-5 h-5 text-[#202020]" />
+                                </div>
+                                <div className="min-w-0">
+                                  <span className="text-[10px] uppercase font-semibold text-[#777777] block tracking-wider truncate">
+                                    Railway Station
+                                  </span>
+                                  <span className="text-xs sm:text-sm font-semibold text-[#202020] dark:text-[#FCFBF9] block">
+                                    ~ 8 km • 18 min
+                                  </span>
+                                </div>
                               </div>
                             </div>
                           </div>
                         ) : (
-                          <div className="p-8 sm:p-10 text-center rounded-[8px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] space-y-3">
-                            <MapPin className="w-8 h-8 mx-auto text-[#B99A62]" />
-                            <h4 className="font-serif text-lg text-[#202020] dark:text-[#FCFBF8]">
-                              Exact map location not available yet.
+                          <div className="p-8 sm:p-10 text-center rounded-2xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383838] space-y-3">
+                            <MapPin className="w-8 h-8 mx-auto text-[#202020] dark:text-white" />
+                            <h4 className="font-serif text-lg text-[#202020] dark:text-[#FCFBF9]">
+                              Exact map location will be shared upon booking.
                             </h4>
-                            <p className="text-xs text-[#66635F] dark:text-[#8A8782] max-w-md mx-auto">
+                            <p className="text-xs text-[#555555] dark:text-[#BDBDBD] max-w-md mx-auto font-normal">
                               {addressText}. Please contact our concierge team for driving directions.
                             </p>
                           </div>
                         )}
-                      </>
+                      </div>
                     );
                   })()}
-
-                  {/* Location Context & Transit Distance Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                    {/* Atmosphere Card */}
-                    <div className="p-5 sm:p-6 rounded-[8px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] space-y-3 shadow-xs">
-                      <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B99A62] flex items-center gap-1.5">
-                        <MapPin className="w-3.5 h-3.5" />
-                        <span>PRIVATE SANCTUARY LOCATION</span>
-                      </div>
-                      <p className="text-xs sm:text-sm font-light text-[#66635F] dark:text-[#BDB8B0] leading-relaxed">
-                        Nestled in the tranquil valleys of Udaipur with panoramic views of the Aravalli range, offering total privacy, serene surroundings, and convenient road connectivity.
-                      </p>
-                    </div>
-
-                    {/* Transit Proximity Times */}
-                    <div className="p-5 sm:p-6 rounded-[8px] bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] space-y-3 shadow-xs">
-                      <div className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#B99A62] flex items-center gap-1.5">
-                        <Car className="w-3.5 h-3.5" />
-                        <span>TRANSIT PROXIMITY</span>
-                      </div>
-
-                      <div className="space-y-2 text-xs">
-                        <div className="flex items-center justify-between p-2.5 rounded-[6px] bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633]">
-                          <span className="text-[#66635F] dark:text-[#8A8782]">Maharana Pratap Airport</span>
-                          <span className="font-mono font-bold text-[#202020] dark:text-[#FCFBF8]">~ 32 km (45 min)</span>
-                        </div>
-                        <div className="flex items-center justify-between p-2.5 rounded-[6px] bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633]">
-                          <span className="text-[#66635F] dark:text-[#8A8782]">Udaipur Railway Station</span>
-                          <span className="font-mono font-bold text-[#202020] dark:text-[#FCFBF8]">~ 8 km (18 min)</span>
-                        </div>
-                        <div className="flex items-center justify-between p-2.5 rounded-[6px] bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633]">
-                          <span className="text-[#66635F] dark:text-[#8A8782]">City Palace &amp; Lake Pichola</span>
-                          <span className="font-mono font-bold text-[#202020] dark:text-[#FCFBF8]">~ 6 km (15 min)</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -773,14 +1000,14 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
 
           {/* 11. Related Villas Section */}
           {relatedVillas.length > 0 && (
-            <div className="bg-white dark:bg-[#202020] border-t border-[#E8E6E2] dark:border-[#383633] py-16 sm:py-20 mt-16 sm:mt-20">
+            <div className="bg-[#FCFBF9] dark:bg-[#202020] border-t border-[#E8E8E8] dark:border-[#383838] py-12 sm:py-16 mt-12 sm:mt-16">
               <Container>
-                <div className="space-y-10">
+                <div className="space-y-8">
                   <div className="text-center space-y-3">
-                    <span className="text-[10px] uppercase font-semibold text-[#B99A62] tracking-[0.3em]">
+                    <span className="text-[10px] uppercase font-semibold text-[#EFA1AA] tracking-[0.25em]">
                       YOU MAY ALSO LIKE
                     </span>
-                    <h2 className="font-serif text-3xl sm:text-4xl font-light text-[#202020] dark:text-[#FCFBF8]">
+                    <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#202020] dark:text-[#FCFBF9]">
                       Explore Other Sanctuaries
                     </h2>
                   </div>

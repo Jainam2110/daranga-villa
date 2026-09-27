@@ -13,7 +13,7 @@ export default async function AdminSettingsPage() {
 
   return (
     <AdminLayoutShell adminName={admin.name} adminEmail={admin.email} pageTitle="Settings">
-      <div className="border-b border-[#E8E6E2] dark:border-[#383633] pb-5">
+      <div className="border-b border-[#E8E8E8] dark:border-[#383633] pb-5">
         <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#202020] dark:text-[#FCFBF8]">
           System Settings &amp; Preferences
         </h1>
@@ -24,8 +24,8 @@ export default async function AdminSettingsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 text-xs">
         {/* Left Column: Admin Account Card */}
-        <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-4">
-          <div className="flex items-center gap-3 border-b border-[#E8E6E2] dark:border-[#383633] pb-3">
+        <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383633] shadow-xs space-y-4">
+          <div className="flex items-center gap-3 border-b border-[#E8E8E8] dark:border-[#383633] pb-3">
             <div className="w-10 h-10 rounded-full bg-[#202020] text-white font-bold text-base flex items-center justify-center">
               {admin.name.charAt(0).toUpperCase()}
             </div>
@@ -40,13 +40,13 @@ export default async function AdminSettingsPage() {
           </div>
 
           <div className="space-y-2 text-[#66635F] dark:text-[#BDB8B0]">
-            <div className="flex justify-between py-1 border-b border-[#E8E6E2]/60 dark:border-[#383633]">
+            <div className="flex justify-between py-1 border-b border-[#E8E8E8]/60 dark:border-[#383633]">
               <span>Role</span>
               <strong className="text-[#202020] dark:text-[#FCFBF8]">Super Administrator</strong>
             </div>
-            <div className="flex justify-between py-1 border-b border-[#E8E6E2]/60 dark:border-[#383633]">
+            <div className="flex justify-between py-1 border-b border-[#E8E8E8]/60 dark:border-[#383633]">
               <span>Session Status</span>
-              <span className="text-[#3F6B52] font-semibold">● Active (JWT Cookie)</span>
+              <span className="text-[#3F7658] font-semibold">● Active (JWT Cookie)</span>
             </div>
             <div className="flex justify-between py-1">
               <span>Security Access</span>
@@ -58,9 +58,9 @@ export default async function AdminSettingsPage() {
         {/* Right Column (2/3): Operational Defaults */}
         <div className="lg:col-span-2 space-y-5">
           {/* Hospitality Defaults Card */}
-          <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-4">
-            <div className="flex items-center gap-2 border-b border-[#E8E6E2] dark:border-[#383633] pb-3">
-              <Globe className="w-4 h-4 text-[#B99A62]" />
+          <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383633] shadow-xs space-y-4">
+            <div className="flex items-center gap-2 border-b border-[#E8E8E8] dark:border-[#383633] pb-3">
+              <Globe className="w-4 h-4 text-[#EFA1AA]" />
               <h3 className="font-serif text-base font-bold text-[#202020] dark:text-[#FCFBF8]">
                 Property System Defaults
               </h3>
@@ -118,9 +118,9 @@ export default async function AdminSettingsPage() {
           </div>
 
           {/* Security Card */}
-          <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-3">
-            <div className="flex items-center gap-2 border-b border-[#E8E6E2] dark:border-[#383633] pb-3">
-              <Shield className="w-4 h-4 text-[#B99A62]" />
+          <div className="p-5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383633] shadow-xs space-y-3">
+            <div className="flex items-center gap-2 border-b border-[#E8E8E8] dark:border-[#383633] pb-3">
+              <Shield className="w-4 h-4 text-[#EFA1AA]" />
               <h3 className="font-serif text-base font-bold text-[#202020] dark:text-[#FCFBF8]">
                 Security &amp; Session Protection
               </h3>

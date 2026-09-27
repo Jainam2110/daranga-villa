@@ -125,19 +125,19 @@ export function AdminBookingsManagementClient({
     switch (status) {
       case "CONFIRMED":
         return (
-          <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider bg-[#3F6B52]/10 text-[#3F6B52] border border-[#3F6B52]/30">
+          <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider bg-[#3F7658]/10 text-[#3F7658] border border-[#3F7658]/30">
             CONFIRMED
           </span>
         );
       case "PENDING":
         return (
-          <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider bg-[#F5D0B5]/30 text-[#B99A62] border border-[#B99A62]/30">
+          <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider bg-[#D9822B]/10 text-[#D9822B] border border-[#D9822B]/30">
             PENDING
           </span>
         );
       case "CANCELLED":
         return (
-          <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider bg-[#B84A4A]/10 text-[#B84A4A] border border-[#B84A4A]/30">
+          <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider bg-[#C94A4A]/10 text-[#C94A4A] border border-[#C94A4A]/30">
             CANCELLED
           </span>
         );
@@ -154,14 +154,14 @@ export function AdminBookingsManagementClient({
     switch (paymentStatus) {
       case "PAID":
         return (
-          <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider bg-[#3F6B52]/10 text-[#3F6B52] border border-[#3F6B52]/30">
+          <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider bg-[#3F7658]/10 text-[#3F7658] border border-[#3F7658]/30">
             PAID
           </span>
         );
       case "UNPAID":
       case "PENDING":
         return (
-          <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider bg-[#F5D0B5]/30 text-[#B99A62] border border-[#B99A62]/30">
+          <span className="px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider bg-[#D9822B]/10 text-[#D9822B] border border-[#D9822B]/30">
             UNPAID
           </span>
         );
@@ -300,7 +300,7 @@ export function AdminBookingsManagementClient({
   return (
     <div className="space-y-5">
       {/* Top Controls & Action Bar */}
-      <div className="p-4 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xs space-y-3 sm:space-y-0 sm:flex sm:items-center sm:gap-3 justify-between">
+      <div className="p-4 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383633] shadow-xs space-y-3 sm:space-y-0 sm:flex sm:items-center sm:gap-3 justify-between">
         {/* Search */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 absolute left-3 top-2.5 text-[#66635F] dark:text-[#BDB8B0]" />
@@ -309,7 +309,7 @@ export function AdminBookingsManagementClient({
             placeholder="Search guest name, email, phone, villa, or booking reference..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
+            className="w-full pl-9 pr-4 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
           />
         </div>
 
@@ -319,7 +319,7 @@ export function AdminBookingsManagementClient({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-medium text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
+            className="px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-medium text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
           >
             <option value="ALL">All Statuses ({bookings.length})</option>
             <option value="PENDING">PENDING</option>
@@ -332,7 +332,7 @@ export function AdminBookingsManagementClient({
           <select
             value={paymentFilter}
             onChange={(e) => setPaymentFilter(e.target.value)}
-            className="px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-medium text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
+            className="px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-medium text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
           >
             <option value="ALL">All Payments</option>
             <option value="PAID">PAID</option>
@@ -346,7 +346,7 @@ export function AdminBookingsManagementClient({
             <select
               value={villaFilter}
               onChange={(e) => setVillaFilter(e.target.value)}
-              className="px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-medium text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
+              className="px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-medium text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
             >
               <option value="ALL">All Villas</option>
               {villas.map((v) => (
@@ -370,7 +370,7 @@ export function AdminBookingsManagementClient({
       </div>
 
       {/* Bookings Table / List */}
-      <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E6E2] dark:border-[#383633] overflow-hidden shadow-xs">
+      <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E8E8] dark:border-[#383633] overflow-hidden shadow-xs">
         {filteredBookings.length === 0 ? (
           <div className="p-12 text-center text-[#66635F] dark:text-[#BDB8B0] space-y-3">
             <BookOpenCheck className="w-10 h-10 mx-auto text-[#8A8782]" />
@@ -382,7 +382,7 @@ export function AdminBookingsManagementClient({
         ) : (
           <>
             {/* Mobile Card List View (< md) */}
-            <div className="md:hidden divide-y divide-[#E8E6E2]/60 dark:divide-[#383633]">
+            <div className="md:hidden divide-y divide-[#E8E8E8]/60 dark:divide-[#383633]">
               {filteredBookings.map((b) => {
                 const checkInStr = new Date(b.checkIn).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
                 const checkOutStr = new Date(b.checkOut).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
@@ -407,7 +407,7 @@ export function AdminBookingsManagementClient({
                       <p className="text-xs text-[#66635F] dark:text-[#BDB8B0]">{b.guestEmail} • {b.guestPhone}</p>
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-2 text-xs pt-2 border-t border-[#E8E6E2] dark:border-[#383633]">
+                    <div className="flex flex-wrap items-center justify-between gap-2 text-xs pt-2 border-t border-[#E8E8E8] dark:border-[#383633]">
                       <div>
                         <span className="font-medium text-[#202020] dark:text-[#FCFBF8] block">{b.villaName}</span>
                         <span className="text-[#66635F] dark:text-[#BDB8B0] text-[11px] block">{checkInStr} → {checkOutStr} ({b.guests} guests)</span>
@@ -423,9 +423,9 @@ export function AdminBookingsManagementClient({
                             setNotesDraft(b.notes || "");
                             setShowCancelConfirm(false);
                           }}
-                          className="mt-1 inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded border border-[#DAD7D1] dark:border-[#383633] hover:border-[#202020] dark:hover:border-[#B99A62] text-[#202020] dark:text-[#FCFBF8] transition-colors"
+                          className="mt-1 inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold rounded border border-[#DAD7D1] dark:border-[#383633] hover:border-[#202020] dark:hover:border-[#EFA1AA] text-[#202020] dark:text-[#FCFBF8] transition-colors"
                         >
-                          <Eye className="w-3.5 h-3.5 text-[#B99A62]" />
+                          <Eye className="w-3.5 h-3.5 text-[#EFA1AA]" />
                           <span>Details</span>
                         </button>
                       </div>
@@ -439,7 +439,7 @@ export function AdminBookingsManagementClient({
             <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="bg-[#F7F6F3] dark:bg-[#171717] border-b border-[#E8E6E2] dark:border-[#383633] text-[#66635F] dark:text-[#BDB8B0] uppercase text-[10px] font-semibold tracking-wider">
+                  <tr className="bg-[#F7F6F3] dark:bg-[#171717] border-b border-[#E8E8E8] dark:border-[#383633] text-[#66635F] dark:text-[#BDB8B0] uppercase text-[10px] font-semibold tracking-wider">
                     <th className="py-3 px-4">Reference</th>
                     <th className="py-3 px-4">Guest</th>
                     <th className="py-3 px-4">Villa</th>
@@ -452,7 +452,7 @@ export function AdminBookingsManagementClient({
                     <th className="py-3 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#E8E6E2]/60 dark:divide-[#383633] text-[#202020] dark:text-[#FCFBF8]">
+                <tbody className="divide-y divide-[#E8E8E8]/60 dark:divide-[#383633] text-[#202020] dark:text-[#FCFBF8]">
                   {filteredBookings.map((b) => {
                     const checkInStr = new Date(b.checkIn).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
                     const checkOutStr = new Date(b.checkOut).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" });
@@ -505,9 +505,9 @@ export function AdminBookingsManagementClient({
                               setNotesDraft(b.notes || "");
                               setShowCancelConfirm(false);
                             }}
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#B99A62] transition-colors"
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] hover:text-[#EFA1AA] transition-colors"
                           >
-                            <Eye className="w-3.5 h-3.5 text-[#B99A62]" />
+                            <Eye className="w-3.5 h-3.5 text-[#EFA1AA]" />
                             <span>Details</span>
                           </button>
                         </td>
@@ -524,8 +524,8 @@ export function AdminBookingsManagementClient({
       {/* Manual Booking Creation Modal */}
       {isManualModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="w-full max-w-lg bg-white dark:bg-[#202020] rounded-2xl border border-[#E8E6E2] dark:border-[#383633] p-6 space-y-5 shadow-2xl text-xs text-[#202020] dark:text-[#FCFBF8]">
-            <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-3.5">
+          <div className="w-full max-w-lg bg-white dark:bg-[#202020] rounded-2xl border border-[#E8E8E8] dark:border-[#333333] p-6 space-y-5 shadow-2xl text-xs text-[#202020] dark:text-[#FCFBF8]">
+            <div className="flex items-center justify-between border-b border-[#E8E8E8] dark:border-[#333333] pb-3.5">
               <div>
                 <h3 className="font-serif text-xl font-bold text-[#202020] dark:text-[#FCFBF8]">
                   Create Manual / Direct Booking
@@ -536,14 +536,14 @@ export function AdminBookingsManagementClient({
               </div>
               <button
                 onClick={() => setIsManualModalOpen(false)}
-                className="p-1 rounded-lg text-[#66635F] dark:text-[#BDB8B0] hover:bg-[#F7F6F3] dark:hover:bg-[#171717]"
+                className="p-1 rounded-lg text-[#66635F] dark:text-[#BDB8B0] hover:bg-[#F7F7F6] dark:hover:bg-[#171717]"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {manualError && (
-              <div className="p-3 rounded-lg bg-[#B84A4A]/10 border border-[#B84A4A]/30 text-[#B84A4A] text-xs">
+              <div className="p-3 rounded-lg bg-[#C94A4A]/10 border border-[#C94A4A]/30 text-[#C94A4A] text-xs">
                 {manualError}
               </div>
             )}
@@ -557,7 +557,7 @@ export function AdminBookingsManagementClient({
                   required
                   value={manualVillaId}
                   onChange={(e) => setManualVillaId(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold"
+                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] text-xs font-semibold focus:border-[#EFA1AA] focus:outline-hidden"
                 >
                   {villas.map((v) => (
                     <option key={v.id} value={v.id}>
@@ -577,7 +577,7 @@ export function AdminBookingsManagementClient({
                     required
                     value={manualCheckIn}
                     onChange={(e) => setManualCheckIn(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs"
+                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] text-xs focus:border-[#EFA1AA] focus:outline-hidden"
                   />
                 </div>
 
@@ -590,7 +590,7 @@ export function AdminBookingsManagementClient({
                     required
                     value={manualCheckOut}
                     onChange={(e) => setManualCheckOut(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs"
+                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] text-xs focus:border-[#EFA1AA] focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -607,7 +607,7 @@ export function AdminBookingsManagementClient({
                     required
                     value={manualGuests}
                     onChange={(e) => setManualGuests(parseInt(e.target.value, 10) || 1)}
-                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-semibold"
+                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] text-xs font-semibold focus:border-[#EFA1AA] focus:outline-hidden"
                   />
                 </div>
 
@@ -618,7 +618,7 @@ export function AdminBookingsManagementClient({
                   <select
                     value={manualSource}
                     onChange={(e) => setManualSource(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-medium"
+                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] text-xs font-medium focus:border-[#EFA1AA] focus:outline-hidden"
                   >
                     <option value="ADMIN">ADMIN (Direct Manual)</option>
                     <option value="PHONE">PHONE</option>
@@ -639,7 +639,7 @@ export function AdminBookingsManagementClient({
                   placeholder="e.g. Rahul Sharma"
                   value={manualGuestName}
                   onChange={(e) => setManualGuestName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs"
+                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] text-xs focus:border-[#EFA1AA] focus:outline-hidden"
                 />
               </div>
 
@@ -654,7 +654,7 @@ export function AdminBookingsManagementClient({
                     placeholder="guest@example.com"
                     value={manualGuestEmail}
                     onChange={(e) => setManualGuestEmail(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs"
+                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] text-xs focus:border-[#EFA1AA] focus:outline-hidden"
                   />
                 </div>
 
@@ -668,12 +668,12 @@ export function AdminBookingsManagementClient({
                     placeholder="+91 98765 43210"
                     value={manualGuestPhone}
                     onChange={(e) => setManualGuestPhone(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs"
+                    className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] text-xs focus:border-[#EFA1AA] focus:outline-hidden"
                   />
                 </div>
               </div>
 
-              <div className="p-3 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] space-y-2">
+              <div className="p-3 rounded-lg bg-[#F7F7F6] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] space-y-2">
                 <label className="block text-[10px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0]">
                   Payment Authority Status
                 </label>
@@ -685,9 +685,9 @@ export function AdminBookingsManagementClient({
                       value="PAID"
                       checked={manualPaymentStatus === "PAID"}
                       onChange={() => setManualPaymentStatus("PAID")}
-                      className="text-[#202020]"
+                      className="text-[#202020] accent-[#202020]"
                     />
-                    <span className="font-semibold text-[#3F6B52]">Mark as PAID (Direct Payment)</span>
+                    <span className="font-semibold text-[#3F7658]">Mark as PAID (Direct Payment)</span>
                   </label>
 
                   <label className="flex items-center gap-1.5 cursor-pointer">
@@ -697,9 +697,9 @@ export function AdminBookingsManagementClient({
                       value="UNPAID"
                       checked={manualPaymentStatus === "UNPAID"}
                       onChange={() => setManualPaymentStatus("UNPAID")}
-                      className="text-[#202020]"
+                      className="text-[#202020] accent-[#202020]"
                     />
-                    <span className="font-semibold text-[#B99A62]">Mark as UNPAID (Pending)</span>
+                    <span className="font-semibold text-[#D9822B]">Mark as UNPAID (Pending)</span>
                   </label>
                 </div>
                 <p className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] font-light">
@@ -716,22 +716,22 @@ export function AdminBookingsManagementClient({
                   placeholder="Optional admin/concierge notes..."
                   value={manualNotes}
                   onChange={(e) => setManualNotes(e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs"
+                  className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] text-xs focus:border-[#EFA1AA] focus:outline-hidden"
                 />
               </div>
 
-              <div className="pt-3 border-t border-[#E8E6E2] dark:border-[#383633] flex justify-end gap-3">
+              <div className="pt-3 border-t border-[#E8E8E8] dark:border-[#333333] flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => setIsManualModalOpen(false)}
-                  className="px-4 py-2 text-xs font-semibold rounded-lg bg-[#F7F6F3] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633]"
+                  className="px-4 py-2 text-xs font-semibold rounded-lg bg-[#F7F7F6] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] border border-[#E8E8E8] dark:border-[#333333]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submittingManual}
-                  className="px-5 py-2 text-xs font-bold rounded-lg bg-[#202020] hover:bg-[#171717] text-white transition-colors uppercase tracking-wider shadow-xs"
+                  className="px-5 py-2 text-xs font-bold rounded-lg bg-[#202020] hover:bg-[#333333] text-white transition-colors uppercase tracking-wider shadow-xs"
                 >
                   {submittingManual ? "Creating..." : "Confirm Booking"}
                 </button>
@@ -744,12 +744,12 @@ export function AdminBookingsManagementClient({
       {/* Booking Detail Modal Drawer */}
       {selectedBooking && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="w-full max-w-lg bg-white dark:bg-[#202020] rounded-2xl border border-[#E8E6E2] dark:border-[#383633] p-6 space-y-5 shadow-2xl text-xs text-[#202020] dark:text-[#FCFBF8] animate-in fade-in zoom-in-95 duration-150">
+          <div className="w-full max-w-lg bg-white dark:bg-[#202020] rounded-2xl border border-[#E8E8E8] dark:border-[#333333] p-6 space-y-5 shadow-2xl text-xs text-[#202020] dark:text-[#FCFBF8] animate-in fade-in zoom-in-95 duration-150">
             
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-3.5">
+            <div className="flex items-center justify-between border-b border-[#E8E8E8] dark:border-[#333333] pb-3.5">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B99A62] block">
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#EFA1AA] block">
                   Reservation Details
                 </span>
                 <h3 className="font-serif text-xl font-bold text-[#202020] dark:text-[#FCFBF8]">
@@ -761,7 +761,7 @@ export function AdminBookingsManagementClient({
                   setSelectedBooking(null);
                   setShowCancelConfirm(false);
                 }}
-                className="p-1 rounded-lg text-[#66635F] dark:text-[#BDB8B0] hover:bg-[#F7F6F3] dark:hover:bg-[#171717]"
+                className="p-1 rounded-lg text-[#66635F] dark:text-[#BDB8B0] hover:bg-[#F7F7F6] dark:hover:bg-[#171717]"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -769,8 +769,8 @@ export function AdminBookingsManagementClient({
 
             {/* Confirmation Dialog for Cancellation */}
             {showCancelConfirm ? (
-              <div className="p-4 rounded-xl bg-[#B84A4A]/10 border border-[#B84A4A]/30 space-y-3 text-xs">
-                <div className="flex items-center gap-2 text-[#B84A4A] font-bold">
+              <div className="p-4 rounded-xl bg-[#C94A4A]/10 border border-[#C94A4A]/30 space-y-3 text-xs">
+                <div className="flex items-center gap-2 text-[#C94A4A] font-bold">
                   <AlertTriangle className="w-5 h-5" />
                   <span>Confirm Admin Cancellation</span>
                 </div>
@@ -780,14 +780,14 @@ export function AdminBookingsManagementClient({
                 <div className="flex justify-end gap-3 pt-2">
                   <button
                     onClick={() => setShowCancelConfirm(false)}
-                    className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-[#202020] text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633]"
+                    className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-[#202020] text-[#202020] dark:text-[#FCFBF8] border border-[#E8E8E8] dark:border-[#333333]"
                   >
                     Keep Booking
                   </button>
                   <button
                     onClick={handleCancelBooking}
                     disabled={isUpdatingStatus}
-                    className="px-4 py-1.5 text-xs font-bold rounded-lg bg-[#B84A4A] hover:bg-[#a33f3f] text-white transition-colors"
+                    className="px-4 py-1.5 text-xs font-bold rounded-lg bg-[#C94A4A] hover:bg-[#b03e3e] text-white transition-colors"
                   >
                     {isUpdatingStatus ? "Cancelling..." : "Confirm Cancellation"}
                   </button>
@@ -797,7 +797,7 @@ export function AdminBookingsManagementClient({
               /* Main Details Content */
               <div className="space-y-3.5">
                 {/* Residence & Visual Preview */}
-                <div className="p-3.5 rounded-xl bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] flex items-center gap-3">
+                <div className="p-3.5 rounded-xl bg-[#F7F7F6] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] flex items-center gap-3">
                   {selectedBooking.villaImage && (
                     <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-[#202020] flex-shrink-0">
                       <Image
@@ -817,14 +817,14 @@ export function AdminBookingsManagementClient({
                       {selectedBooking.villaName}
                     </span>
                     <span className="text-[11px] text-[#66635F] dark:text-[#BDB8B0] flex items-center gap-1">
-                      <MapPin className="w-3 h-3 text-[#B99A62]" />
+                      <MapPin className="w-3 h-3 text-[#EFA1AA]" />
                       <span>{selectedBooking.villaLocation || "Udaipur, Rajasthan"}</span>
                     </span>
                   </div>
                 </div>
 
                 {/* Guest Details */}
-                <div className="p-3.5 rounded-xl bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] space-y-2">
+                <div className="p-3.5 rounded-xl bg-[#F7F7F6] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] space-y-2">
                   <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] tracking-wider block">
                     Guest Information
                   </span>
@@ -850,18 +850,18 @@ export function AdminBookingsManagementClient({
 
                 {/* Schedule & Financial Breakdown */}
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="p-3 rounded-xl bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633]">
+                  <div className="p-3 rounded-xl bg-[#F7F7F6] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333]">
                     <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block">Check-In</span>
                     <span className="font-semibold text-xs">{new Date(selectedBooking.checkIn).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}</span>
                   </div>
-                  <div className="p-3 rounded-xl bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633]">
+                  <div className="p-3 rounded-xl bg-[#F7F7F6] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333]">
                     <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block">Check-Out</span>
                     <span className="font-semibold text-xs">{new Date(selectedBooking.checkOut).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}</span>
                   </div>
                 </div>
 
                 {/* Financial Authority Card */}
-                <div className="p-4 rounded-xl bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] space-y-2">
+                <div className="p-4 rounded-xl bg-[#F7F7F6] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] space-y-2">
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block">Total Amount</span>
@@ -876,7 +876,7 @@ export function AdminBookingsManagementClient({
                   </div>
 
                   {selectedBooking.razorpayPaymentId && (
-                    <div className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] font-mono border-t border-[#E8E6E2] dark:border-[#383633] pt-2">
+                    <div className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] font-mono border-t border-[#E8E8E8] dark:border-[#333333] pt-2">
                       Razorpay Payment ID: {selectedBooking.razorpayPaymentId}
                     </div>
                   )}
@@ -893,13 +893,13 @@ export function AdminBookingsManagementClient({
                       value={notesDraft}
                       onChange={(e) => setNotesDraft(e.target.value)}
                       placeholder="Add admin notes..."
-                      className="flex-1 px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs"
+                      className="flex-1 px-3 py-2 rounded-lg bg-white dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#333333] text-xs focus:border-[#EFA1AA] focus:outline-hidden"
                     />
                     <button
                       type="button"
                       onClick={handleSaveNotes}
                       disabled={isUpdatingStatus}
-                      className="px-3 py-2 bg-[#202020] hover:bg-[#171717] text-white rounded-lg text-xs font-semibold transition-colors"
+                      className="px-3 py-2 bg-[#202020] hover:bg-[#333333] text-white rounded-lg text-xs font-semibold transition-colors"
                     >
                       Save
                     </button>
@@ -909,11 +909,11 @@ export function AdminBookingsManagementClient({
             )}
 
             {/* Modal Footer */}
-            <div className="pt-3 border-t border-[#E8E6E2] dark:border-[#383633] flex items-center justify-between">
+            <div className="pt-3 border-t border-[#E8E8E8] dark:border-[#333333] flex items-center justify-between">
               {selectedBooking.status !== "CANCELLED" && !showCancelConfirm ? (
                 <button
                   onClick={() => setShowCancelConfirm(true)}
-                  className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#B84A4A]/10 text-[#B84A4A] border border-[#B84A4A]/30 hover:bg-[#B84A4A]/20 transition-colors"
+                  className="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-[#C94A4A]/10 text-[#C94A4A] border border-[#C94A4A]/30 hover:bg-[#C94A4A]/20 transition-colors"
                 >
                   Cancel Reservation
                 </button>
@@ -926,7 +926,7 @@ export function AdminBookingsManagementClient({
                   setSelectedBooking(null);
                   setShowCancelConfirm(false);
                 }}
-                className="px-4 py-2 text-xs font-semibold rounded-lg bg-[#202020] hover:bg-[#171717] text-white"
+                className="px-4 py-2 text-xs font-semibold rounded-lg bg-[#202020] hover:bg-[#333333] text-white"
               >
                 Close Window
               </button>

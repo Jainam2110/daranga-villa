@@ -40,14 +40,14 @@ export function ContactConciergeModal({
 
         {/* Modal Header */}
         <div className="text-center space-y-1.5 pt-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#B99A62]/10 text-[#B99A62] text-[10px] font-bold uppercase tracking-[0.25em]">
-            <Clock className="w-3 h-3" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFA1AA]/15 text-[#202020] dark:text-[#FCFBF9] text-[10px] font-bold uppercase tracking-[0.25em] border border-[#EFA1AA]/30">
+            <Clock className="w-3 h-3 text-[#EFA1AA]" />
             24/7 Dedicated Concierge
           </span>
-          <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#202020] dark:text-[#FCFBF8]">
+          <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#202020] dark:text-[#FCFBF9]">
             Call Daranga Concierge
           </h3>
-          <p className="text-xs text-[#66635F] dark:text-[#BDB8B0] font-light leading-relaxed">
+          <p className="text-xs text-[#555555] dark:text-[#BDBDBD] font-normal leading-relaxed">
             Speak directly with our estate hospitality team for instant reservations, private celebrations, or customized Udaipur itineraries.
           </p>
         </div>
@@ -57,11 +57,11 @@ export function ContactConciergeModal({
           {/* Direct Phone Call */}
           <a
             href={`tel:${rawPhone}`}
-            className="w-full p-4 rounded-[10px] bg-[#202020] hover:bg-[#171717] text-white dark:bg-[#FCFBF8] dark:hover:bg-[#E8E6E2] dark:text-[#202020] transition-all flex items-center justify-between shadow-md group cursor-pointer"
+            className="w-full p-4 rounded-xl bg-[#202020] hover:bg-[#171717] text-white dark:bg-[#FCFBF9] dark:hover:bg-[#E8E8E8] dark:text-[#202020] transition-all flex items-center justify-between shadow-md group cursor-pointer"
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white/10 dark:bg-black/10 flex items-center justify-center flex-shrink-0">
-                <Phone className="w-5 h-5 text-[#B99A62]" />
+                <Phone className="w-5 h-5 text-white dark:text-[#202020]" />
               </div>
               <div className="text-left">
                 <span className="text-[10px] uppercase tracking-wider font-semibold opacity-80 block">
@@ -85,7 +85,7 @@ export function ContactConciergeModal({
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full p-4 rounded-[10px] bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/30 text-[#202020] dark:text-[#FCFBF8] transition-all flex items-center justify-between group cursor-pointer"
+              className="w-full p-4 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/30 text-[#202020] dark:text-[#FCFBF9] transition-all flex items-center justify-between group cursor-pointer"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center flex-shrink-0 shadow-sm">
@@ -108,8 +108,8 @@ export function ContactConciergeModal({
         </div>
 
         {/* Guarantee Note */}
-        <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-[#66635F] dark:text-[#8A8782] text-center border-t border-[#E8E6E2] dark:border-[#383633]">
-          <ShieldCheck className="w-3.5 h-3.5 text-[#B99A62]" />
+        <div className="flex items-center justify-center gap-2 pt-2 text-[11px] text-[#555555] dark:text-[#BDBDBD] text-center border-t border-[#E8E8E8] dark:border-[#383838]">
+          <ShieldCheck className="w-3.5 h-3.5 text-[#3F7658]" />
           <span>Best Rate Guarantee on direct reservations</span>
         </div>
       </div>

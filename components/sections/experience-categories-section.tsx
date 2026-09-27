@@ -1,83 +1,86 @@
 "use client";
 
 import React, { useRef, useState, useEffect, useCallback } from "react";
-import { MapPin, Sparkles, X } from "lucide-react";
+import { MapPin, X } from "lucide-react";
 import { Container } from "@/components/ui/container";
 
-export interface ExperienceCategory {
+export interface DestinationCategory {
   id: string;
   name: string;
   tagline: string;
   keywords: string[];
   iconType:
-    | "pool"
-    | "heritage"
-    | "lakeview"
-    | "dining"
+    | "lake"
+    | "hills"
+    | "palace"
+    | "valley"
     | "nature"
-    | "celebrations"
-    | "pet"
-    | "jacuzzi";
+    | "pool"
+    | "sunset"
+    | "heritage";
 }
 
-export const EXPERIENCE_CATEGORIES: ExperienceCategory[] = [
+export const DESTINATION_CATEGORIES: DestinationCategory[] = [
   {
-    id: "pool",
+    id: "lake-pichola",
+    name: "Lake Pichola",
+    tagline: "Lakeside Sanctuaries",
+    keywords: ["pichola", "lake", "lakeview", "water", "sunset"],
+    iconType: "lake",
+  },
+  {
+    id: "tiger-hills",
+    name: "Tiger Hills",
+    tagline: "Hillside Solitude",
+    keywords: ["tiger", "hills", "mountain", "aravalli", "heights"],
+    iconType: "hills",
+  },
+  {
+    id: "fatehsagar",
+    name: "Fateh Sagar",
+    tagline: "Lake Promenade",
+    keywords: ["fateh", "sagar", "lake", "waterfront", "walks"],
+    iconType: "sunset",
+  },
+  {
+    id: "aravalli-valleys",
+    name: "Aravalli Hills",
+    tagline: "Valley Panorama",
+    keywords: ["aravalli", "valley", "hills", "nature", "peace"],
+    iconType: "valley",
+  },
+  {
+    id: "rayta-hills",
+    name: "Rayta Hills",
+    tagline: "Rolling Green Valleys",
+    keywords: ["rayta", "hills", "nature", "clouds", "scenic"],
+    iconType: "nature",
+  },
+  {
+    id: "sajjangarh",
+    name: "Monsoon Palace",
+    tagline: "Royal Sunset Ridge",
+    keywords: ["sajjangarh", "monsoon", "palace", "heritage", "view"],
+    iconType: "palace",
+  },
+  {
+    id: "private-pool",
     name: "Private Pool",
-    tagline: "Exclusive Dip & Deck",
+    tagline: "Exclusive Aquatic Stays",
     keywords: ["pool", "swimming", "private pool", "infinity"],
     iconType: "pool",
   },
   {
-    id: "heritage",
+    id: "royal-heritage",
     name: "Royal Heritage",
-    tagline: "Mewari Architecture",
-    keywords: ["heritage", "royal", "palace", "luxury", "suite"],
+    tagline: "Mewari Grandeur",
+    keywords: ["heritage", "royal", "mewari", "architecture", "suite"],
     iconType: "heritage",
   },
-  {
-    id: "lakeview",
-    name: "Lake & Sunset",
-    tagline: "Golden Hour Lounges",
-    keywords: ["lake", "sunset", "view", "balcony", "lakeview"],
-    iconType: "lakeview",
-  },
-  {
-    id: "dining",
-    name: "Private Chef",
-    tagline: "Gourmet Dining & BBQ",
-    keywords: ["chef", "dining", "breakfast", "food", "kitchen", "bbq"],
-    iconType: "dining",
-  },
-  {
-    id: "nature",
-    name: "Aravalli Views",
-    tagline: "Mountain & Valley",
-    keywords: ["mountain", "aravalli", "hills", "nature", "valley", "garden"],
-    iconType: "nature",
-  },
-  {
-    id: "celebrations",
-    name: "Celebrations",
-    tagline: "Events & Lawns",
-    keywords: ["lawn", "celebration", "party", "event", "gathering"],
-    iconType: "celebrations",
-  },
-  {
-    id: "pet",
-    name: "Pet Friendly",
-    tagline: "Lush Green Lawns",
-    keywords: ["pet", "garden", "lawn", "sprawling"],
-    iconType: "pet",
-  },
-  {
-    id: "jacuzzi",
-    name: "Spa & Jacuzzi",
-    tagline: "Wellness Retreats",
-    keywords: ["jacuzzi", "bath", "spa", "wellness", "luxury"],
-    iconType: "jacuzzi",
-  },
 ];
+
+// Backward-compatible alias
+export const EXPERIENCE_CATEGORIES = DESTINATION_CATEGORIES;
 
 interface ExperienceCategoriesSectionProps {
   selectedCategory: string | null;
@@ -85,99 +88,102 @@ interface ExperienceCategoriesSectionProps {
   className?: string;
 }
 
-// Illustrated Vector Icons matching the Stay Vista whimsical / duotone pastel art style
-function CategoryIllustratedIcon({ type }: { type: ExperienceCategory["iconType"] }) {
+// Illustrated Vector Icons: clean black line work with subtle blush (#F6C7CA / #EFA1AA), soft peach (#F6D2B8), and pastel blue (#DDEEFF)
+function DestinationLineIcon({ type }: { type: DestinationCategory["iconType"] }) {
   switch (type) {
-    case "pool":
-      // Swimming pool with sun lounger & water waves
+    case "lake":
+      // Lake sunrise with sailboat and waves
       return (
-        <svg viewBox="0 0 64 64" className="w-11 h-11 sm:w-12 sm:h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="24" width="52" height="30" rx="8" className="fill-[#FEECEB] dark:fill-[#382828]" />
-          <path d="M12 36C16 34 20 38 24 36C28 34 32 38 36 36C40 34 44 38 48 36C50 35 51 35.5 52 36" stroke="#E8A0A8" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M12 44C16 42 20 46 24 44C28 42 32 46 36 44C40 42 44 46 48 44C50 43 51 43.5 52 44" stroke="#B99A62" strokeWidth="2" strokeLinecap="round" />
-          {/* Parasol / Umbrella */}
-          <path d="M22 10C22 10 26 14 34 14C42 14 46 10 46 10" stroke="#202020" className="dark:stroke-white" strokeWidth="2" strokeLinecap="round" />
-          <path d="M34 10V24" stroke="#202020" className="dark:stroke-white" strokeWidth="2" strokeLinecap="round" />
-          <path d="M26 13C26 13 28 8 34 8C40 8 42 13 42 13" stroke="#E8A0A8" strokeWidth="2" strokeLinecap="round" fill="#FEECEB" />
+        <svg viewBox="0 0 56 56" className="w-10 h-10 sm:w-11 sm:h-11" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Subtle blush & peach backdrop blobs */}
+          <circle cx="28" cy="22" r="10" fill="#F6D2B8" opacity="0.8" />
+          <path d="M12 36C18 33 24 37 30 35C36 33 42 37 46 35" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M10 42C16 39 22 43 28 41C34 39 40 43 46 41" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          {/* Sailboat */}
+          <path d="M28 14V30M28 16L38 28H28" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M20 30H36L33 34H23L20 30Z" fill="#F6C7CA" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinejoin="round" />
         </svg>
       );
-    case "heritage":
-      // Mewari Jharokha / Royal Palace Dome
+    case "hills":
+      // Mountain peaks with birds and soft blush accent
       return (
-        <svg viewBox="0 0 64 64" className="w-11 h-11 sm:w-12 sm:h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M32 8C26 14 20 18 20 26H44C44 18 38 14 32 8Z" className="fill-[#FDF2E2] dark:fill-[#383120]" stroke="#B99A62" strokeWidth="2" strokeLinejoin="round" />
-          <circle cx="32" cy="7" r="2" fill="#B99A62" />
-          {/* Arch pillars */}
-          <path d="M16 26V54H48V26" stroke="#202020" className="dark:stroke-white" strokeWidth="2" strokeLinecap="round" />
-          <path d="M24 54V38C24 33.5 27.5 30 32 30C36.5 30 40 33.5 40 38V54" stroke="#B99A62" strokeWidth="2" className="fill-[#FDF2E2] dark:fill-[#2A2315]" />
-          <circle cx="32" cy="38" r="3" fill="#E8A0A8" />
+        <svg viewBox="0 0 56 56" className="w-10 h-10 sm:w-11 sm:h-11" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 18L44 40H16L30 18Z" fill="#F6C7CA" opacity="0.65" />
+          <circle cx="38" cy="18" r="6" fill="#F6D2B8" opacity="0.9" />
+          {/* Mountain linework */}
+          <path d="M8 44L24 16L36 34L42 24L50 44H8Z" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M24 16L29 26L24 30L20 25L24 16Z" fill="#DDEEFF" />
+          {/* Flying birds */}
+          <path d="M14 16C16 14 18 16 20 14" stroke="#202020" className="dark:stroke-white" strokeWidth="1.4" strokeLinecap="round" />
         </svg>
       );
-    case "lakeview":
-      // Lake sunrise / sunset with reflection & sailboat
+    case "sunset":
+      // Lakeside Sunset with reflection
       return (
-        <svg viewBox="0 0 64 64" className="w-11 h-11 sm:w-12 sm:h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="32" cy="24" r="12" className="fill-[#FEECEB] dark:fill-[#3A2424]" stroke="#E8A0A8" strokeWidth="2" />
-          <path d="M10 40C18 38 24 42 32 40C40 38 46 42 54 40" stroke="#202020" className="dark:stroke-white" strokeWidth="2" strokeLinecap="round" />
-          <path d="M14 48C20 46 26 50 32 48C38 46 44 50 50 48" stroke="#B99A62" strokeWidth="2" strokeLinecap="round" />
-          <path d="M38 20L48 34H38V20Z" className="fill-[#FDF2E2] dark:fill-[#383120]" stroke="#B99A62" strokeWidth="2" strokeLinejoin="round" />
+        <svg viewBox="0 0 56 56" className="w-10 h-10 sm:w-11 sm:h-11" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="28" cy="24" rx="12" ry="12" fill="#F6C7CA" opacity="0.8" />
+          <circle cx="28" cy="20" r="7" fill="#F6D2B8" />
+          <path d="M8 36H48" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M12 42H44" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M18 48H38" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
       );
-    case "dining":
-      // Gourmet Cloche & Wine / Candlelight
+    case "valley":
+      // Valley with road and mountain peaks
       return (
-        <svg viewBox="0 0 64 64" className="w-11 h-11 sm:w-12 sm:h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M14 42C14 26 22 20 32 20C42 20 50 26 50 42H14Z" className="fill-[#FEECEB] dark:fill-[#352525] dark:stroke-white" stroke="#202020" strokeWidth="2" />
-          <circle cx="32" cy="17" r="3" fill="#B99A62" />
-          <path d="M10 46H54" stroke="#B99A62" strokeWidth="2.5" strokeLinecap="round" />
-          <path d="M22 52H42" stroke="#202020" className="dark:stroke-white" strokeWidth="2" strokeLinecap="round" />
-          <circle cx="28" cy="32" r="2" fill="#E8A0A8" />
-          <circle cx="36" cy="32" r="2" fill="#E8A0A8" />
+        <svg viewBox="0 0 56 56" className="w-10 h-10 sm:w-11 sm:h-11" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="26" y="10" width="16" height="24" rx="4" fill="#F6D2B8" opacity="0.75" />
+          <path d="M10 44L22 20L34 38L42 26L48 44H10Z" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          {/* Valley winding road */}
+          <path d="M26 44C26 38 30 36 28 30" stroke="#EFA1AA" strokeWidth="2" strokeLinecap="round" />
         </svg>
       );
     case "nature":
-      // Aravalli Mountain peaks with sun & bird
+      // Palm tree / tropical beach / lake oasis
       return (
-        <svg viewBox="0 0 64 64" className="w-11 h-11 sm:w-12 sm:h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="44" cy="18" r="6" className="fill-[#FEECEB] dark:fill-[#3A2424]" stroke="#E8A0A8" strokeWidth="1.5" />
-          <path d="M8 50L26 20L38 38L46 26L56 50H8Z" className="fill-[#EBF4EC] dark:fill-[#1E2E20] dark:stroke-white" stroke="#202020" strokeWidth="2" strokeLinejoin="round" />
-          <path d="M26 20L31 30L26 34L20 28L26 20Z" fill="#B99A62" opacity="0.6" />
-          <path d="M14 16C16 14 18 16 20 14" stroke="#202020" className="dark:stroke-white" strokeWidth="1.5" strokeLinecap="round" />
+        <svg viewBox="0 0 56 56" className="w-10 h-10 sm:w-11 sm:h-11" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="34" cy="22" r="9" fill="#F6D2B8" opacity="0.85" />
+          <ellipse cx="28" cy="44" rx="18" ry="4" fill="#DDEEFF" />
+          {/* Palm trunk */}
+          <path d="M24 44C25 36 29 28 29 20" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          {/* Palm leaves */}
+          <path d="M29 20C25 18 18 20 16 26" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M29 20C29 14 26 8 20 10" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M29 20C33 14 39 12 42 16" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M29 20C35 20 40 24 42 29" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
       );
-    case "celebrations":
-      // Festive party tent / fairy lights / celebrations
+    case "palace":
+      // Mewari heritage royal arch / palace dome
       return (
-        <svg viewBox="0 0 64 64" className="w-11 h-11 sm:w-12 sm:h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 48L32 14L52 48H12Z" className="fill-[#FDF2E2] dark:fill-[#383120] dark:stroke-white" stroke="#202020" strokeWidth="2" strokeLinejoin="round" />
-          <path d="M32 14V48" stroke="#B99A62" strokeWidth="2" strokeDasharray="3 3" />
-          <path d="M24 48L32 32L40 48" stroke="#E8A0A8" strokeWidth="2" className="fill-[#FEECEB] dark:fill-[#352525]" />
-          <circle cx="16" cy="18" r="2" fill="#B99A62" />
-          <circle cx="48" cy="18" r="2.5" fill="#E8A0A8" />
-          <circle cx="32" cy="10" r="2" fill="#B99A62" />
+        <svg viewBox="0 0 56 56" className="w-10 h-10 sm:w-11 sm:h-11" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M28 8C23 13 18 16 18 24H38C38 16 33 13 28 8Z" fill="#F6C7CA" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinejoin="round" />
+          <circle cx="28" cy="7" r="1.5" fill="#202020" className="dark:fill-white" />
+          <path d="M14 24V46H42V24" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M22 46V32C22 28.5 25 26 28 26C31 26 34 28.5 34 32V46" fill="#FBE9DC" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" />
         </svg>
       );
-    case "pet":
-      // Sprawling garden paw & palm leaf
+    case "pool":
+      // Swimming pool lounger with umbrella
       return (
-        <svg viewBox="0 0 64 64" className="w-11 h-11 sm:w-12 sm:h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="32" cy="38" rx="12" ry="9" className="fill-[#FEECEB] dark:fill-[#352525] dark:stroke-white" stroke="#202020" strokeWidth="2" />
-          <circle cx="19" cy="24" r="4.5" className="fill-[#FDF2E2] dark:fill-[#383120]" stroke="#B99A62" strokeWidth="2" />
-          <circle cx="28" cy="18" r="4.5" className="fill-[#FDF2E2] dark:fill-[#383120]" stroke="#B99A62" strokeWidth="2" />
-          <circle cx="36" cy="18" r="4.5" className="fill-[#FDF2E2] dark:fill-[#383120]" stroke="#B99A62" strokeWidth="2" />
-          <circle cx="45" cy="24" r="4.5" className="fill-[#FDF2E2] dark:fill-[#383120]" stroke="#B99A62" strokeWidth="2" />
+        <svg viewBox="0 0 56 56" className="w-10 h-10 sm:w-11 sm:h-11" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="18" cy="22" r="8" fill="#F6D2B8" opacity="0.85" />
+          {/* Waves */}
+          <path d="M8 40C12 38 16 42 20 40C24 38 28 42 32 40C36 38 40 42 44 40" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M12 46C16 44 20 48 24 46C28 44 32 48 36 46C40 44 44 48 48 46" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          {/* Umbrella */}
+          <path d="M24 16C24 16 28 10 34 10C40 10 44 16 44 16H24Z" fill="#F6C7CA" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinejoin="round" />
+          <path d="M34 10V28" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
       );
-    case "jacuzzi":
-      // Steaming Jacuzzi / Spa Tub & Lotus
+    case "heritage":
+      // Traditional Mewari pavilion
       return (
-        <svg viewBox="0 0 64 64" className="w-11 h-11 sm:w-12 sm:h-12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="10" y="30" width="44" height="24" rx="6" className="fill-[#FDF2E2] dark:fill-[#383120] dark:stroke-white" stroke="#202020" strokeWidth="2" />
-          <path d="M16 38H48" stroke="#B99A62" strokeWidth="2" strokeLinecap="round" />
-          {/* Steam curves */}
-          <path d="M22 22C22 18 26 18 26 14" stroke="#E8A0A8" strokeWidth="2" strokeLinecap="round" />
-          <path d="M32 24C32 20 36 20 36 16" stroke="#B99A62" strokeWidth="2" strokeLinecap="round" />
-          <path d="M42 22C42 18 46 18 46 14" stroke="#E8A0A8" strokeWidth="2" strokeLinecap="round" />
+        <svg viewBox="0 0 56 56" className="w-10 h-10 sm:w-11 sm:h-11" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="38" cy="20" r="7" fill="#DDEEFF" />
+          <path d="M12 24L28 10L44 24H12Z" fill="#F6D2B8" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinejoin="round" />
+          <path d="M16 24V44M40 24V44M28 24V44" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M10 44H46" stroke="#202020" className="dark:stroke-white" strokeWidth="1.8" strokeLinecap="round" />
         </svg>
       );
     default:
@@ -191,7 +197,7 @@ export function ExperienceCategoriesSection({
   className = "",
 }: ExperienceCategoriesSectionProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0); // 0 to 1
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const handleScroll = useCallback(() => {
     const el = scrollRef.current;
@@ -212,7 +218,6 @@ export function ExperienceCategoriesSection({
   const handleCategoryClick = (id: string) => {
     const nextVal = selectedCategory === id ? null : id;
     onSelectCategory(nextVal);
-    // Smooth scroll down to villas section
     const el = document.getElementById("villas");
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
@@ -220,60 +225,55 @@ export function ExperienceCategoriesSection({
   };
 
   return (
-    <section className={`pt-6 pb-6 sm:py-8 bg-transparent text-[#202020] dark:text-[#FCFBF8] select-none ${className}`}>
+    <section className={`pt-6 pb-4 sm:py-6 bg-transparent text-[#202020] dark:text-white select-none ${className}`}>
       <Container>
-        {/* Section Header with Location subtext (Matches the "Pick a Destination 📍 Show nearby locations" in reference) */}
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-4 sm:mb-6 px-1">
-          <div className="flex items-center gap-2">
-            <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#202020] dark:text-[#FCFBF8] tracking-tight">
-              Explore by Experience
+        {/* Section Heading: Editorial Serif + Modern Sans link (matches reference screenshot) */}
+        <div className="flex flex-row items-baseline justify-between gap-2 mb-3 sm:mb-4 px-1">
+          <div className="flex items-baseline gap-3">
+            <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-normal text-[#202020] dark:text-white tracking-tight">
+              Pick a Destination
             </h2>
-          </div>
-
-          <div className="flex items-center gap-1.5 text-xs text-[#B99A62] font-medium tracking-wide">
-            <MapPin className="w-3.5 h-3.5 text-[#B99A62]" />
-            <span>Udaipur, Rajasthan</span>
+            <div className="flex items-center gap-1 text-xs text-[#202020] dark:text-stone-300 font-sans font-medium hover:underline cursor-pointer">
+              <MapPin className="w-3.5 h-3.5 text-[#202020] dark:text-white" />
+              <span>Show nearby locations</span>
+            </div>
           </div>
         </div>
 
         {/* Active Filter Notification Bar if selected */}
         {selectedCategory && (
-          <div className="mb-4 flex items-center justify-between p-3 rounded-[10px] bg-[#B99A62]/10 border border-[#B99A62]/30 text-xs text-[#202020] dark:text-[#FCFBF8] animate-in fade-in">
+          <div className="mb-3 flex items-center justify-between p-2.5 sm:p-3 rounded-[12px] bg-[#F2F7FC] dark:bg-[#202020] border border-[#DDEEFF] dark:border-[#383838] text-xs text-[#202020] dark:text-white animate-in fade-in">
             <span className="flex items-center gap-2 font-medium">
-              <Sparkles className="w-4 h-4 text-[#B99A62]" />
-              Filtering by:{" "}
-              <strong className="text-[#B99A62]">
-                {EXPERIENCE_CATEGORIES.find((c) => c.id === selectedCategory)?.name}
+              <span className="w-2 h-2 rounded-full bg-[#EFA1AA]" />
+              Showing properties in:{" "}
+              <strong className="text-[#202020] dark:text-white font-semibold">
+                {DESTINATION_CATEGORIES.find((c) => c.id === selectedCategory)?.name}
               </strong>
             </span>
             <button
               type="button"
               onClick={() => onSelectCategory(null)}
-              className="flex items-center gap-1 text-[11px] uppercase tracking-wider font-bold text-[#66635F] dark:text-[#BDB8B0] hover:text-rose-500 transition-colors cursor-pointer"
+              className="flex items-center gap-1 text-[11px] uppercase tracking-wider font-semibold text-[#555555] dark:text-[#BDBDBD] hover:text-[#C94A4A] transition-colors cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
-              <span>Clear Filter</span>
+              <span>Clear</span>
             </button>
           </div>
         )}
 
-        {/* Desktop Grid & Mobile Swipeable 2-Row Layout */}
+        {/* Desktop Destination Row & Mobile Horizontal Swipe Carousel */}
         <div
           ref={scrollRef}
           className="
             overflow-x-auto
             scrollbar-none
             scroll-touch-pan
-            pb-3
+            pb-2
             -mx-4 px-4 sm:mx-0 sm:px-0
           "
         >
-          {/* 
-            Two-row layout on mobile/tablet (4 items per row, or 8 items flowing),
-            Desktop: 8-item single grid or flexible wrapped cards
-          */}
-          <div className="grid grid-rows-2 grid-flow-col auto-cols-[82px] sm:auto-cols-[105px] lg:grid-rows-1 lg:grid-cols-8 gap-3 sm:gap-4 w-max lg:w-full">
-            {EXPERIENCE_CATEGORIES.map((cat) => {
+          <div className="grid grid-rows-2 grid-flow-col auto-cols-[80px] sm:auto-cols-[100px] lg:grid-rows-1 lg:grid-cols-8 gap-2.5 sm:gap-3 w-max lg:w-full">
+            {DESTINATION_CATEGORIES.map((cat) => {
               const isSelected = selectedCategory === cat.id;
               return (
                 <button
@@ -282,36 +282,36 @@ export function ExperienceCategoriesSection({
                   onClick={() => handleCategoryClick(cat.id)}
                   aria-pressed={isSelected}
                   className={`
-                    group flex flex-col items-center text-center p-2 sm:p-2.5 rounded-[12px] transition-all duration-300 cursor-pointer
+                    group flex flex-col items-center text-center p-2 rounded-[14px] transition-all duration-200 cursor-pointer
                     ${
                       isSelected
-                        ? "bg-white dark:bg-[#202020] ring-2 ring-[#B99A62] shadow-lg scale-105"
-                        : "hover:bg-white/60 dark:hover:bg-[#202020]/60 active:scale-95"
+                        ? "bg-white dark:bg-[#202020] ring-1.5 ring-[#202020] dark:ring-white shadow-xs"
+                        : "hover:bg-black/5 dark:hover:bg-white/5 active:scale-95"
                     }
                   `}
                 >
-                  {/* Illustrated Category Icon Container */}
+                  {/* Lightweight Line-art Icon Container */}
                   <div
                     className={`
-                      relative w-14 h-14 sm:w-16 sm:h-16 rounded-[16px] flex items-center justify-center transition-transform duration-300 group-hover:scale-110
+                      relative w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center transition-transform duration-200 group-hover:scale-105
                       ${
                         isSelected
-                          ? "bg-[#B99A62]/15 shadow-inner"
-                          : "bg-[#F7F6F3] dark:bg-[#202020] border border-[#E8E6E2]/70 dark:border-[#383633]/70"
+                          ? "bg-[#DDEEFF] dark:bg-[#383838]"
+                          : "bg-transparent"
                       }
                     `}
                   >
-                    <CategoryIllustratedIcon type={cat.iconType} />
+                    <DestinationLineIcon type={cat.iconType} />
                   </div>
 
-                  {/* Category Name Label */}
+                  {/* Destination Name Label */}
                   <span
                     className={`
-                      mt-2 text-[11px] sm:text-xs font-medium tracking-tight line-clamp-1
+                      mt-1.5 text-[11px] sm:text-xs font-sans tracking-tight line-clamp-1
                       ${
                         isSelected
-                          ? "text-[#B99A62] font-semibold"
-                          : "text-[#202020] dark:text-[#FCFBF8] group-hover:text-[#B99A62]"
+                          ? "text-[#202020] dark:text-white font-semibold"
+                          : "text-[#555555] dark:text-[#BDBDBD] group-hover:text-[#202020] dark:group-hover:text-white font-normal"
                       }
                     `}
                   >
@@ -323,11 +323,11 @@ export function ExperienceCategoriesSection({
           </div>
         </div>
 
-        {/* Sleek Scroll Progress Bar (Matches the two-segment pill in Stay Vista screenshot) */}
-        <div className="flex lg:hidden justify-center items-center pt-2">
-          <div className="w-16 h-1 bg-[#E8E6E2] dark:bg-[#383633] rounded-full overflow-hidden">
+        {/* Scroll Progress Bar for Mobile */}
+        <div className="flex lg:hidden justify-center items-center pt-1.5">
+          <div className="w-12 h-0.5 bg-[#E8E8E8] dark:bg-[#383838] rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#B99A62] rounded-full transition-all duration-150"
+              className="h-full bg-[#202020] dark:bg-white rounded-full transition-all duration-150"
               style={{
                 width: "50%",
                 transform: `translateX(${scrollProgress * 100}%)`,

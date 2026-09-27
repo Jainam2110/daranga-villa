@@ -142,19 +142,19 @@ export function ExperiencesSection() {
   return (
     <section
       id="experiences"
-      className="py-16 sm:py-24 lg:py-28 bg-[#FCFBF8] dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF8] overflow-hidden"
+      className="py-12 sm:py-16 lg:py-20 bg-white dark:bg-[#171717] text-[#202020] dark:text-[#FCFBF9] overflow-hidden border-t border-[#E8E8E8] dark:border-[#383838]"
     >
       <Container>
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4 mb-10 sm:mb-14 select-none">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E8A0A8]/15 dark:bg-[#E8A0A8]/20 border border-[#E8A0A8]/30 text-[#202020] dark:text-[#FCFBF8] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.22em]">
-            <Sparkles className="w-3.5 h-3.5 text-[#B99A62]" />
+        <div className="text-center max-w-3xl mx-auto space-y-3 mb-8 sm:mb-10 select-none">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#EFA1AA]/15 dark:bg-[#EFA1AA]/20 border border-[#EFA1AA]/40 text-[#202020] dark:text-[#FCFBF9] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em]">
+            <Sparkles className="w-3.5 h-3.5 text-[#EFA1AA]" />
             CURATED MOMENTS
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#202020] dark:text-[#FCFBF8] tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-normal text-[#202020] dark:text-[#FCFBF9] tracking-tight">
             Tailored Resort Experiences
           </h2>
-          <p className="text-[#66635F] dark:text-[#A8A49E] text-xs sm:text-sm font-light leading-relaxed max-w-xl mx-auto">
+          <p className="text-[#555555] dark:text-[#BDBDBD] text-xs sm:text-sm font-normal leading-relaxed max-w-xl mx-auto">
             From starlit private pool evenings to restorative morning rituals, immerse in curated sanctuary living.
           </p>
         </div>
@@ -187,7 +187,7 @@ export function ExperiencesSection() {
               return (
                 <div
                   key={exp.id}
-                  className="absolute inset-0 w-full h-full rounded-3xl overflow-hidden bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-xl"
+                  className="absolute inset-0 w-full h-full rounded-2xl overflow-hidden bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383838] shadow-lg"
                   style={{
                     transform: `rotateY(${faceAngle}deg) translateZ(${radius}px)`,
                     backfaceVisibility: "hidden",
@@ -209,8 +209,8 @@ export function ExperiencesSection() {
 
                       {/* Badge on Photo */}
                       <div className="absolute top-4 left-4 z-10">
-                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/20 text-white text-[10px] uppercase font-semibold tracking-wider">
-                          <Compass className="w-3 h-3 text-[#B99A62]" />
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-[10px] uppercase font-semibold tracking-wider">
+                          <Compass className="w-3 h-3 text-[#EFA1AA]" />
                           {exp.category}
                         </span>
                       </div>
@@ -220,31 +220,31 @@ export function ExperiencesSection() {
                     <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between bg-white dark:bg-[#202020]">
                       <div className="space-y-3">
                         {/* Subtitle tag */}
-                        <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#B99A62] block">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#EFA1AA] block">
                           {exp.subtitle}
                         </span>
 
                         {/* Title */}
-                        <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#202020] dark:text-[#FCFBF8] leading-tight tracking-tight">
+                        <h3 className="font-serif text-2xl sm:text-3xl font-normal text-[#202020] dark:text-[#FCFBF9] leading-tight tracking-tight">
                           {exp.title}
                         </h3>
 
                         {/* Description */}
-                        <p className="text-[#66635F] dark:text-[#A8A49E] text-xs sm:text-sm font-light leading-relaxed">
+                        <p className="text-[#555555] dark:text-[#BDBDBD] text-xs sm:text-sm font-normal leading-relaxed">
                           {exp.description}
                         </p>
                       </div>
 
                       {/* Highlight & Action CTA */}
-                      <div className="pt-4 border-t border-[#E8E6E2]/80 dark:border-[#383633] flex items-center justify-between">
-                        <span className="text-[11px] font-medium text-[#8A8782] truncate max-w-[190px] sm:max-w-[220px]">
+                      <div className="pt-4 border-t border-[#E8E8E8] dark:border-[#383838] flex items-center justify-between">
+                        <span className="text-[11px] font-medium text-[#777777] truncate max-w-[190px] sm:max-w-[220px]">
                           {exp.highlight}
                         </span>
 
                         <button
                           type="button"
                           onClick={handleInquireExperience}
-                          className="px-4 py-1.5 rounded-full bg-[#202020] dark:bg-[#FCFBF8] text-white dark:text-[#202020] hover:bg-[#B99A62] dark:hover:bg-[#B99A62] dark:hover:text-white text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer shadow-xs hover:scale-105 active:scale-95 flex-shrink-0"
+                          className="px-4 py-2 rounded-xl bg-[#202020] dark:bg-[#FCFBF9] text-white dark:text-[#202020] hover:bg-[#171717] dark:hover:bg-white text-xs font-semibold tracking-wider uppercase transition-all duration-200 cursor-pointer shadow-xs hover:scale-105 active:scale-95 flex-shrink-0"
                         >
                           Explore &rarr;
                         </button>
@@ -268,7 +268,7 @@ export function ExperiencesSection() {
             type="button"
             onClick={prevSlide}
             aria-label="Previous experience"
-            className="absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white dark:bg-[#202020] text-[#202020] dark:text-white border border-[#E8E6E2] dark:border-[#383633] shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-90 cursor-pointer hover:border-[#B99A62]"
+            className="absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white dark:bg-[#202020] text-[#202020] dark:text-white border border-[#E8E8E8] dark:border-[#383838] shadow-md flex items-center justify-center transition-all hover:scale-110 active:scale-90 cursor-pointer hover:border-[#202020]"
           >
             <ChevronLeft className="w-5 h-5 stroke-[2.2]" />
           </button>
@@ -278,7 +278,7 @@ export function ExperiencesSection() {
             type="button"
             onClick={nextSlide}
             aria-label="Next experience"
-            className="absolute -right-3 sm:-right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white dark:bg-[#202020] text-[#202020] dark:text-white border border-[#E8E6E2] dark:border-[#383633] shadow-lg flex items-center justify-center transition-all hover:scale-110 active:scale-90 cursor-pointer hover:border-[#B99A62]"
+            className="absolute -right-3 sm:-right-6 top-1/2 -translate-y-1/2 z-30 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white dark:bg-[#202020] text-[#202020] dark:text-white border border-[#E8E8E8] dark:border-[#383838] shadow-md flex items-center justify-center transition-all hover:scale-110 active:scale-90 cursor-pointer hover:border-[#202020]"
           >
             <ChevronRight className="w-5 h-5 stroke-[2.2]" />
           </button>
@@ -296,8 +296,8 @@ export function ExperiencesSection() {
                 aria-label={`Jump to experience ${idx + 1}`}
                 className={`transition-all duration-300 rounded-full cursor-pointer ${
                   isActive
-                    ? "w-8 h-2 bg-[#B99A62] shadow-sm"
-                    : "w-2 h-2 bg-[#DAD7D1] dark:bg-[#444] hover:bg-[#B99A62]/60"
+                    ? "w-8 h-2 bg-[#202020] dark:bg-white shadow-sm"
+                    : "w-2 h-2 bg-[#DCDCDC] dark:bg-[#444] hover:bg-[#202020]/60"
                 }`}
               />
             );

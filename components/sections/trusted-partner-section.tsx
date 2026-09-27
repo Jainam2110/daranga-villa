@@ -31,13 +31,13 @@ function CuratedStaysIcon() {
         />
         <defs>
           <linearGradient id="dome-grad" x1="16" y1="21" x2="48" y2="40" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#FEECEB" />
-            <stop offset="0.6" stopColor="#FAD4D8" />
-            <stop offset="1" stopColor="#F5D0B5" />
+            <stop stopColor="#FCE7E8" />
+            <stop offset="0.6" stopColor="#F6C7CA" />
+            <stop offset="1" stopColor="#F6D2B8" />
           </linearGradient>
           <linearGradient id="plate-grad" x1="10" y1="39.5" x2="54" y2="45.5" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#E8A0A8" />
-            <stop offset="1" stopColor="#B99A62" />
+            <stop stopColor="#EFA1AA" />
+            <stop offset="1" stopColor="#F6D2B8" />
           </linearGradient>
         </defs>
       </svg>
@@ -47,7 +47,7 @@ function CuratedStaysIcon() {
 
 function UnmatchedServiceIcon() {
   return (
-    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FFF5F2] via-[#FEECEB] to-[#FDF4E7] dark:from-[#2A2422] dark:to-[#222] flex items-center justify-center p-2.5 shadow-xs flex-shrink-0 border border-[#F5D0B5]/40 dark:border-[#52443C]/40">
+    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FCFBF9] via-[#FCE7E8] to-[#FBE9DC] dark:from-[#2A2422] dark:to-[#222] flex items-center justify-center p-2.5 shadow-xs flex-shrink-0 border border-[#F6D2B8]/40 dark:border-[#52443C]/40">
       <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="32" cy="27" r="15" fill="url(#rosette-grad)" />
         <path
@@ -64,17 +64,17 @@ function UnmatchedServiceIcon() {
         {/* Sparkle */}
         <path
           d="M47 13L48.5 9.5L52 8L48.5 6.5L47 3L45.5 6.5L42 8L45.5 9.5L47 13Z"
-          fill="#E8A0A8"
+          fill="#EFA1AA"
         />
         <defs>
           <linearGradient id="rosette-grad" x1="17" y1="12" x2="47" y2="42" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#FAD4D8" />
-            <stop offset="0.5" stopColor="#E8A0A8" />
-            <stop offset="1" stopColor="#F5D0B5" />
+            <stop stopColor="#F6C7CA" />
+            <stop offset="0.5" stopColor="#EFA1AA" />
+            <stop offset="1" stopColor="#F6D2B8" />
           </linearGradient>
           <linearGradient id="ribbon-grad" x1="22" y1="39" x2="42" y2="51" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#E8A0A8" />
-            <stop offset="1" stopColor="#B99A62" />
+            <stop stopColor="#EFA1AA" />
+            <stop offset="1" stopColor="#F6D2B8" />
           </linearGradient>
         </defs>
       </svg>
@@ -84,29 +84,29 @@ function UnmatchedServiceIcon() {
 
 function ImpeccableVillasIcon() {
   return (
-    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FFF5F2] via-[#FEECEB] to-[#FDF4E7] dark:from-[#2A2422] dark:to-[#222] flex items-center justify-center p-2.5 shadow-xs flex-shrink-0 border border-[#F5D0B5]/40 dark:border-[#52443C]/40">
+    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FCFBF9] via-[#FCE7E8] to-[#FBE9DC] dark:from-[#2A2422] dark:to-[#222] flex items-center justify-center p-2.5 shadow-xs flex-shrink-0 border border-[#F6D2B8]/40 dark:border-[#52443C]/40">
       <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
           d="M16 29L32 15L48 29V49H16V29Z"
           fill="url(#house-grad)"
         />
-        <path d="M38 18V13H42V21.5" fill="#E8A0A8" />
+        <path d="M38 18V13H42V21.5" fill="#EFA1AA" />
         <rect x="25.5" y="34" width="13" height="15" rx="2" fill="#FFFFFF" fillOpacity="0.9" />
         <rect x="20" y="32" width="4" height="6" rx="1" fill="#FFFFFF" fillOpacity="0.8" />
         {/* Sparkles */}
         <path
           d="M48 11L49.5 8L52.5 6.5L49.5 5L48 2L46.5 5L43.5 6.5L46.5 8L48 11Z"
-          fill="#F5D0B5"
+          fill="#F6D2B8"
         />
         <path
           d="M12 21L13 19L15 18L13 17L12 15L11 17L9 18L11 19L12 21Z"
-          fill="#E8A0A8"
+          fill="#EFA1AA"
         />
         <defs>
           <linearGradient id="house-grad" x1="16" y1="15" x2="48" y2="49" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#FEECEB" />
-            <stop offset="0.5" stopColor="#F5D0B5" />
-            <stop offset="1" stopColor="#E8A0A8" />
+            <stop stopColor="#FCE7E8" />
+            <stop offset="0.5" stopColor="#F6D2B8" />
+            <stop offset="1" stopColor="#EFA1AA" />
           </linearGradient>
         </defs>
       </svg>
@@ -137,14 +137,14 @@ const PARTNER_FEATURES: PartnerFeature[] = [
 
 export function TrustedPartnerSection() {
   return (
-    <section className="py-10 sm:py-14 bg-transparent select-none">
+    <section className="py-8 sm:py-12 bg-transparent select-none">
       <Container>
         {/* Title Header with Sparkle Accent */}
         <div className="flex items-center gap-2 mb-6 sm:mb-8">
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-[#202020] dark:text-[#FCFBF8] tracking-tight">
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-normal text-[#202020] dark:text-white tracking-tight">
             Your Trusted Getaway Partner
           </h2>
-          <span className="text-[#E8A0A8] text-xl sm:text-2xl animate-pulse">✨</span>
+          <span className="text-[#EFA1AA] text-xl sm:text-2xl animate-pulse">✨</span>
         </div>
 
         {/* 3 Feature Cards */}
@@ -152,14 +152,14 @@ export function TrustedPartnerSection() {
           {PARTNER_FEATURES.map((item) => (
             <div
               key={item.id}
-              className="group relative flex items-center gap-4 p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#202020] border border-[#E8E6E2]/80 dark:border-[#383633] shadow-[0_4px_20px_rgba(0,0,0,0.04)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_10px_30px_rgba(0,0,0,0.3)] transition-all duration-300 hover:-translate-y-0.5"
+              className="group relative flex items-center gap-4 p-4 sm:p-5 rounded-2xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383838] shadow-[0_4px_20px_rgba(32,32,32,0.04)] hover:shadow-[0_10px_30px_rgba(32,32,32,0.08)] transition-all duration-300 hover:-translate-y-0.5"
             >
               {item.icon}
               <div className="flex-1 min-w-0 space-y-0.5">
-                <h3 className="font-sans font-semibold text-sm sm:text-base text-[#202020] dark:text-[#FCFBF8] tracking-tight group-hover:text-[#B99A62] transition-colors">
+                <h3 className="font-sans font-semibold text-sm sm:text-base text-[#202020] dark:text-white tracking-tight transition-colors">
                   {item.title}
                 </h3>
-                <p className="text-xs sm:text-[13px] text-[#66635F] dark:text-[#A8A49E] font-light leading-snug">
+                <p className="text-xs sm:text-[13px] text-[#555555] dark:text-[#BDBDBD] font-light leading-snug">
                   {item.description}
                 </p>
               </div>

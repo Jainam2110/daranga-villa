@@ -71,8 +71,8 @@ export function AdminHeader({
       {/* Right: Status indicator, Theme toggle, Profile & Logout */}
       <div className="flex items-center gap-3 sm:gap-4">
         {/* System Online Badge */}
-        <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3F6B52]/10 border border-[#3F6B52]/20 text-[11px] font-semibold text-[#3F6B52]">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#3F6B52] animate-pulse" />
+        <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3F7658]/10 border border-[#3F7658]/20 text-[11px] font-semibold text-[#3F7658]">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#3F7658] animate-pulse" />
           <span>System Online</span>
         </div>
 
@@ -84,7 +84,7 @@ export function AdminHeader({
             title="Toggle theme"
           >
             {theme === "dark" ? (
-              <Sun className="w-4 h-4 text-[#B99A62]" />
+              <Sun className="w-4 h-4 text-[#F6D2B8]" />
             ) : (
               <Moon className="w-4 h-4 text-[#202020]" />
             )}
@@ -107,7 +107,7 @@ export function AdminHeader({
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg text-[#66635F] dark:text-[#BDB8B0] hover:text-[#B84A4A] hover:bg-[#B84A4A]/10 transition-colors"
+          className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg text-[#66635F] dark:text-[#BDB8B0] hover:text-[#C94A4A] hover:bg-[#C94A4A]/10 transition-colors"
           title="Logout of admin panel"
         >
           <LogOut className="w-3.5 h-3.5" />

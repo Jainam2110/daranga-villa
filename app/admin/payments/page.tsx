@@ -40,7 +40,7 @@ export default async function AdminPaymentsPage() {
 
   return (
     <AdminLayoutShell adminName={admin.name} adminEmail={admin.email} pageTitle="Payments">
-      <div className="border-b border-[#E8E6E2] dark:border-[#383633] pb-5">
+      <div className="border-b border-[#E8E8E8] dark:border-[#383633] pb-5">
         <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#202020] dark:text-[#FCFBF8]">
           Payments &amp; Financial Ledger
         </h1>
@@ -49,7 +49,7 @@ export default async function AdminPaymentsPage() {
         </p>
       </div>
 
-      <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E6E2] dark:border-[#383633] overflow-hidden shadow-xs">
+      <div className="bg-white dark:bg-[#202020] rounded-xl border border-[#E8E8E8] dark:border-[#383633] overflow-hidden shadow-xs">
         {serializedPayments.length === 0 ? (
           <div className="p-12 text-center text-[#66635F] dark:text-[#BDB8B0] space-y-3">
             <CreditCard className="w-10 h-10 mx-auto text-[#8A8782]" />
@@ -62,7 +62,7 @@ export default async function AdminPaymentsPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-[#F7F6F3] dark:bg-[#171717] border-b border-[#E8E6E2] dark:border-[#383633] text-[#66635F] dark:text-[#BDB8B0] uppercase text-[10px] font-semibold tracking-wider">
+                <tr className="bg-[#F7F6F3] dark:bg-[#171717] border-b border-[#E8E8E8] dark:border-[#383633] text-[#66635F] dark:text-[#BDB8B0] uppercase text-[10px] font-semibold tracking-wider">
                   <th className="py-3 px-4">Transaction Ref</th>
                   <th className="py-3 px-4">Guest</th>
                   <th className="py-3 px-4">Villa</th>
@@ -72,7 +72,7 @@ export default async function AdminPaymentsPage() {
                   <th className="py-3 px-4 text-right">Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E8E6E2]/60 dark:divide-[#383633] text-[#202020] dark:text-[#FCFBF8]">
+              <tbody className="divide-y divide-[#E8E8E8]/60 dark:divide-[#383633] text-[#202020] dark:text-[#FCFBF8]">
                 {serializedPayments.map((p) => (
                   <tr key={p._id} className="hover:bg-[#F7F6F3]/50 dark:hover:bg-[#171717]/50 transition-colors">
                     <td className="py-3.5 px-4 font-mono text-[11px] font-semibold text-[#66635F] dark:text-[#BDB8B0]">
@@ -96,11 +96,11 @@ export default async function AdminPaymentsPage() {
                       <span
                         className={`inline-block px-2.5 py-0.5 text-[10px] font-bold rounded-full uppercase tracking-wider ${
                           p.paymentStatus === "PAID"
-                            ? "bg-[#3F6B52]/10 text-[#3F6B52] border border-[#3F6B52]/30"
+                            ? "bg-[#3F7658]/10 text-[#3F7658] border border-[#3F7658]/30"
                             : p.paymentStatus === "PENDING"
-                            ? "bg-[#F5D0B5]/30 text-[#B99A62] border border-[#B99A62]/30"
+                            ? "bg-[#D9822B]/10 text-[#D9822B] border border-[#D9822B]/30"
                             : p.paymentStatus === "FAILED"
-                            ? "bg-[#B84A4A]/10 text-[#B84A4A] border border-[#B84A4A]/30"
+                            ? "bg-[#C94A4A]/10 text-[#C94A4A] border border-[#C94A4A]/30"
                             : "bg-[#8A8782]/10 text-[#66635F] border border-[#DAD7D1]"
                         }`}
                       >

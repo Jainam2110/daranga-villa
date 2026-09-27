@@ -71,7 +71,7 @@ export function MobileBottomNav() {
   return (
     <nav
       aria-label="Mobile Bottom Navigation"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/98 dark:bg-[#202020]/98 backdrop-blur-lg border-t border-[#E8E6E2] dark:border-[#383633] shadow-[0_-4px_20px_rgba(32,32,32,0.06)] dark:shadow-[0_-4px_25px_rgba(0,0,0,0.6)] transition-colors duration-200"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/98 dark:bg-[#202020]/98 backdrop-blur-lg border-t border-[#E8E8E8] dark:border-[#383838] shadow-[0_-4px_20px_rgba(32,32,32,0.06)] dark:shadow-[0_-4px_25px_rgba(0,0,0,0.6)] transition-colors duration-200"
       style={{
         paddingBottom: "max(0px, env(safe-area-inset-bottom, 0px))",
       }}
@@ -89,8 +89,8 @@ export function MobileBottomNav() {
               aria-label={item.label}
               className={`group flex flex-col items-center justify-center h-full w-full py-1.5 transition-all duration-200 select-none relative focus:outline-none cursor-pointer ${
                 active
-                  ? "text-[#202020] dark:text-[#FCFBF8]"
-                  : "text-[#8A8782] dark:text-[#8A8782] hover:text-[#202020] dark:hover:text-[#FCFBF8]"
+                  ? "text-[#202020] dark:text-[#FCFBF9]"
+                  : "text-[#888888] dark:text-[#888888] hover:text-[#202020] dark:hover:text-[#FCFBF9]"
               }`}
             >
               {/* Icon Container */}
@@ -106,8 +106,8 @@ export function MobileBottomNav() {
               <span
                 className={`text-[10px] tracking-wider uppercase mt-1 transition-all duration-200 ${
                   active
-                    ? "font-bold text-[#202020] dark:text-[#FCFBF8]"
-                    : "font-medium text-[#8A8782]"
+                    ? "font-bold text-[#202020] dark:text-[#FCFBF9]"
+                    : "font-medium text-[#888888]"
                 }`}
               >
                 {item.label}
@@ -117,7 +117,7 @@ export function MobileBottomNav() {
               <span
                 className={`absolute top-1.5 w-1 h-1 rounded-full transition-all duration-300 ${
                   active
-                    ? "bg-[#E8A0A8] opacity-100 scale-100"
+                    ? "bg-[#EFA1AA] opacity-100 scale-100"
                     : "opacity-0 scale-0"
                 }`}
               />

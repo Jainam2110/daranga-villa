@@ -7,19 +7,13 @@ import {
   Satellite,
   Map as MapIcon,
   Loader2,
-  Check,
   ExternalLink,
-  ChevronUp,
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  Link as LinkIcon,
   ZoomIn,
   ZoomOut,
   Navigation,
+  Link as LinkIcon,
   CheckCircle2,
-  AlertTriangle,
-  RefreshCw,
+  X,
 } from "lucide-react";
 import {
   loadGoogleMaps,
@@ -41,31 +35,29 @@ interface AdminLocationPickerMapProps {
   latitude: number;
   longitude: number;
   villaName: string;
-  locationAddress?: string;
-  googleMapsUrl?: string;
+  locationAddress: string;
+  zone: string;
+  googleMapsUrl: string;
   placeId?: string;
   onChangeCoordinates: (lat: number, lng: number) => void;
-  onSelectLocationDetails?: (details: {
-    name: string;
-    address: string;
-    latitude: number;
-    longitude: number;
-    placeId?: string;
-    googleMapsUrl: string;
-  }) => void;
+  onAddressChange: (address: string) => void;
+  onZoneChange: (zone: string) => void;
+  onGoogleMapsUrlChange: (url: string) => void;
 }
 
-type GoogleMapMode = "roadmap" | "satellite" | "hybrid" | "terrain";
+type GoogleMapMode = "roadmap" | "satellite";
 
 export function AdminLocationPickerMap({
   latitude,
   longitude,
   villaName,
-  locationAddress = "",
-  googleMapsUrl = "",
-  placeId = "",
+  locationAddress,
+  zone,
+  googleMapsUrl,
   onChangeCoordinates,
-  onSelectLocationDetails,
+  onAddressChange,
+  onZoneChange,
+  onGoogleMapsUrlChange,
 }: AdminLocationPickerMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -75,17 +67,12 @@ export function AdminLocationPickerMap({
   const markerInstanceRef = useRef<google.maps.Marker | null>(null);
   const autocompleteInstanceRef = useRef<google.maps.places.Autocomplete | null>(null);
 
-  // Mode & UI States
+  // UI States
   const [isGoogleJsApiLoaded, setIsGoogleJsApiLoaded] = useState<boolean>(false);
   const [mapMode, setMapMode] = useState<GoogleMapMode>("roadmap");
   const [zoomLevel, setZoomLevel] = useState<number>(16);
 
-  // Address & Place state
-  const [currentAddress, setCurrentAddress] = useState<string>(locationAddress);
-  const [currentPlaceId, setCurrentPlaceId] = useState<string>(placeId);
-  const [isConfirmed, setIsConfirmed] = useState<boolean>(false);
-
-  // Search autocomplete & fallback state
+  // Search & Geocode States
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<GeocodeResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -97,22 +84,29 @@ export function AdminLocationPickerMap({
   const [pastedUrl, setPastedUrl] = useState("");
   const [isResolvingUrl, setIsResolvingUrl] = useState(false);
 
-  // Fine-tuning step size
-  const [stepSize, setStepSize] = useState<number>(0.0005);
-
   const safeLat = typeof latitude === "number" && !isNaN(latitude) ? latitude : 24.5854;
   const safeLng = typeof longitude === "number" && !isNaN(longitude) ? longitude : 73.7125;
 
-  // Keep callback ref updated
+  // Keep callback refs updated to prevent stale closures
   const onChangeCoordinatesRef = useRef(onChangeCoordinates);
   useEffect(() => {
     onChangeCoordinatesRef.current = onChangeCoordinates;
   }, [onChangeCoordinates]);
 
-  const onSelectDetailsRef = useRef(onSelectLocationDetails);
+  const onAddressChangeRef = useRef(onAddressChange);
   useEffect(() => {
-    onSelectDetailsRef.current = onSelectLocationDetails;
-  }, [onSelectLocationDetails]);
+    onAddressChangeRef.current = onAddressChange;
+  }, [onAddressChange]);
+
+  const onZoneChangeRef = useRef(onZoneChange);
+  useEffect(() => {
+    onZoneChangeRef.current = onZoneChange;
+  }, [onZoneChange]);
+
+  const onGoogleMapsUrlChangeRef = useRef(onGoogleMapsUrlChange);
+  useEffect(() => {
+    onGoogleMapsUrlChangeRef.current = onGoogleMapsUrlChange;
+  }, [onGoogleMapsUrlChange]);
 
   // Reverse geocode and update address
   const handleReverseGeocode = useCallback(async (lat: number, lng: number) => {
@@ -120,27 +114,16 @@ export function AdminLocationPickerMap({
     try {
       const res = await reverseGeocodeCoordinates(lat, lng);
       if (res && res.address) {
-        setCurrentAddress(res.address);
-        if (res.placeId) {
-          setCurrentPlaceId(res.placeId);
-        }
-        if (onSelectDetailsRef.current) {
-          onSelectDetailsRef.current({
-            name: villaName || "Villa Location",
-            address: res.address,
-            latitude: lat,
-            longitude: lng,
-            placeId: res.placeId || currentPlaceId,
-            googleMapsUrl: buildGoogleMapsSearchUrl(lat, lng),
-          });
-        }
+        onAddressChangeRef.current(res.address);
+        const autoMapUrl = buildGoogleMapsSearchUrl(lat, lng);
+        onGoogleMapsUrlChangeRef.current(autoMapUrl);
       }
     } catch {
       // Keep existing address
     } finally {
       setIsReversingGeocode(false);
     }
-  }, [villaName, currentPlaceId]);
+  }, []);
 
   // Update map marker position
   const updateMarkerAndMap = useCallback((lat: number, lng: number, shouldPan = true) => {
@@ -152,7 +135,7 @@ export function AdminLocationPickerMap({
     }
   }, []);
 
-  // 1. Initialize Official Google Maps JavaScript API if available
+  // Initialize Official Google Maps JavaScript API
   useEffect(() => {
     let isMounted = true;
 
@@ -185,7 +168,7 @@ export function AdminLocationPickerMap({
         position: initialCenter,
         map: map,
         draggable: true,
-        title: villaName || "Daranga Villa Location",
+        title: villaName || "Villa Location",
         animation: googleObj.maps.Animation.DROP,
       });
 
@@ -199,8 +182,8 @@ export function AdminLocationPickerMap({
         const newLng = Number(pos.lng().toFixed(6));
 
         onChangeCoordinatesRef.current(newLat, newLng);
-        setIsConfirmed(false);
-        setStatusMessage(`📍 Red pointer dragged to: ${newLat}, ${newLng}`);
+        onGoogleMapsUrlChangeRef.current(buildGoogleMapsSearchUrl(newLat, newLng));
+        setStatusMessage(`📍 Pin moved to: ${newLat}, ${newLng}`);
         setTimeout(() => setStatusMessage(null), 3000);
 
         await handleReverseGeocode(newLat, newLng);
@@ -214,14 +197,14 @@ export function AdminLocationPickerMap({
 
         marker.setPosition({ lat: newLat, lng: newLng });
         onChangeCoordinatesRef.current(newLat, newLng);
-        setIsConfirmed(false);
-        setStatusMessage(`📍 Red pointer placed at: ${newLat}, ${newLng}`);
+        onGoogleMapsUrlChangeRef.current(buildGoogleMapsSearchUrl(newLat, newLng));
+        setStatusMessage(`📍 Pin placed at: ${newLat}, ${newLng}`);
         setTimeout(() => setStatusMessage(null), 3000);
 
         await handleReverseGeocode(newLat, newLng);
       });
 
-      // Attach Places Autocomplete to Search Input if input exists
+      // Attach Places Autocomplete to Search Input if available
       if (searchInputRef.current && googleObj.maps.places) {
         const autocomplete = new googleObj.maps.places.Autocomplete(searchInputRef.current, {
           fields: ["place_id", "geometry", "name", "formatted_address"],
@@ -239,30 +222,18 @@ export function AdminLocationPickerMap({
           const newLat = Number(place.geometry.location.lat().toFixed(6));
           const newLng = Number(place.geometry.location.lng().toFixed(6));
           const newAddress = place.formatted_address || place.name || "";
-          const newPlaceId = place.place_id || "";
 
           map.panTo({ lat: newLat, lng: newLng });
           map.setZoom(17);
           marker.setPosition({ lat: newLat, lng: newLng });
 
-          setCurrentAddress(newAddress);
-          setCurrentPlaceId(newPlaceId);
-          setIsConfirmed(false);
           onChangeCoordinatesRef.current(newLat, newLng);
+          if (newAddress) onAddressChangeRef.current(newAddress);
+          if (place.name) onZoneChangeRef.current(place.name);
+          onGoogleMapsUrlChangeRef.current(buildGoogleMapsSearchUrl(newLat, newLng));
 
-          if (onSelectDetailsRef.current) {
-            onSelectDetailsRef.current({
-              name: place.name || villaName || "Villa Location",
-              address: newAddress,
-              latitude: newLat,
-              longitude: newLng,
-              placeId: newPlaceId,
-              googleMapsUrl: buildGoogleMapsSearchUrl(newLat, newLng),
-            });
-          }
-
-          setStatusMessage(`📍 Selected: ${place.name || newAddress}`);
-          setTimeout(() => setStatusMessage(null), 4000);
+          setStatusMessage(`📍 Location selected: ${place.name || newAddress}`);
+          setTimeout(() => setStatusMessage(null), 3500);
         });
 
         autocompleteInstanceRef.current = autocomplete;
@@ -303,7 +274,7 @@ export function AdminLocationPickerMap({
     }
   };
 
-  // 2. Search Places Fallback (when Places Autocomplete is not active)
+  // Search Places Fallback
   const handleSearchPlaces = async (queryToSearch?: string) => {
     const q = (queryToSearch !== undefined ? queryToSearch : searchQuery).trim();
     if (!q || q.length < 2) return;
@@ -318,7 +289,7 @@ export function AdminLocationPickerMap({
         setSearchResults(data.results);
         setShowDropdown(data.results.length > 0);
         if (data.results.length === 0) {
-          setStatusMessage("No exact matches found. Try searching a landmark or locality.");
+          setStatusMessage("No exact matches found. Try searching a landmark or area.");
           setTimeout(() => setStatusMessage(null), 4000);
         }
       } else {
@@ -333,33 +304,23 @@ export function AdminLocationPickerMap({
     }
   };
 
-  // 3. Select Place from Autocomplete Dropdown
+  // Select Place from Autocomplete Dropdown
   const handleSelectSearchResult = (item: GeocodeResult) => {
     setShowDropdown(false);
     setSearchQuery(item.name);
-    setCurrentAddress(item.displayName);
-    if (item.placeId) setCurrentPlaceId(item.placeId);
 
     onChangeCoordinates(item.latitude, item.longitude);
+    onAddressChange(item.displayName);
+    if (item.name) onZoneChange(item.name);
+    onGoogleMapsUrlChange(item.googleMapsUrl);
+
     updateMarkerAndMap(item.latitude, item.longitude);
-    setIsConfirmed(false);
 
-    if (onSelectLocationDetails) {
-      onSelectLocationDetails({
-        name: item.name,
-        address: item.displayName,
-        latitude: item.latitude,
-        longitude: item.longitude,
-        placeId: item.placeId || "",
-        googleMapsUrl: item.googleMapsUrl,
-      });
-    }
-
-    setStatusMessage(`📍 Red pointer placed at ${item.name}`);
+    setStatusMessage(`📍 Location set to ${item.name}`);
     setTimeout(() => setStatusMessage(null), 3500);
   };
 
-  // 4. Resolve Pasted Google Maps URL or Raw Coordinates
+  // Resolve Pasted Google Maps URL or Raw Coordinates
   const handleResolvePastedLink = async () => {
     const raw = pastedUrl.trim();
     if (!raw) return;
@@ -368,24 +329,24 @@ export function AdminLocationPickerMap({
     setStatusMessage(null);
 
     try {
-      // Check if user entered raw coordinates: e.g. "24.5854, 73.6780"
+      // 1. Check for raw coordinates e.g. "24.5854, 73.6780"
       const coordMatch = raw.match(/^(-?\d+\.?\d*)[,\s]+(-?\d+\.?\d*)$/);
       if (coordMatch) {
         const newLat = parseFloat(coordMatch[1]);
         const newLng = parseFloat(coordMatch[2]);
         if (!isNaN(newLat) && !isNaN(newLng)) {
           onChangeCoordinates(newLat, newLng);
+          onGoogleMapsUrlChange(buildGoogleMapsSearchUrl(newLat, newLng));
           updateMarkerAndMap(newLat, newLng);
-          setStatusMessage(`📍 Set coordinates: ${newLat}, ${newLng}`);
           setPastedUrl("");
-          setIsConfirmed(false);
           await handleReverseGeocode(newLat, newLng);
+          setStatusMessage(`📍 GPS coordinates applied: ${newLat}, ${newLng}`);
           setIsResolvingUrl(false);
           return;
         }
       }
 
-      // Resolve via server API
+      // 2. Resolve via server API
       const res = await fetch("/api/admin/resolve-maps-url", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -395,52 +356,24 @@ export function AdminLocationPickerMap({
       const data = await res.json();
       if (data.success && data.latitude && data.longitude) {
         onChangeCoordinates(data.latitude, data.longitude);
+        onGoogleMapsUrlChange(data.resolvedUrl || raw);
         updateMarkerAndMap(data.latitude, data.longitude);
-        setIsConfirmed(false);
         await handleReverseGeocode(data.latitude, data.longitude);
-        setStatusMessage(`📍 Red pointer placed: ${data.latitude}, ${data.longitude}`);
+        setStatusMessage(`📍 Coordinates extracted: ${data.latitude}, ${data.longitude}`);
         setPastedUrl("");
       } else {
-        setStatusMessage(data.error || "Could not extract coordinates from link.");
+        setStatusMessage(data.error || "Could not extract GPS coordinates from this link.");
       }
     } catch {
-      setStatusMessage("Failed to resolve link. Please try again.");
+      setStatusMessage("Failed to resolve link. Please check the URL.");
     } finally {
       setIsResolvingUrl(false);
       setTimeout(() => setStatusMessage(null), 4000);
     }
   };
 
-  // 5. Fine-Tune Nudge Pin Position
-  const nudgeCoordinates = async (deltaLat: number, deltaLng: number) => {
-    const newLat = Number((safeLat + deltaLat).toFixed(6));
-    const newLng = Number((safeLng + deltaLng).toFixed(6));
-    onChangeCoordinates(newLat, newLng);
-    updateMarkerAndMap(newLat, newLng, false);
-    setIsConfirmed(false);
-    setStatusMessage(`📍 Adjusted to: ${newLat}, ${newLng}`);
-    setTimeout(() => setStatusMessage(null), 2000);
-  };
-
-  // 6. Confirm Location Action
-  const handleConfirmLocation = () => {
-    setIsConfirmed(true);
-    if (onSelectLocationDetails) {
-      onSelectLocationDetails({
-        name: villaName || "Villa Location",
-        address: currentAddress || `${safeLat.toFixed(6)}, ${safeLng.toFixed(6)}`,
-        latitude: safeLat,
-        longitude: safeLng,
-        placeId: currentPlaceId,
-        googleMapsUrl: buildGoogleMapsSearchUrl(safeLat, safeLng),
-      });
-    }
-    setStatusMessage("✅ Location confirmed & verified as canonical source of truth!");
-    setTimeout(() => setStatusMessage(null), 4000);
-  };
-
   // Google Maps embed URL for iframe fallback
-  const tCode = mapMode === "satellite" ? "k" : mapMode === "terrain" ? "p" : "m";
+  const tCode = mapMode === "satellite" ? "k" : "m";
   const googleMapsEmbedUrl = `https://maps.google.com/maps?q=${safeLat},${safeLng}&hl=en&z=${zoomLevel}&t=${tCode}&output=embed`;
 
   const directionsUrl = buildGoogleMapsDirectionsUrl(safeLat, safeLng);
@@ -450,16 +383,17 @@ export function AdminLocationPickerMap({
       : buildGoogleMapsSearchUrl(safeLat, safeLng);
 
   return (
-    <div className="space-y-4 rounded-xl p-4 sm:p-5 bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] shadow-sm">
+    <div className="space-y-4 rounded-xl p-4 sm:p-5 bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383633] shadow-xs text-[#202020] dark:text-[#FCFBF8]">
+      
       {/* 1. Places Search Bar */}
-      <div className="space-y-2 relative">
+      <div className="space-y-1.5 relative">
         <div className="flex items-center justify-between">
-          <label className="text-[11px] font-bold uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
-            <Search className="w-3.5 h-3.5 text-[#B99A62]" />
-            <span>Search Villa Location</span>
+          <label className="text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] flex items-center gap-1.5">
+            <Search className="w-3.5 h-3.5 text-[#EFA1AA]" />
+            <span>Search Location or Landmark</span>
           </label>
           <span className="text-[10px] text-[#66635F] dark:text-[#BDB8B0]">
-            Google Places Autocomplete
+            Search by area, hotel, lake or street
           </span>
         </div>
 
@@ -481,17 +415,30 @@ export function AdminLocationPickerMap({
                   handleSearchPlaces();
                 }
               }}
-              placeholder="Search villa location (e.g. Sisarma, Rani Road, Fatehsagar Lake...)"
-              className="w-full pl-9 pr-3 py-2.5 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62] shadow-xs"
+              placeholder="e.g. Sisarma, Rani Road, Lake Pichola, Fatehsagar Lake..."
+              className="w-full pl-9 pr-8 py-2.5 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
             />
             <Search className="w-4 h-4 text-[#66635F] dark:text-[#BDB8B0] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSearchResults([]);
+                  setShowDropdown(false);
+                }}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#66635F] dark:text-[#BDB8B0] hover:text-[#202020] dark:hover:text-white p-0.5"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
 
           <button
             type="button"
             disabled={isSearching || !searchQuery.trim()}
             onClick={() => handleSearchPlaces()}
-            className="px-4 py-2.5 rounded-lg bg-[#202020] hover:bg-[#171717] text-white font-semibold text-xs flex items-center gap-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 shadow-xs"
+            className="px-4 py-2.5 rounded-lg bg-[#202020] hover:bg-[#171717] text-white dark:bg-[#FCFBF8] dark:text-[#202020] dark:hover:bg-white font-semibold text-xs flex items-center gap-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 cursor-pointer shadow-xs"
           >
             {isSearching ? (
               <>
@@ -499,27 +446,24 @@ export function AdminLocationPickerMap({
                 <span>Searching...</span>
               </>
             ) : (
-              <>
-                <MapPin className="w-3.5 h-3.5 text-[#B99A62]" />
-                <span>Search</span>
-              </>
+              <span>Search</span>
             )}
           </button>
         </div>
 
-        {/* Autocomplete Dropdown Fallback */}
+        {/* Autocomplete Dropdown */}
         {showDropdown && searchResults.length > 0 && (
-          <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-xl shadow-2xl max-h-60 overflow-y-auto divide-y divide-[#E8E6E2]/50 dark:divide-[#383633]">
+          <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-white dark:bg-[#1E1E1E] border border-[#E8E8E8] dark:border-[#383633] rounded-xl shadow-xl max-h-56 overflow-y-auto divide-y divide-[#E8E8E8]/50 dark:divide-[#383633]">
             {searchResults.map((item, idx) => (
               <button
                 key={idx}
                 type="button"
                 onClick={() => handleSelectSearchResult(item)}
-                className="w-full text-left px-3.5 py-2.5 hover:bg-[#F7F6F3] dark:hover:bg-[#171717] transition-colors flex items-start gap-2.5 group"
+                className="w-full text-left px-3.5 py-2.5 hover:bg-[#F7F6F3] dark:hover:bg-[#171717] transition-colors flex items-start gap-2.5 group cursor-pointer"
               >
-                <MapPin className="w-4 h-4 text-[#B84A4A] flex-shrink-0 mt-0.5" />
+                <MapPin className="w-4 h-4 text-[#EFA1AA] flex-shrink-0 mt-0.5" />
                 <div className="min-w-0">
-                  <div className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] group-hover:text-[#B99A62]">
+                  <div className="text-xs font-semibold text-[#202020] dark:text-[#FCFBF8] group-hover:text-[#EFA1AA]">
                     {item.name}
                   </div>
                   <div className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] truncate mt-0.5">
@@ -536,20 +480,20 @@ export function AdminLocationPickerMap({
       <div className="space-y-2">
         <div className="flex flex-wrap items-center justify-between gap-2 text-[11px]">
           <span className="font-semibold text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#B84A4A] inline-block shadow-xs animate-pulse" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#EFA1AA] inline-block shadow-xs animate-pulse" />
             <span>
-              Interactive Map: {safeLat.toFixed(6)}, {safeLng.toFixed(6)}
+              Map Location: {safeLat.toFixed(6)}, {safeLng.toFixed(6)}
             </span>
           </span>
 
           <div className="flex items-center gap-2">
             {/* Zoom Controls */}
-            <div className="flex items-center gap-0.5 bg-white dark:bg-[#202020] p-0.5 rounded-lg border border-[#E8E6E2] dark:border-[#383633]">
+            <div className="flex items-center gap-0.5 bg-[#F7F6F3] dark:bg-[#171717] p-0.5 rounded-lg border border-[#E8E8E8] dark:border-[#383633]">
               <button
                 type="button"
                 onClick={() => handleZoomChange(zoomLevel + 1)}
                 title="Zoom In"
-                className="p-1 rounded text-[#66635F] dark:text-[#BDB8B0] hover:text-[#202020] dark:hover:text-white hover:bg-[#F7F6F3] dark:hover:bg-[#171717]"
+                className="p-1 rounded text-[#66635F] dark:text-[#BDB8B0] hover:text-[#202020] dark:hover:text-white cursor-pointer"
               >
                 <ZoomIn className="w-3.5 h-3.5" />
               </button>
@@ -560,20 +504,20 @@ export function AdminLocationPickerMap({
                 type="button"
                 onClick={() => handleZoomChange(zoomLevel - 1)}
                 title="Zoom Out"
-                className="p-1 rounded text-[#66635F] dark:text-[#BDB8B0] hover:text-[#202020] dark:hover:text-white hover:bg-[#F7F6F3] dark:hover:bg-[#171717]"
+                className="p-1 rounded text-[#66635F] dark:text-[#BDB8B0] hover:text-[#202020] dark:hover:text-white cursor-pointer"
               >
                 <ZoomOut className="w-3.5 h-3.5" />
               </button>
             </div>
 
             {/* Mode Switcher */}
-            <div className="flex items-center gap-1 p-0.5 bg-white dark:bg-[#202020] rounded-lg border border-[#E8E6E2] dark:border-[#383633]">
+            <div className="flex items-center gap-1 p-0.5 bg-[#F7F6F3] dark:bg-[#171717] rounded-lg border border-[#E8E8E8] dark:border-[#383633]">
               <button
                 type="button"
                 onClick={() => handleToggleMapMode("roadmap")}
-                className={`px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider transition-all flex items-center gap-1 ${
+                className={`px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer ${
                   mapMode === "roadmap"
-                    ? "bg-[#202020] text-white shadow-xs"
+                    ? "bg-[#202020] text-white dark:bg-[#FCFBF8] dark:text-[#202020] shadow-xs"
                     : "text-[#66635F] dark:text-[#BDB8B0]"
                 }`}
               >
@@ -583,9 +527,9 @@ export function AdminLocationPickerMap({
               <button
                 type="button"
                 onClick={() => handleToggleMapMode("satellite")}
-                className={`px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider transition-all flex items-center gap-1 ${
+                className={`px-2 py-1 rounded text-[10px] font-semibold uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer ${
                   mapMode === "satellite"
-                    ? "bg-[#202020] text-white shadow-xs"
+                    ? "bg-[#202020] text-white dark:bg-[#FCFBF8] dark:text-[#202020] shadow-xs"
                     : "text-[#66635F] dark:text-[#BDB8B0]"
                 }`}
               >
@@ -597,22 +541,21 @@ export function AdminLocationPickerMap({
         </div>
 
         {/* Map Canvas */}
-        <div className="relative w-full h-80 sm:h-96 rounded-xl overflow-hidden border border-[#E8E6E2] dark:border-[#383633] shadow-inner bg-[#202020]">
+        <div className="relative w-full h-72 sm:h-80 rounded-xl overflow-hidden border border-[#E8E8E8] dark:border-[#383633] shadow-xs bg-[#202020]">
           {/* Official Google Maps JS Canvas */}
           <div ref={mapContainerRef} className="w-full h-full absolute inset-0 z-10" />
 
-          {/* Iframe fallback if JS API key is not configured */}
+          {/* Iframe fallback */}
           {!isGoogleJsApiLoaded && (
             <iframe
               key={`${safeLat}-${safeLng}-${zoomLevel}-${mapMode}`}
-              title="Google Maps Location Embed"
+              title="Google Maps Location"
               src={googleMapsEmbedUrl}
               width="100%"
               height="100%"
-              style={{ border: 0, minHeight: "100%", filter: "contrast(1.02) saturate(1.05)" }}
+              style={{ border: 0, minHeight: "100%" }}
               allowFullScreen={true}
               loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
               className="w-full h-full absolute inset-0 z-0"
             />
           )}
@@ -623,10 +566,10 @@ export function AdminLocationPickerMap({
               href={directionsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              title="Test Navigation Directions"
-              className="px-2.5 py-1 rounded-md bg-[#202020]/90 hover:bg-[#171717] text-white text-[10px] font-semibold flex items-center gap-1 backdrop-blur-md border border-white/20 transition-all shadow-md"
+              title="Preview Directions"
+              className="px-2.5 py-1 rounded-md bg-[#202020]/90 hover:bg-[#171717] text-white text-[10px] font-semibold flex items-center gap-1 backdrop-blur-md border border-white/20 transition-all shadow-sm"
             >
-              <Navigation className="w-3 h-3 text-[#B99A62]" />
+              <Navigation className="w-3 h-3 text-[#EFA1AA]" />
               <span>Directions</span>
             </a>
             <a
@@ -634,214 +577,29 @@ export function AdminLocationPickerMap({
               target="_blank"
               rel="noopener noreferrer"
               title="Open full view in Google Maps"
-              className="px-2.5 py-1 rounded-md bg-[#202020]/90 hover:bg-[#171717] text-white text-[10px] font-semibold flex items-center gap-1 backdrop-blur-md border border-white/20 transition-all shadow-md"
+              className="px-2.5 py-1 rounded-md bg-[#202020]/90 hover:bg-[#171717] text-white text-[10px] font-semibold flex items-center gap-1 backdrop-blur-md border border-white/20 transition-all shadow-sm"
             >
               <span>View Map</span>
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>
 
-          {/* Map Bottom Hint Banner */}
+          {/* Map Bottom Helper */}
           <div className="absolute bottom-2 left-2 right-2 z-20 pointer-events-none text-center">
-            <span className="px-3 py-1 rounded-full bg-[#202020]/90 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-md inline-flex items-center gap-1.5">
-              <span>🎯</span>
-              <span>Search for the villa, then drag the pin to the exact property location if needed.</span>
+            <span className="px-3 py-1 rounded-full bg-[#202020]/90 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 shadow-sm inline-flex items-center gap-1.5">
+              <span>💡 Click map or drag red pin to set exact property spot</span>
             </span>
           </div>
         </div>
       </div>
 
-      {/* 3. Selected Location Details Card & Confirmation */}
-      <div className="p-4 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] shadow-sm space-y-3">
-        <div className="flex items-center justify-between border-b border-[#E8E6E2] dark:border-[#383633] pb-2">
-          <h5 className="font-bold text-xs uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
-            <MapPin className="w-4 h-4 text-[#B84A4A]" />
-            <span>📍 Selected Location</span>
-          </h5>
-
-          {isConfirmed ? (
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold text-[#3F6B52] bg-[#3F6B52]/10 border border-[#3F6B52]/30 flex items-center gap-1">
-              <CheckCircle2 className="w-3 h-3" />
-              <span>Location Verified</span>
-            </span>
-          ) : (
-            <span className="px-2 py-0.5 rounded text-[10px] font-medium text-[#B99A62] bg-[#F5D0B5]/30 border border-[#B99A62]/30 flex items-center gap-1">
-              <AlertTriangle className="w-3 h-3" />
-              <span>Unconfirmed Changes</span>
-            </span>
-          )}
-        </div>
-
-        <div className="space-y-2 text-xs">
-          <div>
-            <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-0.5">
-              Formatted Address:
-            </span>
-            <div className="font-medium text-[#202020] dark:text-[#FCFBF8] bg-[#F7F6F3] dark:bg-[#171717] px-3 py-2 rounded-lg border border-[#E8E6E2] dark:border-[#383633] flex items-center justify-between gap-2">
-              <span className="truncate">{currentAddress || "No address selected yet"}</span>
-              {isReversingGeocode && <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B99A62] flex-shrink-0" />}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-0.5">
-                Exact Latitude:
-              </span>
-              <div className="font-mono font-semibold text-[#202020] dark:text-[#FCFBF8] bg-[#F7F6F3] dark:bg-[#171717] px-3 py-2 rounded-lg border border-[#E8E6E2] dark:border-[#383633]">
-                {safeLat.toFixed(6)}
-              </div>
-            </div>
-
-            <div>
-              <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0] block mb-0.5">
-                Exact Longitude:
-              </span>
-              <div className="font-mono font-semibold text-[#202020] dark:text-[#FCFBF8] bg-[#F7F6F3] dark:bg-[#171717] px-3 py-2 rounded-lg border border-[#E8E6E2] dark:border-[#383633]">
-                {safeLng.toFixed(6)}
-              </div>
-            </div>
-          </div>
-
-          {currentPlaceId && (
-            <div className="text-[10px] text-[#66635F] dark:text-[#BDB8B0] font-mono truncate">
-              Google Place ID: {currentPlaceId}
-            </div>
-          )}
-        </div>
-
-        {/* Confirm Location Button */}
-        <div className="pt-2 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={handleConfirmLocation}
-            className="flex-1 py-2.5 px-4 rounded-lg bg-[#202020] hover:bg-[#171717] text-white font-semibold text-xs flex items-center justify-center gap-2 transition-all shadow-md"
-          >
-            <Check className="w-4 h-4" />
-            <span>Confirm Location</span>
-          </button>
-        </div>
-      </div>
-
-      {/* 4. Fine-Tuning D-Pad, Steppers & Paste Input */}
-      <div className="p-3.5 rounded-xl bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] space-y-3">
-        <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
-            <RefreshCw className="w-3.5 h-3.5 text-[#B99A62]" />
-            <span>Fine-Tune Pin or Paste Coordinates</span>
-          </span>
-
-          {/* Step Size Selector */}
-          <div className="flex items-center gap-1 text-[10px]">
-            <span className="text-[#66635F] dark:text-[#BDB8B0]">Step:</span>
-            {[
-              { label: "10m", val: 0.0001 },
-              { label: "50m", val: 0.0005 },
-              { label: "200m", val: 0.002 },
-            ].map((s) => (
-              <button
-                key={s.label}
-                type="button"
-                onClick={() => setStepSize(s.val)}
-                className={`px-2 py-0.5 rounded text-[10px] font-medium transition-colors ${
-                  stepSize === s.val
-                    ? "bg-[#202020] text-white font-bold"
-                    : "bg-[#F7F6F3] dark:bg-[#171717] text-[#66635F] dark:text-[#BDB8B0]"
-                }`}
-              >
-                {s.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-          {/* Direct Coordinate Inputs */}
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="block text-[10px] font-semibold uppercase text-[#66635F] dark:text-[#BDB8B0] mb-1">
-                Latitude
-              </label>
-              <input
-                type="number"
-                step="0.000001"
-                value={safeLat}
-                onChange={(e) => {
-                  const val = parseFloat(e.target.value);
-                  if (!isNaN(val)) {
-                    onChangeCoordinates(val, safeLng);
-                    updateMarkerAndMap(val, safeLng, false);
-                    setIsConfirmed(false);
-                  }
-                }}
-                className="w-full px-2.5 py-1.5 rounded bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-mono text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-semibold uppercase text-[#66635F] dark:text-[#BDB8B0] mb-1">
-                Longitude
-              </label>
-              <input
-                type="number"
-                step="0.000001"
-                value={safeLng}
-                onChange={(e) => {
-                  const val = parseFloat(e.target.value);
-                  if (!isNaN(val)) {
-                    onChangeCoordinates(safeLat, val);
-                    updateMarkerAndMap(safeLat, val, false);
-                    setIsConfirmed(false);
-                  }
-                }}
-                className="w-full px-2.5 py-1.5 rounded bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-mono text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
-              />
-            </div>
-          </div>
-
-          {/* D-Pad Buttons */}
-          <div className="flex items-center justify-center gap-1.5">
-            <span className="text-[10px] font-semibold text-[#66635F] dark:text-[#BDB8B0] mr-2">
-              Nudge Pin:
-            </span>
-            <button
-              type="button"
-              onClick={() => nudgeCoordinates(0, -stepSize)}
-              title="Move West"
-              className="p-1.5 rounded-md bg-[#F7F6F3] dark:bg-[#171717] hover:bg-[#202020] hover:text-white text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] transition-colors"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <div className="flex flex-col gap-1">
-              <button
-                type="button"
-                onClick={() => nudgeCoordinates(stepSize, 0)}
-                title="Move North"
-                className="p-1.5 rounded-md bg-[#F7F6F3] dark:bg-[#171717] hover:bg-[#202020] hover:text-white text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] transition-colors"
-              >
-                <ChevronUp className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => nudgeCoordinates(-stepSize, 0)}
-                title="Move South"
-                className="p-1.5 rounded-md bg-[#F7F6F3] dark:bg-[#171717] hover:bg-[#202020] hover:text-white text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] transition-colors"
-              >
-                <ChevronDown className="w-4 h-4" />
-              </button>
-            </div>
-            <button
-              type="button"
-              onClick={() => nudgeCoordinates(0, stepSize)}
-              title="Move East"
-              className="p-1.5 rounded-md bg-[#F7F6F3] dark:bg-[#171717] hover:bg-[#202020] hover:text-white text-[#202020] dark:text-[#FCFBF8] border border-[#DAD7D1] dark:border-[#383633] transition-colors"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* URL Paste */}
-        <div className="pt-2 border-t border-[#E8E6E2] dark:border-[#383633] flex gap-2">
+      {/* 3. Paste Google Maps Link or Coordinates */}
+      <div className="p-3.5 rounded-xl bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E8E8] dark:border-[#383633] space-y-2">
+        <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#202020] dark:text-[#FCFBF8] flex items-center gap-1.5">
+          <LinkIcon className="w-3.5 h-3.5 text-[#EFA1AA]" />
+          <span>Quick Paste: Google Maps Share Link or GPS Coordinates</span>
+        </label>
+        <div className="flex gap-2">
           <input
             type="text"
             value={pastedUrl}
@@ -852,24 +610,126 @@ export function AdminLocationPickerMap({
                 handleResolvePastedLink();
               }
             }}
-            placeholder="Paste Google Maps URL or coordinates"
-            className="flex-1 px-3 py-1.5 rounded-md bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#B99A62]"
+            placeholder="Paste URL (e.g. https://maps.app.goo.gl/... or 24.5854, 73.6780)"
+            className="flex-1 px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
           />
           <button
             type="button"
             disabled={isResolvingUrl || !pastedUrl.trim()}
             onClick={handleResolvePastedLink}
-            className="px-3 py-1.5 rounded-md bg-[#202020] hover:bg-[#171717] text-white text-xs font-semibold transition-all disabled:opacity-50 flex items-center gap-1.5"
+            className="px-3.5 py-2 rounded-lg bg-[#202020] hover:bg-[#171717] text-white dark:bg-[#FCFBF8] dark:text-[#202020] dark:hover:bg-white text-xs font-semibold flex items-center gap-1.5 transition-all disabled:opacity-50 cursor-pointer shadow-xs"
           >
-            {isResolvingUrl ? <Loader2 className="w-3 h-3 animate-spin" /> : <LinkIcon className="w-3 h-3" />}
-            <span>Set Pin</span>
+            {isResolvingUrl ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                <span>Syncing...</span>
+              </>
+            ) : (
+              <span>Sync Map</span>
+            )}
           </button>
         </div>
       </div>
 
+      {/* 4. Structured Location Fields */}
+      <div className="space-y-3 pt-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
+              Zone / Area Name *
+            </label>
+            <input
+              type="text"
+              required
+              value={zone}
+              onChange={(e) => onZoneChange(e.target.value)}
+              placeholder="e.g. Lake Pichola Waterfront, Rani Road"
+              className="w-full px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
+            />
+          </div>
+
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0]">
+                Full Address / Street Location
+              </label>
+              {isReversingGeocode && (
+                <span className="text-[10px] text-[#EFA1AA] flex items-center gap-1">
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                  <span>Fetching address...</span>
+                </span>
+              )}
+            </div>
+            <input
+              type="text"
+              value={locationAddress}
+              onChange={(e) => onAddressChange(e.target.value)}
+              placeholder="e.g. Haridas Ji Ki Magri, Pichola West Bank, Udaipur"
+              className="w-full px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
+            />
+          </div>
+        </div>
+
+        {/* GPS Coordinates & Google Maps Share Link */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div>
+            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
+              Latitude
+            </label>
+            <input
+              type="number"
+              step="0.000001"
+              value={safeLat}
+              onChange={(e) => {
+                const val = parseFloat(e.target.value);
+                if (!isNaN(val)) {
+                  onChangeCoordinates(val, safeLng);
+                  updateMarkerAndMap(val, safeLng, false);
+                  onGoogleMapsUrlChange(buildGoogleMapsSearchUrl(val, safeLng));
+                }
+              }}
+              className="w-full px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-mono text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
+              Longitude
+            </label>
+            <input
+              type="number"
+              step="0.000001"
+              value={safeLng}
+              onChange={(e) => {
+                const val = parseFloat(e.target.value);
+                if (!isNaN(val)) {
+                  onChangeCoordinates(safeLat, val);
+                  updateMarkerAndMap(safeLat, val, false);
+                  onGoogleMapsUrlChange(buildGoogleMapsSearchUrl(safeLat, val));
+                }
+              }}
+              className="w-full px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-mono text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0] mb-1">
+              Google Maps URL
+            </label>
+            <input
+              type="text"
+              value={googleMapsUrl}
+              onChange={(e) => onGoogleMapsUrlChange(e.target.value)}
+              placeholder="Auto-generated or custom Google Maps link"
+              className="w-full px-3 py-2 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-mono text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA] truncate"
+            />
+          </div>
+        </div>
+      </div>
+
       {statusMessage && (
-        <div className="text-[11px] font-medium text-[#3F6B52] bg-[#3F6B52]/10 border border-[#3F6B52]/30 px-3 py-2 rounded-md animate-in fade-in flex items-center gap-1.5">
-          <Check className="w-3.5 h-3.5 flex-shrink-0" />
+        <div className="text-[11px] font-medium text-[#3F7658] dark:text-[#4ADE80] bg-[#3F7658]/10 dark:bg-[#3F7658]/20 border border-[#3F7658]/30 px-3 py-2 rounded-lg animate-in fade-in flex items-center gap-1.5">
+          <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
           <span>{statusMessage}</span>
         </div>
       )}

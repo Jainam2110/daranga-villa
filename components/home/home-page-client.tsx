@@ -159,7 +159,7 @@ export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps
   }, [villas]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#FCFBF8] dark:bg-[#171717] font-sans text-[#202020] dark:text-[#FCFBF8] selection:bg-[#E8A0A8] selection:text-[#202020]">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-[#171717] font-sans text-[#202020] dark:text-white selection:bg-[#F6C7CA] selection:text-[#202020]">
       {/* 1. Header with Call Us button on top right & menu */}
       <Navbar
         checkIn={checkIn}
@@ -180,12 +180,17 @@ export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps
           onExploreClick={handleScrollToVillas}
         />
 
-        {/* 3. Floating Stay Vista-style Search Bar (Overlapping bottom edge of hero) */}
+        {/* 3. Search Bar (Overlapping bottom edge of hero) */}
         <div className="relative -mt-6 sm:-mt-8 z-30">
           <HeroSearchBar
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             onSearchSubmit={handleScrollToVillas}
+            checkIn={checkIn}
+            checkOut={checkOut}
+            guests={guests}
+            onSelectDates={handleSelectDates}
+            onSelectGuests={handleSelectGuests}
           />
         </div>
 
