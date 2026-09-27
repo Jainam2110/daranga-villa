@@ -553,38 +553,7 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
                   )}
                 </div>
 
-                {/* 7. Sleeping / Bedroom Information */}
-                <div className="space-y-6 pb-12 border-b border-[#E8E6E2] dark:border-[#383633]">
-                  <div className="space-y-2">
-                    <span className="text-[10px] uppercase font-semibold text-[#B99A62] tracking-[0.25em]">
-                      ACCOMMODATION
-                    </span>
-                    <h2 className="font-serif text-3xl font-light text-[#202020] dark:text-[#FCFBF8]">
-                      Sleeping Arrangements
-                    </h2>
-                  </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {Array.from({ length: villa.bedrooms || 1 }, (_, i) => i + 1).map((num) => (
-                      <div
-                        key={num}
-                        className="p-5 bg-white dark:bg-[#202020] border border-[#E8E6E2] dark:border-[#383633] rounded-[8px] space-y-3 shadow-xs"
-                      >
-                        <div className="w-9 h-9 rounded-lg bg-[#F7F6F3] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] flex items-center justify-center text-[#B99A62]">
-                          <Bed className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <h3 className="font-serif text-lg font-medium text-[#202020] dark:text-[#FCFBF8]">
-                            Bedroom Suite {num}
-                          </h3>
-                          <p className="text-xs text-[#66635F] dark:text-[#8A8782] font-light mt-1">
-                            Private luxury suite with ensuite bathroom &amp; scenic views.
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
 
                 {/* 8. House Rules */}
                 {villa.houseRules && villa.houseRules.length > 0 && (

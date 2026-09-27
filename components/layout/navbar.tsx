@@ -125,10 +125,10 @@ export function Navbar({
   return (
     <header
       role="banner"
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 border-none ${
         isOverlayOnHero
-          ? "bg-gradient-to-b from-black/75 via-black/30 to-transparent text-white py-4 sm:py-5 border-b border-transparent"
-          : "bg-white/94 dark:bg-[#171717]/94 backdrop-blur-md text-[#202020] dark:text-[#FCFBF8] py-3 sm:py-3.5 border-b border-[#E8E6E2] dark:border-[#383633] shadow-xs"
+          ? "bg-transparent text-white py-4 sm:py-5"
+          : "bg-white/95 dark:bg-[#171717]/95 backdrop-blur-md text-[#202020] dark:text-[#FCFBF8] py-3 sm:py-3.5 shadow-xs"
       }`}
     >
       <div className="max-w-[1440px] w-full mx-auto px-3 sm:px-5 lg:px-6 xl:px-8">

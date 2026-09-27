@@ -24,6 +24,8 @@ export function ScrollProgressBar() {
     };
   }, []);
 
+  if (scrollProgress <= 0) return null;
+
   return (
     <div
       aria-hidden="true"
