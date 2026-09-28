@@ -30,10 +30,23 @@ export async function GET(
     await connectToDatabase();
 
     // Query active villa either by ObjectId or by unique slug
-    const isObjectId = mongoose.Types.ObjectId.isValid(id);
+    const cleanId = decodeURIComponent(id || "").trim();
+    const isObjectId = mongoose.Types.ObjectId.isValid(cleanId);
+    const normalizedSlug = cleanId
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_-]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
     const query = isObjectId
-      ? { _id: id, status: "ACTIVE" as const }
-      : { slug: id, status: "ACTIVE" as const };
+      ? { _id: cleanId, status: "ACTIVE" as const }
+      : {
+          status: "ACTIVE" as const,
+          $or: [
+            { slug: cleanId.toLowerCase() },
+            { slug: normalizedSlug },
+          ],
+        };
 
     const villa = await Villa.findOne(query).lean();
 

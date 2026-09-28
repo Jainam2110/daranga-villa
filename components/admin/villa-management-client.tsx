@@ -530,7 +530,13 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
 
     const payload = {
       name: formData.name.trim(),
-      slug: formData.slug.trim() || undefined,
+      slug: formData.slug.trim()
+        ? formData.slug
+            .toLowerCase()
+            .trim()
+            .replace(/[^\w\s-]/g, "")
+            .replace(/[\s_-]+/g, "-")
+        : undefined,
       description: formData.description.trim(),
       location: {
         address: formData.location.trim() || formData.zone.trim() || "Udaipur, Rajasthan",
@@ -882,6 +888,17 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                       type="text"
                       value={formData.slug}
                       onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                      onBlur={(e) =>
+                        setFormData({
+                          ...formData,
+                          slug: e.target.value
+                            .toLowerCase()
+                            .trim()
+                            .replace(/[^\w\s-]/g, "")
+                            .replace(/[\s_-]+/g, "-")
+                            .replace(/^-+|-+$/g, ""),
+                        })
+                      }
                       placeholder="e.g. celestial-residence"
                       className="w-full px-3 py-2 rounded-lg bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#333333] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#EFA1AA]"
                     />

@@ -113,7 +113,30 @@ export async function PUT(
     }
 
     if (name) villa.name = name.trim();
-    if (slug) villa.slug = slug.toLowerCase().trim();
+
+    if (slug !== undefined) {
+      const candidateSlug = (typeof slug === "string" && slug.trim() ? slug : name || villa.name)
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/[\s_-]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
+      if (candidateSlug && candidateSlug !== villa.slug) {
+        const existingVilla = await Villa.findOne({
+          slug: candidateSlug,
+          _id: { $ne: villa._id },
+        });
+        if (existingVilla) {
+          return NextResponse.json(
+            { success: false, error: `Villa with slug '${candidateSlug}' already exists.` },
+            { status: 409 }
+          );
+        }
+        villa.slug = candidateSlug;
+      }
+    }
+
     if (description !== undefined) villa.description = description;
     if (zone !== undefined) villa.zone = zone;
 

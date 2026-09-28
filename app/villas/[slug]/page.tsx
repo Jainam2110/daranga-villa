@@ -15,7 +15,8 @@ export async function generateMetadata({
   params,
 }: VillaSlugPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const villa = await getVillaBySlug(slug);
+  const decodedSlug = decodeURIComponent(slug || "");
+  const villa = await getVillaBySlug(decodedSlug);
 
   if (!villa) {
     return {
@@ -41,7 +42,8 @@ export async function generateMetadata({
 
 export default async function VillaSlugPage({ params }: VillaSlugPageProps) {
   const { slug } = await params;
-  const villa = await getVillaBySlug(slug);
+  const decodedSlug = decodeURIComponent(slug || "");
+  const villa = await getVillaBySlug(decodedSlug);
 
   if (!villa) {
     notFound();

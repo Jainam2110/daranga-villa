@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/mongodb";
 import VillaModel, { IVilla } from "@/models/Villa";
 import { Villa } from "@/types/villa";
@@ -86,14 +87,33 @@ export async function getActiveVillas(): Promise<Villa[]> {
 }
 
 /**
- * Server-side helper to fetch a single ACTIVE villa by its unique slug.
+ * Server-side helper to fetch a single ACTIVE villa by its unique slug or ObjectId.
  */
 export async function getVillaBySlug(slug: string): Promise<Villa | null> {
   try {
+    if (!slug) return null;
     await connectToDatabase();
+
+    const cleanRaw = slug.trim();
+    const decoded = decodeURIComponent(cleanRaw).toLowerCase().trim();
+    const normalized = decoded
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_-]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+    const possibleSlugs = Array.from(
+      new Set([cleanRaw.toLowerCase(), decoded, normalized].filter(Boolean))
+    );
+
+    const orConditions: Record<string, unknown>[] = possibleSlugs.map((s) => ({ slug: s }));
+
+    if (mongoose.Types.ObjectId.isValid(cleanRaw)) {
+      orConditions.push({ _id: new mongoose.Types.ObjectId(cleanRaw) });
+    }
+
     const rawVilla = await VillaModel.findOne({
-      slug: slug.toLowerCase().trim(),
       status: "ACTIVE",
+      $or: orConditions,
     }).lean<IVilla>();
 
     if (!rawVilla) {
