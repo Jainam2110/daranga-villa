@@ -33,6 +33,14 @@ export async function loadGoogleMapsLibraries() {
   }
 
   const key = getGoogleMapsApiKey();
+
+  // Temporary safe log requested by audit checklist (No full key logged)
+  console.log("[Google Maps Config Audit]", {
+    keyPresent: Boolean(key && key.trim()),
+    keyLength: key ? key.length : 0,
+    first4Chars: key && key.length >= 4 ? key.substring(0, 4) : "N/A",
+  });
+
   if (!key) {
     console.warn("Google Maps API key is not configured.");
     return null;
