@@ -3,7 +3,7 @@ import Booking from "@/models/Booking";
 import "@/models/Villa";
 
 export interface SendEmailOptions {
-  to: string;
+  to: string | string[];
   subject: string;
   html: string;
 }
@@ -28,24 +28,28 @@ export function getSiteBaseUrl(): string {
 
 /**
  * Core transactional email sender using HTTP API (Resend / SendGrid compatible).
- * In test mode or when EMAIL_API_KEY is unset, logs dispatch safely without failing.
+ * In test mode or when RESEND_API_KEY is unset, logs dispatch safely without failing.
  */
 export async function sendEmail(
   options: SendEmailOptions
 ): Promise<SendEmailResult> {
-  const { to, subject, html } = options;
+  const { to: rawTo, subject, html } = options;
 
-  if (!to || !to.includes("@")) {
+  const recipients = (Array.isArray(rawTo) ? rawTo : rawTo.split(","))
+    .map((e) => e.trim())
+    .filter((e) => e.includes("@"));
+
+  if (recipients.length === 0) {
     return { success: false, error: "Invalid recipient email address." };
   }
 
-  const apiKey = process.env.EMAIL_API_KEY || process.env.RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY || process.env.EMAIL_API_KEY;
   const fromAddress =
-    process.env.EMAIL_FROM || "Daranga Villa <reservations@darangavilla.com>";
+    process.env.EMAIL_FROM || "Daranga Villas <reservations@darangavillas.com>";
 
   // Stub/Mock mode for automated test suites or missing server API keys
   if (!apiKey || process.env.NODE_ENV === "test" || process.env.MOCK_EMAIL === "true") {
-    console.log(`[EMAIL STUB] Sent "${subject}" to <${to}> from <${fromAddress}>`);
+    console.log(`[EMAIL STUB] Sent "${subject}" to <${recipients.join(", ")}> from <${fromAddress}>`);
     return { success: true, mocked: true, messageId: `stub_${Date.now()}` };
   }
 
@@ -59,7 +63,7 @@ export async function sendEmail(
       },
       body: JSON.stringify({
         from: fromAddress,
-        to: [to.trim()],
+        to: recipients,
         subject,
         html,
       }),
@@ -69,7 +73,7 @@ export async function sendEmail(
 
     if (!response.ok) {
       const errorMsg = data?.message || data?.error || `HTTP ${response.status}`;
-      console.error(`Email API error for <${to}>:`, errorMsg);
+      console.error(`Email API error for <${recipients.join(", ")}>:`, errorMsg);
       return { success: false, error: errorMsg };
     }
 
@@ -79,7 +83,7 @@ export async function sendEmail(
     };
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Network error sending email";
-    console.error(`Email dispatch network error for <${to}>:`, msg);
+    console.error(`Email dispatch network error for <${recipients.join(", ")}>:`, msg);
     return { success: false, error: msg };
   }
 }
@@ -393,21 +397,28 @@ export async function triggerBookingConfirmationEmails(bookingId: string): Promi
       html: customerHtml,
     });
 
-    // 3. Dispatch Admin Notification Email
-    const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_FROM || "admin@darangavilla.com";
-    const villaObj =
-      booking.villaId && typeof booking.villaId === "object"
-        ? (booking.villaId as { title?: string; name?: string })
-        : null;
-    const villaName = villaObj?.title || villaObj?.name || "Villa Sanctuary";
-    const adminSubject = `[New Booking Confirmed] ${villaName} — ${booking.guestName} | #${(booking._id || booking.id || "").toString().slice(-8).toUpperCase()}`;
-    const adminHtml = generateAdminNotificationEmailHtml(booking, baseUrl);
+    // 3. Dispatch Admin / Team Booking Notification Email
+    // Uses BOOKING_NOTIFICATION_EMAIL exclusively (ADMIN_EMAIL is reserved for admin login auth only)
+    const bookingNotificationEmail = process.env.BOOKING_NOTIFICATION_EMAIL?.trim();
+    if (bookingNotificationEmail) {
+      const villaObj =
+        booking.villaId && typeof booking.villaId === "object"
+          ? (booking.villaId as { title?: string; name?: string })
+          : null;
+      const villaName = villaObj?.title || villaObj?.name || "Villa Sanctuary";
+      const adminSubject = `[New Booking Confirmed] ${villaName} — ${booking.guestName} | #${(booking._id || booking.id || "").toString().slice(-8).toUpperCase()}`;
+      const adminHtml = generateAdminNotificationEmailHtml(booking, baseUrl);
 
-    await sendEmail({
-      to: adminEmail,
-      subject: adminSubject,
-      html: adminHtml,
-    });
+      await sendEmail({
+        to: bookingNotificationEmail,
+        subject: adminSubject,
+        html: adminHtml,
+      });
+    } else {
+      console.log(
+        "[EMAIL] BOOKING_NOTIFICATION_EMAIL is not set. Admin booking notification email skipped."
+      );
+    }
 
     if (!customerResult.success) {
       // Record failure state in MongoDB without modifying confirmed/paid payment status!
