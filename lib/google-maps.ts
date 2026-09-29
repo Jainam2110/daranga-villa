@@ -1,63 +1,89 @@
 import { setOptions, importLibrary } from "@googlemaps/js-api-loader";
 
-let googleMapsPromise: Promise<typeof google> | null = null;
+let librariesPromise: Promise<{
+  Map: typeof google.maps.Map;
+  AdvancedMarkerElement?: typeof google.maps.marker.AdvancedMarkerElement;
+  Marker?: typeof google.maps.Marker;
+  Animation?: typeof google.maps.Animation;
+  Autocomplete?: typeof google.maps.places.Autocomplete;
+  Geocoder?: typeof google.maps.Geocoder;
+} | null> | null = null;
 
+/**
+ * Returns the configured public Google Maps API Key.
+ */
 export function getGoogleMapsApiKey(): string {
   if (typeof window !== "undefined") {
     return process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
   }
-  return process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || process.env.GOOGLE_MAPS_API_KEY || "";
+  return (
+    process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
+    process.env.GOOGLE_MAPS_API_KEY ||
+    ""
+  );
 }
 
 /**
- * Singleton Google Maps API Script Loader.
- * Safely loads Google Maps JS API with Places, Marker & Geometry libraries.
+ * Singleton loader for Google Maps JavaScript API Libraries.
+ * Returns constructors directly (Map, AdvancedMarkerElement, Marker, Autocomplete, Geocoder).
  */
-export async function loadGoogleMaps(apiKey?: string): Promise<typeof google | null> {
+export async function loadGoogleMapsLibraries() {
   if (typeof window === "undefined") {
     return null;
   }
 
-  // Already loaded globally on window
-  if (window.google && window.google.maps) {
-    return window.google;
-  }
-
-  const key = apiKey || getGoogleMapsApiKey();
+  const key = getGoogleMapsApiKey();
   if (!key) {
-    // API Key not configured
+    console.warn("Google Maps API key is not configured.");
     return null;
   }
 
-  if (!googleMapsPromise) {
-    googleMapsPromise = (async () => {
+  if (!librariesPromise) {
+    librariesPromise = (async () => {
       setOptions({
-        key: key,
+        key,
         v: "weekly",
       });
 
-      await Promise.all([
-        importLibrary("maps"),
-        importLibrary("places"),
-        importLibrary("marker"),
-        importLibrary("geometry"),
+      const [mapsLib, markerLib, placesLib, geocodingLib] = await Promise.all([
+        importLibrary("maps") as Promise<google.maps.MapsLibrary>,
+        importLibrary("marker") as Promise<google.maps.MarkerLibrary>,
+        importLibrary("places") as Promise<google.maps.PlacesLibrary>,
+        importLibrary("geocoding") as Promise<google.maps.GeocodingLibrary>,
       ]);
 
-      return window.google;
+      return {
+        Map: mapsLib.Map,
+        AdvancedMarkerElement: markerLib.AdvancedMarkerElement,
+        Marker: markerLib.Marker,
+        Animation: markerLib.Animation,
+        Autocomplete: placesLib.Autocomplete,
+        Geocoder: geocodingLib.Geocoder,
+      };
     })();
   }
 
   try {
-    return await googleMapsPromise;
+    return await librariesPromise;
   } catch (err) {
-    console.warn("Google Maps JS API failed to load via Loader:", err);
-    googleMapsPromise = null;
+    console.error("Failed to load Google Maps JS API libraries:", err);
+    librariesPromise = null;
     return null;
   }
 }
 
 /**
- * Universal canonical Google Maps Search URL based on exact coordinates.
+ * Legacy wrapper for compatibility.
+ */
+export async function loadGoogleMaps() {
+  const libs = await loadGoogleMapsLibraries();
+  if (!libs) return null;
+  return window.google || null;
+}
+
+/**
+ * Constructs a Google Maps Search URL based on exact coordinates.
+ * Format: https://www.google.com/maps/search/?api=1&query=LATITUDE,LONGITUDE
  */
 export function buildGoogleMapsSearchUrl(lat: number, lng: number): string {
   const safeLat = Number(lat);
@@ -69,7 +95,8 @@ export function buildGoogleMapsSearchUrl(lat: number, lng: number): string {
 }
 
 /**
- * Universal canonical Google Maps Directions URL based on exact coordinates.
+ * Constructs a Google Maps Directions URL based on exact coordinates.
+ * Format: https://www.google.com/maps/dir/?api=1&destination=LATITUDE,LONGITUDE
  */
 export function buildGoogleMapsDirectionsUrl(lat: number, lng: number): string {
   const safeLat = Number(lat);
@@ -81,60 +108,33 @@ export function buildGoogleMapsDirectionsUrl(lat: number, lng: number): string {
 }
 
 /**
- * Universal Google Maps Embed URL for responsive iframes.
- */
-export function buildGoogleMapsEmbedUrl(
-  lat: number,
-  lng: number,
-  zoom = 16,
-  mapMode: "street" | "satellite" | "terrain" = "street"
-): string {
-  const safeLat = Number(lat);
-  const safeLng = Number(lng);
-  const tCode = mapMode === "satellite" ? "k" : mapMode === "terrain" ? "p" : "m";
-
-  if (isNaN(safeLat) || isNaN(safeLng)) {
-    return `https://maps.google.com/maps?q=24.5854,73.7125&hl=en&z=${zoom}&t=${tCode}&output=embed`;
-  }
-  return `https://maps.google.com/maps?q=${safeLat},${safeLng}&hl=en&z=${zoom}&t=${tCode}&output=embed`;
-}
-
-/**
- * Reverse geocode coordinates to a human-readable formatted address.
+ * Client-side reverse geocoding to convert lat/lng into a formatted address & placeId.
  */
 export async function reverseGeocodeCoordinates(
   lat: number,
   lng: number
 ): Promise<{ address: string; placeId?: string } | null> {
-  if (typeof window !== "undefined" && window.google && window.google.maps) {
-    try {
-      const geocoder = new window.google.maps.Geocoder();
-      const response = await geocoder.geocode({ location: { lat, lng } });
-      if (response.results && response.results.length > 0) {
-        return {
-          address: response.results[0].formatted_address,
-          placeId: response.results[0].place_id,
-        };
-      }
-    } catch {
-      // Fallback to server geocoder
-    }
+  if (typeof window === "undefined") {
+    return null;
   }
 
-  // Fallback to server-side endpoint if available
   try {
-    const res = await fetch(`/api/admin/geocode?lat=${lat}&lng=${lng}`);
-    if (res.ok) {
-      const data = await res.json();
-      if (data.success && data.address) {
-        return {
-          address: data.address,
-          placeId: data.placeId || "",
-        };
-      }
+    const libs = await loadGoogleMapsLibraries();
+    if (!libs || !libs.Geocoder) {
+      return null;
     }
-  } catch {
-    // Ignore fallback failure
+
+    const geocoder = new libs.Geocoder();
+    const response = await geocoder.geocode({ location: { lat, lng } });
+    if (response.results && response.results.length > 0) {
+      const topResult = response.results[0];
+      return {
+        address: topResult.formatted_address,
+        placeId: topResult.place_id,
+      };
+    }
+  } catch (error) {
+    console.warn("Reverse geocoding failed:", error);
   }
 
   return null;

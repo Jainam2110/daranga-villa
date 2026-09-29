@@ -25,7 +25,7 @@ import {
   Shield,
   Check,
 } from "lucide-react";
-import { AdminLocationPickerMap } from "@/components/admin/admin-location-picker-map";
+import { VillaLocationPicker } from "@/components/admin/villa-location-picker";
 import { AmenityIcon, STANDARD_LUXURY_AMENITIES } from "@/components/ui/amenity-icon";
 import { VillaImageCategory, VILLA_IMAGE_CATEGORIES } from "@/types/villa";
 
@@ -193,14 +193,14 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
       name: "",
       slug: "",
       description: "",
-      location: "Haridas Ji Ki Magri, Lake Pichola, Udaipur, Rajasthan",
+      location: "",
       placeId: "",
-      zone: "Lake Pichola Waterfront",
+      zone: "",
       googleMapsUrl: "",
-      latitude: 24.576,
-      longitude: 73.678,
-      mapX: 58,
-      mapY: 64,
+      latitude: NaN,
+      longitude: NaN,
+      mapX: 50,
+      mapY: 50,
       pricePerNight: 25000,
       maxGuests: 6,
       bedrooms: 3,
@@ -242,20 +242,22 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
     const locLat =
       typeof villa.location === "object" &&
       villa.location !== null &&
-      typeof villa.location.latitude === "number"
+      typeof villa.location.latitude === "number" &&
+      !isNaN(villa.location.latitude)
         ? villa.location.latitude
-        : villa.latitude !== undefined
+        : typeof villa.latitude === "number" && !isNaN(villa.latitude)
         ? villa.latitude
-        : 24.576;
+        : NaN;
 
     const locLng =
       typeof villa.location === "object" &&
       villa.location !== null &&
-      typeof villa.location.longitude === "number"
+      typeof villa.location.longitude === "number" &&
+      !isNaN(villa.location.longitude)
         ? villa.location.longitude
-        : villa.longitude !== undefined
+        : typeof villa.longitude === "number" && !isNaN(villa.longitude)
         ? villa.longitude
-        : 73.678;
+        : NaN;
 
     const locPlaceId =
       typeof villa.location === "object" && villa.location !== null
@@ -515,14 +517,11 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError("");
-
     const lat = Number(formData.latitude);
     const lng = Number(formData.longitude);
 
-    if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
-      setFormError(
-        "Valid Google Maps coordinates are required. Latitude must be between -90 and 90, and Longitude between -180 and 180."
-      );
+    if (!formData.location || !formData.location.trim() || isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+      setFormError("Please select the exact villa location on the map.");
       return;
     }
 
@@ -954,39 +953,41 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                   </div>
                 </div>
 
-                {/* Unified Interactive Map Canvas & Location Fields */}
-                <AdminLocationPickerMap
-                  latitude={formData.latitude}
-                  longitude={formData.longitude}
+                <VillaLocationPicker
+                  value={
+                    typeof formData.latitude === "number" &&
+                    typeof formData.longitude === "number" &&
+                    !isNaN(formData.latitude) &&
+                    !isNaN(formData.longitude)
+                      ? {
+                          address: formData.location || "",
+                          latitude: formData.latitude,
+                          longitude: formData.longitude,
+                          placeId: formData.placeId || "",
+                        }
+                      : formData.location || ""
+                  }
                   villaName={formData.name}
-                  locationAddress={formData.location}
-                  zone={formData.zone}
-                  googleMapsUrl={formData.googleMapsUrl}
-                  placeId={formData.placeId}
-                  onChangeCoordinates={(lat, lng) => {
-                    setFormData((prev) => ({
-                      ...prev,
-                      latitude: lat,
-                      longitude: lng,
-                    }));
-                  }}
-                  onAddressChange={(address) => {
-                    setFormData((prev) => ({
-                      ...prev,
-                      location: address,
-                    }));
-                  }}
-                  onZoneChange={(zone) => {
-                    setFormData((prev) => ({
-                      ...prev,
-                      zone: zone,
-                    }));
-                  }}
-                  onGoogleMapsUrlChange={(url) => {
-                    setFormData((prev) => ({
-                      ...prev,
-                      googleMapsUrl: url,
-                    }));
+                  onChange={(newLoc) => {
+                    if (newLoc) {
+                      setFormData((prev) => ({
+                        ...prev,
+                        location: newLoc.address,
+                        latitude: newLoc.latitude,
+                        longitude: newLoc.longitude,
+                        placeId: newLoc.placeId || "",
+                        googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${newLoc.latitude},${newLoc.longitude}`,
+                      }));
+                    } else {
+                      setFormData((prev) => ({
+                        ...prev,
+                        location: "",
+                        latitude: NaN,
+                        longitude: NaN,
+                        placeId: "",
+                        googleMapsUrl: "",
+                      }));
+                    }
                   }}
                 />
               </div>

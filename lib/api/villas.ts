@@ -2,14 +2,9 @@ import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/mongodb";
 import VillaModel, { IVilla } from "@/models/Villa";
 import { Villa } from "@/types/villa";
-
-/**
- * Fallback image placeholder when a villa has no uploaded images.
- */
 import { DEFAULT_VILLA_IMAGE } from "@/lib/constants";
-
 import { normalizeVillaImage, getPrimaryVillaImageUrl } from "@/lib/utils/image";
-import { normalizeVillaLocation, getVillaAddress } from "@/lib/utils/villa-location";
+import { normalizeVillaLocation, getVillaAddress, isValidCoordinates } from "@/lib/utils/villa-location";
 
 export { normalizeVillaImage, getPrimaryVillaImageUrl, normalizeVillaLocation, getVillaAddress };
 
@@ -29,13 +24,22 @@ export function serializeVilla(doc: IVilla): Villa {
     doc.placeId
   );
 
-  const lat = structuredLoc.latitude;
-  const lng = structuredLoc.longitude;
+  const coordCheck = isValidCoordinates(structuredLoc.latitude, structuredLoc.longitude);
+  const lat = coordCheck.valid ? coordCheck.lat : undefined;
+  const lng = coordCheck.valid ? coordCheck.lng : undefined;
+
   const addressText =
     structuredLoc.address ||
     (typeof doc.location === "string" ? doc.location : "") ||
     doc.zone ||
-    "Daranga Estate, Udaipur";
+    "";
+
+  const googleMapsUrl =
+    doc.googleMapsUrl && doc.googleMapsUrl.trim()
+      ? doc.googleMapsUrl.trim()
+      : coordCheck.valid
+      ? `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`
+      : "";
 
   return {
     id: doc._id.toString(),
@@ -44,10 +48,16 @@ export function serializeVilla(doc: IVilla): Villa {
     slug: doc.slug,
     tagline: doc.description ? doc.description.slice(0, 100) + "..." : "Exclusive Villa Residence",
     description: doc.description || "",
-    location: structuredLoc,
-    zone: doc.zone || addressText || "Udaipur, Rajasthan",
-    googleMapsUrl:
-      doc.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+    location: coordCheck.valid
+      ? {
+          address: addressText,
+          latitude: lat!,
+          longitude: lng!,
+          placeId: structuredLoc.placeId || doc.placeId || "",
+        }
+      : addressText,
+    zone: doc.zone || addressText || "",
+    googleMapsUrl,
     latitude: lat,
     longitude: lng,
     placeId: structuredLoc.placeId || doc.placeId || "",

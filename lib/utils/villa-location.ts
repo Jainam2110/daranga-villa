@@ -6,7 +6,7 @@ import { VillaLocation } from "@/types/villa";
  */
 export function getVillaAddress(
   location?: unknown,
-  fallback = "Udaipur, Rajasthan"
+  fallback = "Location not specified"
 ): string {
   if (!location) return fallback;
   if (typeof location === "string") return location.trim() || fallback;
@@ -20,49 +20,82 @@ export function getVillaAddress(
 }
 
 /**
- * Normalizes location input into a structured VillaLocation object.
+ * Helper to check if latitude and longitude are valid numbers.
+ */
+export function isValidCoordinates(
+  lat: unknown,
+  lng: unknown
+): { valid: true; lat: number; lng: number } | { valid: false; lat: undefined; lng: undefined } {
+  const numLat = Number(lat);
+  const numLng = Number(lng);
+
+  if (
+    typeof lat !== "undefined" &&
+    lat !== null &&
+    !isNaN(numLat) &&
+    numLat >= -90 &&
+    numLat <= 90 &&
+    typeof lng !== "undefined" &&
+    lng !== null &&
+    !isNaN(numLng) &&
+    numLng >= -180 &&
+    numLng <= 180 &&
+    !(numLat === 0 && numLng === 0)
+  ) {
+    return { valid: true, lat: numLat, lng: numLng };
+  }
+
+  return { valid: false, lat: undefined, lng: undefined };
+}
+
+/**
+ * Normalizes location input into a structured VillaLocation object or partial object.
+ * Does NOT fabricate default/fake coordinates if missing or invalid.
  */
 export function normalizeVillaLocation(
   rawLocation: unknown,
   rawLat?: unknown,
   rawLng?: unknown,
   rawPlaceId?: unknown
-): VillaLocation {
+): VillaLocation | { address: string; latitude?: number; longitude?: number; placeId?: string } {
+  let address = "";
+  let placeId = typeof rawPlaceId === "string" ? rawPlaceId.trim() : "";
+  let targetLat = rawLat;
+  let targetLng = rawLng;
+
   if (rawLocation && typeof rawLocation === "object") {
     const locObj = rawLocation as Record<string, unknown>;
-    const lat =
-      typeof locObj.latitude === "number"
-        ? locObj.latitude
-        : typeof rawLat === "number"
-        ? rawLat
-        : 24.5854;
-    const lng =
-      typeof locObj.longitude === "number"
-        ? locObj.longitude
-        : typeof rawLng === "number"
-        ? rawLng
-        : 73.7125;
+    if (typeof locObj.address === "string") {
+      address = locObj.address.trim();
+    }
+    if (typeof locObj.placeId === "string" && locObj.placeId.trim()) {
+      placeId = locObj.placeId.trim();
+    }
+    if (locObj.latitude !== undefined) {
+      targetLat = locObj.latitude;
+    }
+    if (locObj.longitude !== undefined) {
+      targetLng = locObj.longitude;
+    }
+  } else if (typeof rawLocation === "string") {
+    address = rawLocation.trim();
+  }
+
+  const coordCheck = isValidCoordinates(targetLat, targetLng);
+
+  if (coordCheck.valid) {
     return {
-      address: typeof locObj.address === "string" ? locObj.address : "",
-      latitude: lat,
-      longitude: lng,
-      placeId:
-        typeof locObj.placeId === "string"
-          ? locObj.placeId
-          : typeof rawPlaceId === "string"
-          ? rawPlaceId
-          : "",
+      address,
+      latitude: coordCheck.lat,
+      longitude: coordCheck.lng,
+      placeId,
     };
   }
 
-  const address = typeof rawLocation === "string" ? rawLocation : "";
-  const lat = typeof rawLat === "number" ? rawLat : 24.5854;
-  const lng = typeof rawLng === "number" ? rawLng : 73.7125;
-
   return {
     address,
-    latitude: lat,
-    longitude: lng,
-    placeId: typeof rawPlaceId === "string" ? rawPlaceId : "",
+    latitude: undefined,
+    longitude: undefined,
+    placeId,
   };
 }

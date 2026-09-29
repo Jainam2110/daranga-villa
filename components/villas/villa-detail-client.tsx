@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import {
   ChevronLeft,
@@ -15,8 +15,6 @@ import {
   CheckCircle2,
   Shield,
   Tag,
-  Compass,
-  Car,
   ExternalLink,
   Navigation,
   Star,
@@ -37,11 +35,11 @@ import { VillaGalleryModal } from "@/components/villas/villa-gallery-modal";
 import { VillaAmenitiesModal } from "@/components/villas/villa-amenities-modal";
 import { renderAmenityIcon, getAmenityPricing } from "@/components/ui/amenity-icon";
 import { VillaCardsCarousel } from "@/components/ui/villa-cards-carousel";
-import { RealUdaipurMap } from "@/components/maps/real-udaipur-map";
-import { UdaipurLocation } from "@/components/sections/location-section";
+import { VillaLocationMap } from "@/components/villas/villa-location-map";
+import { buildGoogleMapsSearchUrl, buildGoogleMapsDirectionsUrl } from "@/lib/google-maps";
 import { Villa } from "@/types/villa";
 import { getVillaAddress } from "@/lib/utils/villa-location";
-import { getVillaImagesWithMetadata, formatCategoryLabel, getPrimaryVillaImageUrl } from "@/lib/utils/image";
+import { getVillaImagesWithMetadata, formatCategoryLabel } from "@/lib/utils/image";
 
 interface VillaDetailClientProps {
   villa: Villa;
@@ -58,83 +56,7 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [isRulesExpanded, setIsRulesExpanded] = useState(false);
 
-  // Mapped locations for interactive map
-  const allLocationVillas = useMemo<Villa[]>(() => [villa, ...relatedVillas], [villa, relatedVillas]);
-  const [selectedMapLocationId, setSelectedMapLocationId] = useState<string>(
-    villa.id || villa._id || "villa-0"
-  );
 
-  const mappedLocations = useMemo<UdaipurLocation[]>(() => {
-    return allLocationVillas.map((v: Villa, index: number): UdaipurLocation => {
-      const vLat =
-        typeof v.location === "object" &&
-          v.location !== null &&
-          typeof v.location.latitude === "number" &&
-          !isNaN(v.location.latitude)
-          ? v.location.latitude
-          : typeof v.latitude === "number" && !isNaN(v.latitude)
-            ? v.latitude
-            : 24.5854 + index * 0.012;
-
-      const vLng =
-        typeof v.location === "object" &&
-          v.location !== null &&
-          typeof v.location.longitude === "number" &&
-          !isNaN(v.location.longitude)
-          ? v.location.longitude
-          : typeof v.longitude === "number" && !isNaN(v.longitude)
-            ? v.longitude
-            : 73.678 + index * 0.012;
-
-      const vAddress =
-        typeof v.location === "object" && v.location !== null
-          ? v.location.address || v.zone || "Udaipur, Rajasthan"
-          : typeof v.location === "string" && v.location
-            ? v.location
-            : v.zone || "Udaipur, Rajasthan";
-
-      const posX = v.mapX !== undefined && !isNaN(Number(v.mapX)) ? Number(v.mapX) : 50;
-      const posY = v.mapY !== undefined && !isNaN(Number(v.mapY)) ? Number(v.mapY) : 50;
-      const dynamicId = v.id || v._id || `villa-${index}`;
-      const coverImg =
-        getPrimaryVillaImageUrl(v.images) || v.imageUrl || "/images/hero/heroimg.webp";
-
-      return {
-        id: dynamicId,
-        number: String(index + 1).padStart(2, "0"),
-        name: v.name,
-        tagline: v.tagline || v.description?.slice(0, 60) || "Private Luxury Villa Residence",
-        zone: v.zone || vAddress || "Udaipur, Rajasthan",
-        address: vAddress,
-        coordinates: { lat: vLat, lng: vLng },
-        mapPos: { x: posX, y: posY },
-        imageUrl: coverImg,
-        highlights: v.amenities?.slice(0, 4) || [
-          "Private Pool",
-          "Aravalli Mountain Views",
-          "24/7 Butler",
-        ],
-        distanceToAirport: "28 - 36 km (45 min)",
-        distanceToCityPalace: "4 - 8 km (15 min)",
-        distanceToStation: "6 - 12 km (20 min)",
-        description:
-          v.description ||
-          "An exclusive private sanctuary designed for quiet elegance and natural serenity.",
-        googleMapsUrl:
-          v.googleMapsUrl && v.googleMapsUrl.trim()
-            ? v.googleMapsUrl.trim()
-            : `https://www.google.com/maps/search/?api=1&query=${vLat},${vLng}`,
-        slug: v.slug,
-      };
-    });
-  }, [allLocationVillas]);
-
-  const selectedLocation = useMemo<UdaipurLocation>(() => {
-    return (
-      mappedLocations.find((l) => l.id === selectedMapLocationId) ||
-      mappedLocations[0]
-    );
-  }, [mappedLocations, selectedMapLocationId]);
 
   const thumbnailRowRef = useRef<HTMLDivElement>(null);
   const [isStageHovered, setIsStageHovered] = useState(false);
@@ -833,150 +755,102 @@ export function VillaDetailClient({ villa, relatedVillas = [] }: VillaDetailClie
                   </div>
                 )}
 
-                {/* 10. Dedicated Interactive Map & Surroundings Section */}
-                <div className="space-y-5 pb-8 sm:pb-10 border-b border-[#E8E8E8] dark:border-[#383838]" id="villa-location">
+                {/* 10. Dedicated Location & Map Section */}
+                <div className="space-y-6 pb-8 sm:pb-10 border-b border-[#E8E8E8] dark:border-[#383838]" id="villa-location">
                   {(() => {
-                    const addressText =
-                      typeof villa.location === "object" && villa.location !== null
-                        ? villa.location.address || villa.zone || "Daranga Sanctuary Estate, Udaipur"
-                        : typeof villa.location === "string" && villa.location
-                          ? villa.location
-                          : villa.zone || "Daranga Sanctuary Estate, Udaipur";
+                    const addressText = getVillaAddress(villa.location, villa.zone || "Location not specified");
 
                     const exactLat =
                       typeof villa.location === "object" &&
-                        villa.location !== null &&
-                        typeof villa.location.latitude === "number" &&
-                        !isNaN(villa.location.latitude)
+                      villa.location !== null &&
+                      typeof villa.location.latitude === "number" &&
+                      !isNaN(villa.location.latitude)
                         ? villa.location.latitude
                         : typeof villa.latitude === "number" && !isNaN(villa.latitude)
-                          ? villa.latitude
-                          : undefined;
+                        ? villa.latitude
+                        : undefined;
 
                     const exactLng =
                       typeof villa.location === "object" &&
-                        villa.location !== null &&
-                        typeof villa.location.longitude === "number" &&
-                        !isNaN(villa.location.longitude)
+                      villa.location !== null &&
+                      typeof villa.location.longitude === "number" &&
+                      !isNaN(villa.location.longitude)
                         ? villa.location.longitude
                         : typeof villa.longitude === "number" && !isNaN(villa.longitude)
-                          ? villa.longitude
-                          : undefined;
+                        ? villa.longitude
+                        : undefined;
 
                     const hasValidCoordinates =
                       exactLat !== undefined &&
                       exactLng !== undefined &&
-                      exactLat !== 0 &&
-                      exactLng !== 0 &&
                       exactLat >= -90 &&
                       exactLat <= 90 &&
                       exactLng >= -180 &&
-                      exactLng <= 180;
+                      exactLng <= 180 &&
+                      !(exactLat === 0 && exactLng === 0);
 
-                    const googleMapsOpenUrl = hasValidCoordinates
-                      ? `https://www.google.com/maps/search/?api=1&query=${exactLat},${exactLng}`
-                      : "https://www.google.com/maps";
+                    const viewMapsUrl = hasValidCoordinates
+                      ? buildGoogleMapsSearchUrl(exactLat, exactLng)
+                      : "";
+
+                    const directionsUrl = hasValidCoordinates
+                      ? buildGoogleMapsDirectionsUrl(exactLat, exactLng)
+                      : "";
 
                     return (
-                      <div className="space-y-5">
-                        {/* Header with Clean Google Maps Link */}
-                        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2.5">
-                          <div className="space-y-1.5">
-                            <div className="flex items-center gap-2">
-                              <span className="text-[10px] uppercase font-semibold text-[#EFA1AA] tracking-[0.25em]">
-                                LOCATION &amp; SURROUNDINGS
-                              </span>
-                            </div>
-                            <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#202020] dark:text-[#FCFBF9]">
-                              Where You’ll Be
-                            </h2>
-                            <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[#555555] dark:text-[#BDBDBD] pt-0.5">
-                              <MapPin className="w-3.5 h-3.5 text-[#202020] dark:text-white flex-shrink-0" />
-                              <span>{addressText}</span>
-                            </div>
+                      <div className="space-y-6">
+                        {/* Header & Address */}
+                        <div className="space-y-2">
+                          <span className="text-[10px] uppercase font-semibold text-[#EFA1AA] tracking-[0.25em]">
+                            PROPERTY LOCATION
+                          </span>
+                          <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#202020] dark:text-[#FCFBF9]">
+                            Location
+                          </h2>
+                          <div className="flex items-center gap-1.5 text-xs sm:text-sm text-[#555555] dark:text-[#BDBDBD]">
+                            <MapPin className="w-4 h-4 text-[#202020] dark:text-white flex-shrink-0" />
+                            <span className="font-medium">{addressText}</span>
                           </div>
-
-                          {/* Clean Google Maps Link */}
-                          {hasValidCoordinates && (
-                            <a
-                              href={googleMapsOpenUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#2563EB] hover:text-[#1D4ED8] hover:underline flex-shrink-0 cursor-pointer pt-1 sm:pt-0"
-                            >
-                              <span>Open in Google Maps</span>
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          )}
                         </div>
 
-                        {/* 100% Clean Interactive Google Map (Zero Overlays) */}
+                        {/* Exact Google Map Component */}
                         {hasValidCoordinates ? (
                           <div className="space-y-4">
-                            <div className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] rounded-2xl sm:rounded-3xl overflow-hidden border border-[#E8E8E8] dark:border-[#383838] bg-[#F7F7F6] dark:bg-[#1E1E1E] shadow-2xs">
-                              <RealUdaipurMap
-                                locations={mappedLocations}
-                                selectedLocation={selectedLocation}
-                                onSelectLocation={(loc) => setSelectedMapLocationId(loc.id)}
-                                showControls={false}
-                                showActivePill={false}
-                                showEstateSwitcher={false}
-                              />
-                            </div>
+                            <VillaLocationMap
+                              latitude={exactLat}
+                              longitude={exactLng}
+                              address={addressText}
+                              villaName={villa.name}
+                            />
 
-                            {/* Clean 3-Column Transit Proximity Cards */}
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-1">
-                              {/* Airport */}
-                              <div className="p-4 rounded-2xl bg-white dark:bg-[#1E1E1E] border border-[#E8E8E8] dark:border-[#383838] shadow-xs flex items-center gap-3 hover:border-[#202020]/30 transition-colors">
-                                <div className="w-10 h-10 rounded-xl bg-[#DDEEFF] flex items-center justify-center text-[#202020] flex-shrink-0">
-                                  <Car className="w-5 h-5 text-[#202020]" />
-                                </div>
-                                <div className="min-w-0">
-                                  <span className="text-[10px] uppercase font-semibold text-[#777777] block tracking-wider truncate">
-                                    Airport (UDR)
-                                  </span>
-                                  <span className="text-xs sm:text-sm font-semibold text-[#202020] dark:text-[#FCFBF9] block">
-                                    ~ 32 km • 45 min
-                                  </span>
-                                </div>
-                              </div>
+                            {/* Action Buttons: View on Google Maps & Get Directions */}
+                            <div className="flex flex-wrap items-center gap-3 pt-1">
+                              <a
+                                href={viewMapsUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-5 py-2.5 rounded-xl bg-[#202020] hover:bg-[#171717] text-white dark:bg-[#FCFBF8] dark:text-[#202020] dark:hover:bg-white text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-xs cursor-pointer active:scale-95"
+                              >
+                                <span>View on Google Maps</span>
+                                <ExternalLink className="w-3.5 h-3.5" />
+                              </a>
 
-                              {/* City Palace & Lake Pichola */}
-                              <div className="p-4 rounded-2xl bg-white dark:bg-[#1E1E1E] border border-[#E8E8E8] dark:border-[#383838] shadow-xs flex items-center gap-3 hover:border-[#202020]/30 transition-colors">
-                                <div className="w-10 h-10 rounded-xl bg-[#DDEEFF] flex items-center justify-center text-[#202020] flex-shrink-0">
-                                  <Compass className="w-5 h-5 text-[#202020]" />
-                                </div>
-                                <div className="min-w-0">
-                                  <span className="text-[10px] uppercase font-semibold text-[#777777] block tracking-wider truncate">
-                                    City Palace &amp; Lake
-                                  </span>
-                                  <span className="text-xs sm:text-sm font-semibold text-[#202020] dark:text-[#FCFBF9] block">
-                                    ~ 6 km • 15 min
-                                  </span>
-                                </div>
-                              </div>
-
-                              {/* Railway Station */}
-                              <div className="p-4 rounded-2xl bg-white dark:bg-[#1E1E1E] border border-[#E8E8E8] dark:border-[#383838] shadow-xs flex items-center gap-3 hover:border-[#202020]/30 transition-colors">
-                                <div className="w-10 h-10 rounded-xl bg-[#DDEEFF] flex items-center justify-center text-[#202020] flex-shrink-0">
-                                  <Navigation className="w-5 h-5 text-[#202020]" />
-                                </div>
-                                <div className="min-w-0">
-                                  <span className="text-[10px] uppercase font-semibold text-[#777777] block tracking-wider truncate">
-                                    Railway Station
-                                  </span>
-                                  <span className="text-xs sm:text-sm font-semibold text-[#202020] dark:text-[#FCFBF9] block">
-                                    ~ 8 km • 18 min
-                                  </span>
-                                </div>
-                              </div>
+                              <a
+                                href={directionsUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-5 py-2.5 rounded-xl border border-[#DCDCDC] dark:border-[#383838] bg-white dark:bg-[#202020] hover:bg-[#F7F7F6] dark:hover:bg-[#282828] text-[#202020] dark:text-[#FCFBF9] text-xs font-semibold uppercase tracking-wider flex items-center gap-2 transition-all shadow-xs cursor-pointer active:scale-95"
+                              >
+                                <Navigation className="w-3.5 h-3.5 text-[#EFA1AA]" />
+                                <span>Get Directions</span>
+                              </a>
                             </div>
                           </div>
                         ) : (
                           <div className="p-8 sm:p-10 text-center rounded-2xl bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383838] space-y-3">
                             <MapPin className="w-8 h-8 mx-auto text-[#202020] dark:text-white" />
                             <h4 className="font-serif text-lg text-[#202020] dark:text-[#FCFBF9]">
-                              Exact map location will be shared upon booking.
+                              Location Details
                             </h4>
                             <p className="text-xs text-[#555555] dark:text-[#BDBDBD] max-w-md mx-auto font-normal">
                               {addressText}. Please contact our concierge team for driving directions.

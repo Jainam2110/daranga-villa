@@ -60,11 +60,11 @@ const VillaSchema = new Schema<IVilla>(
     },
     location: {
       type: Schema.Types.Mixed,
-      default: () => ({ address: "", latitude: undefined, longitude: undefined, placeId: "" }),
+      required: false,
     },
     zone: {
       type: String,
-      default: "Udaipur, Rajasthan",
+      default: "",
     },
     googleMapsUrl: {
       type: String,
@@ -73,11 +73,11 @@ const VillaSchema = new Schema<IVilla>(
     },
     latitude: {
       type: Number,
-      default: 24.5854,
+      required: false,
     },
     longitude: {
       type: Number,
-      default: 73.7125,
+      required: false,
     },
     placeId: {
       type: String,

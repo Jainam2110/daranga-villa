@@ -96,6 +96,54 @@ export async function POST(request: Request) {
       );
     }
 
+    // Extract location properties
+    let placeAddress = "";
+    let parsedLat: number = NaN;
+    let parsedLng: number = NaN;
+    let extractedPlaceId = "";
+
+    if (typeof location === "object" && location !== null) {
+      placeAddress = typeof location.address === "string" ? location.address.trim() : "";
+      parsedLat = Number(location.latitude);
+      parsedLng = Number(location.longitude);
+      extractedPlaceId = typeof location.placeId === "string" ? location.placeId.trim() : "";
+    } else if (typeof location === "string") {
+      placeAddress = location.trim();
+    }
+
+    if (isNaN(parsedLat) && latitude !== undefined) {
+      parsedLat = Number(latitude);
+    }
+    if (isNaN(parsedLng) && longitude !== undefined) {
+      parsedLng = Number(longitude);
+    }
+
+    // Validate location required fields
+    if (!placeAddress) {
+      return NextResponse.json(
+        { success: false, error: "Villa address is required." },
+        { status: 400 }
+      );
+    }
+
+    if (
+      isNaN(parsedLat) ||
+      isNaN(parsedLng) ||
+      parsedLat < -90 ||
+      parsedLat > 90 ||
+      parsedLng < -180 ||
+      parsedLng > 180
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          error:
+            "Exact map location coordinates are required. Latitude must be between -90 and 90, and Longitude between -180 and 180.",
+        },
+        { status: 400 }
+      );
+    }
+
     // Auto slugify name if slug not provided
     const generatedSlug = (slug || name)
       .toLowerCase()
@@ -114,51 +162,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Coordinate validation
-    const parsedLat =
-      typeof location === "object" && location?.latitude !== undefined
-        ? Number(location.latitude)
-        : latitude !== undefined
-        ? Number(latitude)
-        : NaN;
-
-    const parsedLng =
-      typeof location === "object" && location?.longitude !== undefined
-        ? Number(location.longitude)
-        : longitude !== undefined
-        ? Number(longitude)
-        : NaN;
-
-    if (
-      isNaN(parsedLat) ||
-      isNaN(parsedLng) ||
-      parsedLat < -90 ||
-      parsedLat > 90 ||
-      parsedLng < -180 ||
-      parsedLng > 180
-    ) {
-      return NextResponse.json(
-        {
-          success: false,
-          error:
-            "Valid Google Maps coordinates are required. Latitude must be between -90 and 90, and Longitude between -180 and 180.",
-        },
-        { status: 400 }
-      );
-    }
-
-    const placeAddress =
-      typeof location === "object" && location?.address
-        ? String(location.address).trim()
-        : typeof location === "string"
-        ? location.trim()
-        : zone || "Udaipur, Rajasthan";
-
-    const extractedPlaceId =
-      typeof location === "object" && location?.placeId
-        ? String(location.placeId).trim()
-        : "";
-
     const canonicalLocationObj = {
       address: placeAddress,
       latitude: parsedLat,
@@ -176,7 +179,7 @@ export async function POST(request: Request) {
       slug: generatedSlug,
       description: description || "",
       location: canonicalLocationObj,
-      zone: zone || placeAddress || "Udaipur, Rajasthan",
+      zone: zone || placeAddress,
       googleMapsUrl: canonicalGoogleMapsUrl,
       latitude: parsedLat,
       longitude: parsedLng,
