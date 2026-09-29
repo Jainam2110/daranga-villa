@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["razorpay", "mongoose"],
   images: {
     remotePatterns: [
       {

@@ -6,6 +6,26 @@ import User, { IUser } from "@/models/User";
 import { getRazorpayInstance, getRazorpayKeyId } from "@/lib/razorpay";
 import { getAdminAuth } from "@/lib/firebase/admin";
 
+/**
+ * Diagnostic & Health Check Endpoint
+ * Reports presence of critical environment variables without exposing sensitive values.
+ */
+export async function GET() {
+  const hasKeyId = Boolean(process.env.RAZORPAY_KEY_ID?.trim());
+  const hasKeySecret = Boolean(process.env.RAZORPAY_KEY_SECRET?.trim());
+  const hasMongoUri = Boolean(process.env.MONGODB_URI?.trim());
+
+  return NextResponse.json({
+    status: "ok",
+    endpoint: "/api/payments/create-order",
+    environment: {
+      RAZORPAY_KEY_ID: hasKeyId ? "PRESENT" : "MISSING",
+      RAZORPAY_KEY_SECRET: hasKeySecret ? "PRESENT" : "MISSING",
+      MONGODB_URI: hasMongoUri ? "PRESENT" : "MISSING",
+    },
+  });
+}
+
 export async function POST(request: Request) {
   try {
     // 1. Parse & validate request body
@@ -162,6 +182,7 @@ export async function POST(request: Request) {
         {
           success: false,
           error: "Payment service is currently unconfigured or unavailable on the server.",
+          details: process.env.NODE_ENV !== "production" ? msg : undefined,
         },
         { status: 500 }
       );
@@ -204,18 +225,61 @@ export async function POST(request: Request) {
 
     // 8. Create Razorpay Order
     // Format receipt safely: daranga_<bookingId> (max 40 chars)
-    const receipt = `daranga_${booking._id.toString()}`;
+    const receipt = `daranga_${booking._id.toString()}`.slice(0, 40);
     const notes = {
       bookingId: booking._id.toString(),
-      villaId: booking.villaId.toString(),
+      villaId: booking.villaId ? booking.villaId.toString() : "",
     };
 
-    const razorpayOrder = await razorpay.orders.create({
+    console.log("[Razorpay Order Create Attempt]", {
+      bookingId: booking._id.toString(),
       amount: amountInPaise,
       currency: "INR",
-      receipt,
-      notes,
+      hasKeyId: Boolean(process.env.RAZORPAY_KEY_ID?.trim()),
+      hasKeySecret: Boolean(process.env.RAZORPAY_KEY_SECRET?.trim()),
     });
+
+    let razorpayOrder;
+    try {
+      razorpayOrder = await razorpay.orders.create({
+        amount: amountInPaise,
+        currency: "INR",
+        receipt,
+        notes,
+      });
+    } catch (orderCreateErr: unknown) {
+      // Extract safe diagnostic details without exposing secrets
+      const errObj = orderCreateErr as {
+        statusCode?: number;
+        error?: {
+          code?: string;
+          description?: string;
+        };
+        message?: string;
+      };
+
+      const statusCode = errObj?.statusCode || 500;
+      const errorCode = errObj?.error?.code || "ORDER_CREATION_FAILED";
+      const errorDescription =
+        errObj?.error?.description || errObj?.message || "Razorpay API order creation failed";
+
+      console.error("[Razorpay Order Create Error]", {
+        bookingId: booking._id.toString(),
+        statusCode,
+        errorCode,
+        errorDescription,
+      });
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Failed to initiate payment gateway order.",
+          code: errorCode,
+          details: process.env.NODE_ENV !== "production" ? errorDescription : undefined,
+        },
+        { status: statusCode >= 400 && statusCode < 600 ? statusCode : 500 }
+      );
+    }
 
     if (!razorpayOrder || !razorpayOrder.id) {
       return NextResponse.json(
@@ -252,7 +316,11 @@ export async function POST(request: Request) {
     console.error("Razorpay Create Order API Error:", errMessage);
 
     return NextResponse.json(
-      { success: false, error: "Failed to process payment order creation." },
+      {
+        success: false,
+        error: "Failed to process payment order creation.",
+        details: process.env.NODE_ENV !== "production" ? errMessage : undefined,
+      },
       { status: 500 }
     );
   }
