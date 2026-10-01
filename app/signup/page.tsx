@@ -3,8 +3,12 @@ import type { Metadata } from "next";
 import { SignupClient } from "@/components/auth/signup-client";
 
 export const metadata: Metadata = {
-  title: "Create Account | Daranga Villa Customer Portal",
-  description: "Join Daranga Villa to start planning your private luxury stays.",
+  title: "Create Account | Daranga Villas",
+  description: "Join Daranga Villas to start planning your private luxury stays.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function SignupPage() {

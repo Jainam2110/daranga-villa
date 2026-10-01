@@ -3,8 +3,12 @@ import type { Metadata } from "next";
 import { LoginClient } from "@/components/auth/login-client";
 
 export const metadata: Metadata = {
-  title: "Sign In | Daranga Villa Customer Portal",
-  description: "Sign in to manage your private luxury villa stays at Daranga Villa.",
+  title: "Sign In | Daranga Villas",
+  description: "Sign in to manage your private luxury villa stays at Daranga Villas.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function LoginPage() {

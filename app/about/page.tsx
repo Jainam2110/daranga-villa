@@ -10,10 +10,32 @@ import { BookingCtaSection } from "@/components/sections/booking-cta-section";
 import { DarangaStandardSection } from "@/components/sections/daranga-standard-section";
 import { TrustedPartnerSection } from "@/components/sections/trusted-partner-section";
 
+import { getCanonicalUrl, getSiteUrl } from "@/lib/seo";
+
 export const metadata: Metadata = {
-  title: "About Us | Daranga Villa Udaipur",
-  description: "Discover the story, vision, and timeless heritage behind Daranga Villa's private luxury sanctuaries in Udaipur.",
+  title: "About Us | Daranga Villas Igatpuri",
+  description:
+    "Discover the story, vision, and timeless heritage behind Daranga Villas' private luxury sanctuaries in Igatpuri.",
+  alternates: {
+    canonical: getCanonicalUrl("/about"),
+  },
+  openGraph: {
+    title: "About Us | Daranga Villas Igatpuri",
+    description:
+      "Discover the story, vision, and timeless heritage behind Daranga Villas' private luxury sanctuaries in Igatpuri.",
+    url: getCanonicalUrl("/about"),
+    siteName: "Daranga Villas",
+    images: [
+      {
+        url: `${getSiteUrl()}/images/hero/heroimg.webp`,
+        width: 1200,
+        height: 630,
+        alt: "About Daranga Villas Igatpuri",
+      },
+    ],
+  },
 };
+
 
 export default function AboutPage() {
   const brandPillars = [

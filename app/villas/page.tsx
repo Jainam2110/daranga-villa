@@ -1,17 +1,39 @@
 import React from "react";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Container } from "@/components/ui/container";
 import { VillaCardsCarousel } from "@/components/ui/villa-cards-carousel";
 import { getActiveVillas } from "@/lib/api/villas";
+import { getCanonicalUrl, getSiteUrl } from "@/lib/seo";
 
 export const revalidate = 0;
 
-export const metadata = {
-  title: "Private Villa Portfolio | Daranga Villa",
-  description: "Explore our curated portfolio of private luxury villa residences.",
+export const metadata: Metadata = {
+  title: "Luxury Villas in Igatpuri | Daranga Villas",
+  description:
+    "Explore private villas in Igatpuri and find a stay that fits your group, dates and preferences.",
+  alternates: {
+    canonical: getCanonicalUrl("/villas"),
+  },
+  openGraph: {
+    title: "Luxury Villas in Igatpuri | Daranga Villas",
+    description:
+      "Explore private villas in Igatpuri and find a stay that fits your group, dates and preferences.",
+    url: getCanonicalUrl("/villas"),
+    siteName: "Daranga Villas",
+    images: [
+      {
+        url: `${getSiteUrl()}/images/hero/heroimg.webp`,
+        width: 1200,
+        height: 630,
+        alt: "Luxury Villas in Igatpuri - Daranga Villas",
+      },
+    ],
+  },
 };
+
 
 export default async function VillasListingPage() {
   const villas = await getActiveVillas();
