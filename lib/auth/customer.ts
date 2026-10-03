@@ -23,10 +23,10 @@ export async function verifyCustomerFromHeader(
     return null;
   }
 
-  let decodedToken: { uid: string; email?: string } | undefined;
+  let decodedToken: { uid: string; email?: string; name?: string } | undefined;
   try {
     const verified = await getAdminAuth().verifyIdToken(idToken);
-    decodedToken = { uid: verified.uid, email: verified.email };
+    decodedToken = { uid: verified.uid, email: verified.email, name: verified.name };
   } catch {
     // Fallback for dev mode
     if (process.env.NODE_ENV !== "production") {
@@ -37,7 +37,7 @@ export async function verifyCustomerFromHeader(
             Buffer.from(parts[1], "base64").toString("utf-8")
           );
           if (payload && payload.sub) {
-            decodedToken = { uid: payload.sub, email: payload.email };
+            decodedToken = { uid: payload.sub, email: payload.email, name: payload.name };
           }
         }
       } catch {
@@ -58,12 +58,43 @@ export async function verifyCustomerFromHeader(
 
   if (!customer && decodedToken.email) {
     customer = (await User.findOne({
-      email: decodedToken.email.toLowerCase(),
+      email: decodedToken.email.toLowerCase().trim(),
     })) as IUser | null;
+  }
+
+  // Auto-sync customer to MongoDB if valid token present but User doc does not exist yet
+  if (!customer) {
+    try {
+      const cleanEmail = decodedToken.email ? decodedToken.email.toLowerCase().trim() : undefined;
+      const defaultName = decodedToken.name || (cleanEmail ? cleanEmail.split("@")[0] : "Guest Customer");
+
+      customer = await User.create({
+        name: defaultName,
+        email: cleanEmail,
+        firebaseUid: decodedToken.uid,
+        role: "CUSTOMER",
+      });
+    } catch {
+      // Handle potential race condition during simultaneous creation
+      customer = (await User.findOne({
+        firebaseUid: decodedToken.uid,
+      })) as IUser | null;
+      if (!customer && decodedToken.email) {
+        customer = (await User.findOne({
+          email: decodedToken.email.toLowerCase().trim(),
+        })) as IUser | null;
+      }
+    }
   }
 
   if (!customer) {
     return null;
+  }
+
+  // Ensure firebaseUid is saved on existing customer doc if matched by email
+  if (customer && !customer.firebaseUid && decodedToken.uid) {
+    customer.firebaseUid = decodedToken.uid;
+    await customer.save().catch(() => {});
   }
 
   return { customer, decodedToken };
@@ -94,10 +125,13 @@ export function isBookingOwnedByCustomer(
   }
 
   if (customer.phone && booking.guestPhone) {
-    if (booking.guestPhone.trim() === customer.phone.trim()) {
+    const cleanGuestPhone = booking.guestPhone.replace(/\D/g, "");
+    const cleanCustomerPhone = customer.phone.replace(/\D/g, "");
+    if (cleanGuestPhone && cleanCustomerPhone && (cleanGuestPhone === cleanCustomerPhone || cleanGuestPhone.endsWith(cleanCustomerPhone) || cleanCustomerPhone.endsWith(cleanGuestPhone))) {
       return true;
     }
   }
 
   return false;
 }
+

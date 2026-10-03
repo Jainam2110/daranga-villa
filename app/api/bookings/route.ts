@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
+import User from "@/models/User";
 import { checkVillaAvailability, normalizeDateToUTCMidnight, calculatePaymentHoldExpiry } from "@/lib/booking/availability";
 
 /**
@@ -120,11 +121,20 @@ export async function POST(request: Request) {
     // 4. Create Booking Document in MongoDB with Temporary Payment Hold Expiry
     const paymentHoldExpiresAt = calculatePaymentHoldExpiry();
 
+    let resolvedCustomerId = customerId && mongoose.Types.ObjectId.isValid(customerId)
+      ? new mongoose.Types.ObjectId(customerId)
+      : undefined;
+
+    if (!resolvedCustomerId && guestEmail) {
+      const existingUser = await User.findOne({ email: guestEmail.trim().toLowerCase() }).lean();
+      if (existingUser && existingUser._id) {
+        resolvedCustomerId = existingUser._id as mongoose.Types.ObjectId;
+      }
+    }
+
     const newBooking = await Booking.create({
       villaId: new mongoose.Types.ObjectId(villaId),
-      customerId: customerId && mongoose.Types.ObjectId.isValid(customerId)
-        ? new mongoose.Types.ObjectId(customerId)
-        : undefined,
+      customerId: resolvedCustomerId,
       guestName: guestName.trim(),
       guestEmail: guestEmail.trim().toLowerCase(),
       guestPhone: guestPhone.trim(),

@@ -21,6 +21,8 @@ import {
   ExternalLink,
 } from "lucide-react";
 
+import { getVillaAddress } from "@/lib/utils/villa-location";
+
 export interface BookingDetail {
   id: string;
   _id?: string;
@@ -34,7 +36,7 @@ export interface BookingDetail {
     heroImage?: string;
     address?: string;
     city?: string;
-    location?: string;
+    location?: unknown;
     pricePerNight?: number;
     bedrooms?: number;
     bathrooms?: number;
@@ -77,14 +79,32 @@ export function BookingDetailsClient({ bookingId }: { bookingId: string }) {
 
   useEffect(() => {
     async function fetchBookingDetails() {
-      if (!idToken || !bookingId) return;
+      if (!bookingId) return;
+      if (authLoading) return;
+
+      if (!firebaseUser) {
+        setLoading(false);
+        return;
+      }
+
       setLoading(true);
       setError(null);
 
       try {
+        let activeToken = idToken;
+        if (!activeToken && firebaseUser) {
+          activeToken = await firebaseUser.getIdToken();
+        }
+
+        if (!activeToken) {
+          setError("Authentication token required to view booking details.");
+          setLoading(false);
+          return;
+        }
+
         const res = await fetch(`/api/customer/bookings/${bookingId}`, {
           headers: {
-            Authorization: `Bearer ${idToken}`,
+            Authorization: `Bearer ${activeToken}`,
           },
         });
 
@@ -104,10 +124,10 @@ export function BookingDetailsClient({ bookingId }: { bookingId: string }) {
       }
     }
 
-    if (idToken) {
+    if (!authLoading) {
       fetchBookingDetails();
     }
-  }, [idToken, bookingId]);
+  }, [authLoading, firebaseUser, idToken, bookingId]);
 
   // Update nowMs every second if there's a pending hold
   useEffect(() => {
@@ -241,7 +261,10 @@ export function BookingDetailsClient({ bookingId }: { bookingId: string }) {
       : "") ||
     "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80";
 
-  const villaLocation = booking.villa?.location || booking.villa?.city || "Kutch, Gujarat";
+  const villaLocation = getVillaAddress(
+    booking.villa?.location,
+    booking.villa?.address || booking.villa?.city || "Igatpuri, Maharashtra"
+  );
   const pricePerNight = booking.villa?.pricePerNight || Math.round(booking.totalAmount / nights);
   const bookingReference = `#${(booking.id || booking._id || "").slice(-8).toUpperCase()}`;
 

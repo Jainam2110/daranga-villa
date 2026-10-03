@@ -53,6 +53,11 @@ export async function GET(
       );
     }
 
+    // Auto-link customerId to booking if not linked yet
+    if (!booking.customerId && customer._id) {
+      await Booking.updateOne({ _id: booking._id }, { $set: { customerId: customer._id } }).catch(() => {});
+    }
+
     const checkInISO = booking.checkIn ? new Date(booking.checkIn).toISOString() : "";
     const checkOutISO = booking.checkOut ? new Date(booking.checkOut).toISOString() : "";
     const createdAtISO = booking.createdAt ? new Date(booking.createdAt).toISOString() : "";
