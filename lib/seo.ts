@@ -40,11 +40,11 @@ export function generateOrganizationSchema() {
     url: siteUrl,
     logo: `${siteUrl}/brand/daranga-icon-mark.png`,
     description:
-      "Exclusive private luxury villa sanctuaries in Igatpuri featuring private pool residences, 24/7 butler service, and tailored group getaways.",
+      "Exclusive private luxury villa sanctuaries in Udaipur featuring private pool residences, 24/7 butler service, and tailored group getaways.",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Igatpuri",
-      addressRegion: "Maharashtra",
+      addressLocality: "Udaipur",
+      addressRegion: "Rajasthan",
       addressCountry: "IN",
     },
     contactPoint: {
@@ -70,7 +70,7 @@ export function generateWebSiteSchema() {
     "@id": `${siteUrl}/#website`,
     url: siteUrl,
     name: "Daranga Villas",
-    description: "Luxury Private Villas in Igatpuri for exclusive family and group stays.",
+    description: "Luxury Private Villas in Udaipur for exclusive family and group stays.",
     publisher: {
       "@id": `${siteUrl}/#organization`,
     },
@@ -84,7 +84,7 @@ export function generateWebSiteSchema() {
 export function generateVillaSchema(villa: Villa) {
   const siteUrl = getSiteUrl();
   const villaUrl = getCanonicalUrl(`/villas/${villa.slug || villa.id || villa._id}`);
-  const addressText = getVillaAddress(villa.location, villa.zone || "Igatpuri, Maharashtra, India");
+  const addressText = getVillaAddress(villa.location, villa.zone || "Udaipur, Rajasthan, India");
   const coverImage = getPrimaryVillaImageUrl(villa.images) || `${siteUrl}/images/hero/heroimg.webp`;
 
   const amenitiesList = villa.amenities && Array.isArray(villa.amenities) ? villa.amenities : [];
@@ -96,14 +96,14 @@ export function generateVillaSchema(villa: Villa) {
     name: villa.name,
     description:
       villa.description ||
-      `Private luxury stay at ${villa.name} in Igatpuri featuring ${villa.bedrooms || 1} bedrooms, private pool, and concierge service.`,
+      `Private luxury stay at ${villa.name} in Udaipur featuring ${villa.bedrooms || 1} bedrooms, private pool, and concierge service.`,
     url: villaUrl,
     image: [coverImage],
     address: {
       "@type": "PostalAddress",
       streetAddress: addressText,
-      addressLocality: "Igatpuri",
-      addressRegion: "Maharashtra",
+      addressLocality: "Udaipur",
+      addressRegion: "Rajasthan",
       addressCountry: "IN",
     },
     numberOfBedrooms: villa.bedrooms || 1,

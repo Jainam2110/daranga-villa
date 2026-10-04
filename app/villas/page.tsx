@@ -11,16 +11,16 @@ import { getCanonicalUrl, getSiteUrl } from "@/lib/seo";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Luxury Villas in Igatpuri | Daranga Villas",
+  title: "Luxury Villas in Udaipur | Daranga Villas",
   description:
-    "Explore private villas in Igatpuri and find a stay that fits your group, dates and preferences.",
+    "Explore private villas in Udaipur and find a stay that fits your group, dates and preferences.",
   alternates: {
     canonical: getCanonicalUrl("/villas"),
   },
   openGraph: {
-    title: "Luxury Villas in Igatpuri | Daranga Villas",
+    title: "Luxury Villas in Udaipur | Daranga Villas",
     description:
-      "Explore private villas in Igatpuri and find a stay that fits your group, dates and preferences.",
+      "Explore private villas in Udaipur and find a stay that fits your group, dates and preferences.",
     url: getCanonicalUrl("/villas"),
     siteName: "Daranga Villas",
     images: [
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
         url: `${getSiteUrl()}/images/hero/heroimg.webp`,
         width: 1200,
         height: 630,
-        alt: "Luxury Villas in Igatpuri - Daranga Villas",
+        alt: "Luxury Villas in Udaipur - Daranga Villas",
       },
     ],
   },

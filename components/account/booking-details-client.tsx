@@ -263,7 +263,7 @@ export function BookingDetailsClient({ bookingId }: { bookingId: string }) {
 
   const villaLocation = getVillaAddress(
     booking.villa?.location,
-    booking.villa?.address || booking.villa?.city || "Igatpuri, Maharashtra"
+    booking.villa?.address || booking.villa?.city || "Udaipur, Rajasthan"
   );
   const pricePerNight = booking.villa?.pricePerNight || Math.round(booking.totalAmount / nights);
   const bookingReference = `#${(booking.id || booking._id || "").slice(-8).toUpperCase()}`;

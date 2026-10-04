@@ -13,16 +13,16 @@ import { TrustedPartnerSection } from "@/components/sections/trusted-partner-sec
 import { getCanonicalUrl, getSiteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "About Us | Daranga Villas Igatpuri",
+  title: "About Us | Daranga Villas Udaipur",
   description:
-    "Discover the story, vision, and timeless heritage behind Daranga Villas' private luxury sanctuaries in Igatpuri.",
+    "Discover the story, vision, and timeless heritage behind Daranga Villas' private luxury sanctuaries in Udaipur.",
   alternates: {
     canonical: getCanonicalUrl("/about"),
   },
   openGraph: {
-    title: "About Us | Daranga Villas Igatpuri",
+    title: "About Us | Daranga Villas Udaipur",
     description:
-      "Discover the story, vision, and timeless heritage behind Daranga Villas' private luxury sanctuaries in Igatpuri.",
+      "Discover the story, vision, and timeless heritage behind Daranga Villas' private luxury sanctuaries in Udaipur.",
     url: getCanonicalUrl("/about"),
     siteName: "Daranga Villas",
     images: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
         url: `${getSiteUrl()}/images/hero/heroimg.webp`,
         width: 1200,
         height: 630,
-        alt: "About Daranga Villas Igatpuri",
+        alt: "About Daranga Villas Udaipur",
       },
     ],
   },

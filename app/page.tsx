@@ -9,16 +9,16 @@ import { getCanonicalUrl, getSiteUrl } from "@/lib/seo";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Daranga Villas | Luxury Private Villas in Igatpuri",
+  title: "Daranga Villas | Luxury Private Villas in Udaipur",
   description:
-    "Book private luxury villas in Igatpuri for family retreats, corporate getaways, and weekend stays featuring private pools, mountain views, and 24/7 hospitality.",
+    "Book private luxury villas in Udaipur for family retreats, corporate getaways, and weekend stays featuring private pools, mountain views, and 24/7 hospitality.",
   alternates: {
     canonical: getCanonicalUrl("/"),
   },
   openGraph: {
-    title: "Daranga Villas | Luxury Private Villas in Igatpuri",
+    title: "Daranga Villas | Luxury Private Villas in Udaipur",
     description:
-      "Book private luxury villas in Igatpuri for family retreats, corporate getaways, and weekend stays featuring private pools.",
+      "Book private luxury villas in Udaipur for family retreats, corporate getaways, and weekend stays featuring private pools.",
     url: getCanonicalUrl("/"),
     siteName: "Daranga Villas",
     images: [
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
         url: `${getSiteUrl()}/images/hero/heroimg.webp`,
         width: 1200,
         height: 630,
-        alt: "Daranga Villas Igatpuri Luxury Sanctuaries",
+        alt: "Daranga Villas Udaipur Luxury Sanctuaries",
       },
     ],
   },

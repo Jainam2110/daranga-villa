@@ -25,18 +25,18 @@ const siteUrl = getSiteUrl();
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Daranga Villas | Luxury Private Villas in Igatpuri",
+    default: "Daranga Villas | Luxury Private Villas in Udaipur",
     template: "%s | Daranga Villas",
   },
   description:
-    "Discover private luxury villas in Igatpuri for exclusive group getaways, family holidays, and weekend retreats featuring private pools and personalized hospitality.",
+    "Discover private luxury villas in Udaipur for exclusive group getaways, family holidays, and weekend retreats featuring private pools and personalized hospitality.",
   keywords: [
     "Daranga Villas",
-    "luxury villas Igatpuri",
-    "private villa with pool Igatpuri",
-    "villas in Igatpuri",
-    "weekend getaway Igatpuri",
-    "group stays Igatpuri",
+    "luxury villas Udaipur",
+    "private villa with pool Udaipur",
+    "villas in Udaipur",
+    "weekend getaway Udaipur",
+    "group stays Udaipur",
   ],
   authors: [{ name: "Daranga Villas" }],
   creator: "Daranga Villas",
@@ -60,23 +60,23 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: siteUrl,
     siteName: "Daranga Villas",
-    title: "Daranga Villas | Luxury Private Villas in Igatpuri",
+    title: "Daranga Villas | Luxury Private Villas in Udaipur",
     description:
-      "Discover private luxury villas in Igatpuri for exclusive group getaways, family holidays, and weekend retreats with private pools.",
+      "Discover private luxury villas in Udaipur for exclusive group getaways, family holidays, and weekend retreats with private pools.",
     images: [
       {
         url: `${siteUrl}/images/hero/heroimg.webp`,
         width: 1200,
         height: 630,
-        alt: "Daranga Villas Luxury Private Villas in Igatpuri",
+        alt: "Daranga Villas Luxury Private Villas in Udaipur",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Daranga Villas | Luxury Private Villas in Igatpuri",
+    title: "Daranga Villas | Luxury Private Villas in Udaipur",
     description:
-      "Discover private luxury villas in Igatpuri for exclusive group getaways, family holidays, and weekend retreats.",
+      "Discover private luxury villas in Udaipur for exclusive group getaways, family holidays, and weekend retreats.",
     images: [`${siteUrl}/images/hero/heroimg.webp`],
   },
   manifest: "/manifest.json",

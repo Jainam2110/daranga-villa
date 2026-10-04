@@ -39,9 +39,9 @@ type MapMarkerInstance = {
   addListener?: (eventName: string, handler: (...args: unknown[]) => void) => google.maps.MapsEventListener;
 } | null;
 
-// Default regional center for UX view when no location is set (e.g. Igatpuri, Maharashtra)
+// Default regional center for UX view when no location is set (e.g. Udaipur, Rajasthan)
 // IMPORTANT: This default center is NEVER saved automatically.
-const DEFAULT_MAP_CENTER = { lat: 19.6950, lng: 73.5620 };
+const DEFAULT_MAP_CENTER = { lat: 24.5854, lng: 73.7125 };
 
 export function VillaLocationPicker({
   value,
@@ -420,7 +420,7 @@ export function VillaLocationPicker({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search address, landmark, or area (e.g. Igatpuri, Maharashtra)..."
+            placeholder="Search address, landmark, or area (e.g. Udaipur, Rajasthan)..."
             className="w-full pl-9 pr-9 py-2.5 rounded-xl bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA] transition-colors"
           />
           <Search className="w-4 h-4 text-[#66635F] dark:text-[#BDB8B0] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />

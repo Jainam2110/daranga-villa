@@ -40,7 +40,7 @@ export async function generateMetadata({
 
   const locationText = getVillaAddress(
     villa.location,
-    villa.zone || "Igatpuri, Maharashtra"
+    villa.zone || "Udaipur, Rajasthan"
   );
   const factualDescription =
     villa.description ||
@@ -61,7 +61,7 @@ export async function generateMetadata({
       images: [
         {
           url: primaryCoverUrl,
-          alt: `${villa.name} Luxury Private Villa in Igatpuri`,
+          alt: `${villa.name} Luxury Private Villa in Udaipur`,
         },
       ],
     },
