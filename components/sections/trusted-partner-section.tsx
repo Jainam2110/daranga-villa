@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Container } from "@/components/ui/container";
+import { Sparkles, Award, Home } from "lucide-react";
 
 interface PartnerFeature {
   id: string;
@@ -12,104 +13,24 @@ interface PartnerFeature {
 
 function CuratedStaysIcon() {
   return (
-    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FFF5F2] via-[#FEECEB] to-[#FDF4E7] dark:from-[#2A2422] dark:to-[#222] flex items-center justify-center p-2.5 shadow-xs flex-shrink-0 border border-[#F5D0B5]/40 dark:border-[#52443C]/40">
-      <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="32" cy="18" r="3.5" fill="#E8A0A8" />
-        <path
-          d="M16 40C16 29 23.2 21 32 21C40.8 21 48 29 48 40H16Z"
-          fill="url(#dome-grad)"
-        />
-        <path
-          d="M10 42C10 40.5 14 39.5 32 39.5C50 39.5 54 40.5 54 42C54 44 48 45.5 32 45.5C16 45.5 10 44 10 42Z"
-          fill="url(#plate-grad)"
-        />
-        <path
-          d="M8 48C14 48 18 46 26 46H38C44 46 50 49 56 49"
-          stroke="#E8A0A8"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-        />
-        <defs>
-          <linearGradient id="dome-grad" x1="16" y1="21" x2="48" y2="40" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#FCE7E8" />
-            <stop offset="0.6" stopColor="#F6C7CA" />
-            <stop offset="1" stopColor="#F6D2B8" />
-          </linearGradient>
-          <linearGradient id="plate-grad" x1="10" y1="39.5" x2="54" y2="45.5" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#EFA1AA" />
-            <stop offset="1" stopColor="#F6D2B8" />
-          </linearGradient>
-        </defs>
-      </svg>
+    <div className="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-white text-black dark:bg-[#171717] dark:text-white flex items-center justify-center shadow-md flex-shrink-0 border border-stone-200 dark:border-stone-800 transition-transform group-hover:scale-105">
+      <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-black dark:text-white stroke-[1.8]" />
     </div>
   );
 }
 
 function UnmatchedServiceIcon() {
   return (
-    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FCFBF9] via-[#FCE7E8] to-[#FBE9DC] dark:from-[#2A2422] dark:to-[#222] flex items-center justify-center p-2.5 shadow-xs flex-shrink-0 border border-[#F6D2B8]/40 dark:border-[#52443C]/40">
-      <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="32" cy="27" r="15" fill="url(#rosette-grad)" />
-        <path
-          d="M25 27L29.5 31.5L39 22"
-          stroke="#FFFFFF"
-          strokeWidth="2.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M26 39L22 51L32 46L42 51L38 39"
-          fill="url(#ribbon-grad)"
-        />
-        {/* Sparkle */}
-        <path
-          d="M47 13L48.5 9.5L52 8L48.5 6.5L47 3L45.5 6.5L42 8L45.5 9.5L47 13Z"
-          fill="#EFA1AA"
-        />
-        <defs>
-          <linearGradient id="rosette-grad" x1="17" y1="12" x2="47" y2="42" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#F6C7CA" />
-            <stop offset="0.5" stopColor="#EFA1AA" />
-            <stop offset="1" stopColor="#F6D2B8" />
-          </linearGradient>
-          <linearGradient id="ribbon-grad" x1="22" y1="39" x2="42" y2="51" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#EFA1AA" />
-            <stop offset="1" stopColor="#F6D2B8" />
-          </linearGradient>
-        </defs>
-      </svg>
+    <div className="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-white text-black dark:bg-[#171717] dark:text-white flex items-center justify-center shadow-md flex-shrink-0 border border-stone-200 dark:border-stone-800 transition-transform group-hover:scale-105">
+      <Award className="w-5 h-5 sm:w-6 sm:h-6 text-black dark:text-white stroke-[1.8]" />
     </div>
   );
 }
 
 function ImpeccableVillasIcon() {
   return (
-    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#FCFBF9] via-[#FCE7E8] to-[#FBE9DC] dark:from-[#2A2422] dark:to-[#222] flex items-center justify-center p-2.5 shadow-xs flex-shrink-0 border border-[#F6D2B8]/40 dark:border-[#52443C]/40">
-      <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M16 29L32 15L48 29V49H16V29Z"
-          fill="url(#house-grad)"
-        />
-        <path d="M38 18V13H42V21.5" fill="#EFA1AA" />
-        <rect x="25.5" y="34" width="13" height="15" rx="2" fill="#FFFFFF" fillOpacity="0.9" />
-        <rect x="20" y="32" width="4" height="6" rx="1" fill="#FFFFFF" fillOpacity="0.8" />
-        {/* Sparkles */}
-        <path
-          d="M48 11L49.5 8L52.5 6.5L49.5 5L48 2L46.5 5L43.5 6.5L46.5 8L48 11Z"
-          fill="#F6D2B8"
-        />
-        <path
-          d="M12 21L13 19L15 18L13 17L12 15L11 17L9 18L11 19L12 21Z"
-          fill="#EFA1AA"
-        />
-        <defs>
-          <linearGradient id="house-grad" x1="16" y1="15" x2="48" y2="49" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#FCE7E8" />
-            <stop offset="0.5" stopColor="#F6D2B8" />
-            <stop offset="1" stopColor="#EFA1AA" />
-          </linearGradient>
-        </defs>
-      </svg>
+    <div className="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-white text-black dark:bg-[#171717] dark:text-white flex items-center justify-center shadow-md flex-shrink-0 border border-stone-200 dark:border-stone-800 transition-transform group-hover:scale-105">
+      <Home className="w-5 h-5 sm:w-6 sm:h-6 text-black dark:text-white stroke-[1.8]" />
     </div>
   );
 }

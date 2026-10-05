@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { Container } from "@/components/ui/container";
 
+import { Waves, ChefHat, ConciergeBell, ShieldCheck } from "lucide-react";
+
 interface StandardFeature {
   id: string;
   name: string;
@@ -18,76 +20,35 @@ interface StandardSlide {
   features: StandardFeature[];
 }
 
-// 3D-styled illustrated pastel vector icons matching reference
+// Crisp luxury black vector icons on clean white glass badges
 function PrivatePoolIcon() {
   return (
-    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#FFF5F2]/80 to-[#F5D0B5]/40 backdrop-blur-md flex items-center justify-center p-2 shadow-sm border border-white/25">
-      <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Swimmer head & body */}
-        <circle cx="28" cy="20" r="4.5" fill="#FAD4D8" stroke="#E8A0A8" strokeWidth="1.5" />
-        <path d="M22 28C24 24 30 24 36 27L42 30" stroke="#E8A0A8" strokeWidth="3" strokeLinecap="round" />
-        {/* Water waves */}
-        <path d="M10 38C15 36 20 40 25 38C30 36 35 40 40 38C45 36 50 40 54 38" stroke="#8ED1FC" strokeWidth="3.5" strokeLinecap="round" />
-        <path d="M12 46C17 44 22 48 27 46C32 44 37 48 42 46C47 44 52 48 56 46" stroke="#F5D0B5" strokeWidth="2.5" strokeLinecap="round" />
-      </svg>
+    <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-white text-black flex items-center justify-center shadow-lg border border-white/80">
+      <Waves className="w-5 h-5 sm:w-6 sm:h-6 text-black stroke-[1.8]" />
     </div>
   );
 }
 
 function InHouseChefIcon() {
   return (
-    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#FFF5F2]/80 to-[#F5D0B5]/40 backdrop-blur-md flex items-center justify-center p-2 shadow-sm border border-white/25">
-      <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Chef Toque / Hat */}
-        <path d="M24 24C20 24 18 20 22 15C25 11 30 11 32 14C34 11 39 11 42 15C46 20 44 24 40 24H24Z" fill="#FEECEB" stroke="#E8A0A8" strokeWidth="1.8" />
-        {/* Head */}
-        <circle cx="32" cy="29" r="6" fill="#FAD4D8" />
-        {/* Chef Coat */}
-        <path d="M22 40C22 36 27 35 32 35C37 35 42 36 42 40V48H22V40Z" fill="#FFFFFF" fillOpacity="0.9" />
-        {/* Buttons */}
-        <circle cx="30" cy="40" r="1" fill="#E8A0A8" />
-        <circle cx="30" cy="44" r="1" fill="#E8A0A8" />
-        <circle cx="34" cy="40" r="1" fill="#E8A0A8" />
-        <circle cx="34" cy="44" r="1" fill="#E8A0A8" />
-      </svg>
+    <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-white text-black flex items-center justify-center shadow-lg border border-white/80">
+      <ChefHat className="w-5 h-5 sm:w-6 sm:h-6 text-black stroke-[1.8]" />
     </div>
   );
 }
 
 function ButlerServiceIcon() {
   return (
-    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#FFF5F2]/80 to-[#F6D2B8]/40 backdrop-blur-md flex items-center justify-center p-2 shadow-sm border border-white/25">
-      <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Butler head with hair */}
-        <path d="M25 24C25 20 28 17 32 17C36 17 39 20 39 24C39 28 36 30 32 30C28 30 25 28 25 24Z" fill="#FAD4D8" />
-        <path d="M25 22C25 18 28 16 32 16C36 16 39 18 39 20" stroke="#202020" strokeWidth="2.5" strokeLinecap="round" />
-        {/* Suit & Bow tie */}
-        <path d="M20 42C20 35 25 34 32 34C39 34 44 35 44 42V49H20V42Z" fill="#FFFFFF" fillOpacity="0.95" />
-        <path d="M29 36L32 38L35 36L32 40L29 36Z" fill="#EFA1AA" />
-      </svg>
+    <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-white text-black flex items-center justify-center shadow-lg border border-white/80">
+      <ConciergeBell className="w-5 h-5 sm:w-6 sm:h-6 text-black stroke-[1.8]" />
     </div>
   );
 }
 
 function CaretakerOnsiteIcon() {
   return (
-    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-[#FFF5F2]/80 to-[#F6D2B8]/40 backdrop-blur-md flex items-center justify-center p-2 shadow-sm border border-white/25">
-      <svg viewBox="0 0 64 64" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Rosette with soft blush & peach sparkles */}
-        <circle cx="32" cy="32" r="13" fill="url(#caretaker-sun)" />
-        <circle cx="32" cy="32" r="9" fill="#FFF5F2" fillOpacity="0.8" />
-        {/* Sparkles */}
-        <path d="M44 18L45 15L48 14L45 13L44 10L43 13L40 14L43 15L44 18Z" fill="#F6D2B8" />
-        <path d="M20 18L21 16L23 15L21 14L20 12L19 14L17 15L19 16L20 18Z" fill="#EFA1AA" />
-        <path d="M48 40L49 38L51 37L49 36L48 34L47 36L45 37L47 38L48 40Z" fill="#EFA1AA" />
-        <defs>
-          <linearGradient id="caretaker-sun" x1="19" y1="19" x2="45" y2="45" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#F6D2B8" />
-            <stop offset="0.6" stopColor="#EFA1AA" />
-            <stop offset="1" stopColor="#F6C7CA" />
-          </linearGradient>
-        </defs>
-      </svg>
+    <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-white text-black flex items-center justify-center shadow-lg border border-white/80">
+      <ShieldCheck className="w-5 h-5 sm:w-6 sm:h-6 text-black stroke-[1.8]" />
     </div>
   );
 }
