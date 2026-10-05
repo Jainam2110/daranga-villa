@@ -5,11 +5,12 @@ export interface HeroSlideData {
   _id?: string;
   id?: string;
   url: string;
-  title: string;
-  tagline: string;
+  title?: string;
+  tagline?: string;
   subtitle?: string;
   caption?: string;
   publicId?: string;
+  objectPosition?: string;
   order: number;
   isActive: boolean;
 }
@@ -21,6 +22,7 @@ export const INITIAL_HERO_SLIDES: Omit<HeroSlideData, "_id" | "id">[] = [
     title: "Villas For\nLuxury Living",
     subtitle: "Where timeless heritage meets private modern luxury",
     caption: "The Grand Sanctuary Estate",
+    objectPosition: "center 35%",
     order: 0,
     isActive: true,
   },
@@ -30,6 +32,7 @@ export const INITIAL_HERO_SLIDES: Omit<HeroSlideData, "_id" | "id">[] = [
     title: "Villas With\nPrivate Pools",
     subtitle: "Serene aquatic escapes enveloped by tranquil nature",
     caption: "Infinity Twilight Pools",
+    objectPosition: "center 35%",
     order: 1,
     isActive: true,
   },
@@ -39,6 +42,7 @@ export const INITIAL_HERO_SLIDES: Omit<HeroSlideData, "_id" | "id">[] = [
     title: "Bespoke\nArchitecture",
     subtitle: "Handcrafted stone, soaring ceilings & sunlit spaces",
     caption: "Architectural Pavilions",
+    objectPosition: "center 35%",
     order: 2,
     isActive: true,
   },
@@ -48,6 +52,7 @@ export const INITIAL_HERO_SLIDES: Omit<HeroSlideData, "_id" | "id">[] = [
     title: "Secluded\nNature Retreats",
     subtitle: "Bespoke privacy amidst Udaipur's peaceful valleys",
     caption: "Secluded Tropical Grounds",
+    objectPosition: "center 35%",
     order: 3,
     isActive: true,
   },
@@ -57,6 +62,7 @@ export const INITIAL_HERO_SLIDES: Omit<HeroSlideData, "_id" | "id">[] = [
     title: "Sunset &\nStarlit Evenings",
     subtitle: "Unwind under the evening sky in absolute tranquility",
     caption: "Sunset Verandas & Lounges",
+    objectPosition: "center 35%",
     order: 4,
     isActive: true,
   },
@@ -72,11 +78,12 @@ export async function getActiveHeroSlides(): Promise<HeroSlideData[]> {
         _id: String(s._id),
         id: String(s._id),
         url: s.url,
-        title: s.title || "Villas For\nLuxury Living",
-        tagline: s.tagline || "DARANGA SANCTUARIES",
-        subtitle: s.subtitle || "",
-        caption: s.caption || s.title || "",
-        publicId: s.publicId || "",
+        title: s.title ?? "",
+        tagline: s.tagline ?? "",
+        subtitle: s.subtitle ?? "",
+        caption: s.caption ?? s.title ?? "",
+        publicId: s.publicId ?? "",
+        objectPosition: s.objectPosition || "center 35%",
         order: s.order ?? 0,
         isActive: s.isActive ?? true,
       }));

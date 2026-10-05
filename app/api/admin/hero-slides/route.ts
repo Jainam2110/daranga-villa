@@ -30,6 +30,7 @@ export async function GET() {
         subtitle: s.subtitle,
         caption: s.caption,
         publicId: s.publicId,
+        objectPosition: s.objectPosition || "center 35%",
         order: s.order ?? 0,
         isActive: s.isActive ?? true,
       })),
@@ -51,7 +52,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { url, title, tagline, subtitle, caption, publicId, order, isActive } = body;
+    const { url, title, tagline, subtitle, caption, publicId, objectPosition, order, isActive } = body;
 
     if (!url || typeof url !== "string") {
       return NextResponse.json(
@@ -67,11 +68,12 @@ export async function POST(req: NextRequest) {
 
     const newSlide = await HeroSlide.create({
       url: url.trim(),
-      title: title ? title.trim() : "Villas For\nLuxury Living",
-      tagline: tagline ? tagline.trim() : "DARANGA SANCTUARIES",
-      subtitle: subtitle ? subtitle.trim() : "",
-      caption: caption ? caption.trim() : (title ? title.trim() : ""),
+      title: title !== undefined ? String(title).trim() : "",
+      tagline: tagline !== undefined ? String(tagline).trim() : "",
+      subtitle: subtitle !== undefined ? String(subtitle).trim() : "",
+      caption: caption !== undefined ? String(caption).trim() : "",
       publicId: publicId || "",
+      objectPosition: objectPosition || "center 35%",
       order: nextOrder,
       isActive: isActive !== undefined ? Boolean(isActive) : true,
     });
@@ -88,6 +90,7 @@ export async function POST(req: NextRequest) {
           subtitle: newSlide.subtitle,
           caption: newSlide.caption,
           publicId: newSlide.publicId,
+          objectPosition: newSlide.objectPosition,
           order: newSlide.order,
           isActive: newSlide.isActive,
         },
@@ -157,6 +160,7 @@ export async function PUT(req: NextRequest) {
         subtitle: s.subtitle,
         caption: s.caption,
         publicId: s.publicId,
+        objectPosition: s.objectPosition || "center 35%",
         order: s.order ?? 0,
         isActive: s.isActive ?? true,
       })),

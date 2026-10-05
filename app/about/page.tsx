@@ -6,7 +6,6 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Container } from "@/components/ui/container";
 import { Sparkles, ArrowRight, ShieldCheck, HeartHandshake, UtensilsCrossed, Crown, Award, Clock } from "lucide-react";
-import { BookingCtaSection } from "@/components/sections/booking-cta-section";
 import { DarangaStandardSection } from "@/components/sections/daranga-standard-section";
 import { TrustedPartnerSection } from "@/components/sections/trusted-partner-section";
 
@@ -195,9 +194,6 @@ export default function AboutPage() {
 
         {/* 6. Trusted Partner Section */}
         <TrustedPartnerSection />
-
-        {/* 7. Reservation CTA Banner */}
-        <BookingCtaSection />
       </main>
 
       {/* 8. Footer */}

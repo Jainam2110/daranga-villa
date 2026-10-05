@@ -73,36 +73,7 @@ interface VillaManagementClientProps {
   initialVillas: SerializedVilla[];
 }
 
-const UDAIPUR_LOCATION_PRESETS = [
-  {
-    name: "Lake Pichola Waterfront",
-    lat: 24.576,
-    lng: 73.678,
-    mapX: 58,
-    mapY: 64,
-  },
-  {
-    name: "Fateh Sagar Lakeside (Rani Road)",
-    lat: 24.602,
-    lng: 73.668,
-    mapX: 50,
-    mapY: 40,
-  },
-  {
-    name: "Kodiyat Valley & Sajjangarh Ridge",
-    lat: 24.59,
-    lng: 73.635,
-    mapX: 32,
-    mapY: 55,
-  },
-  {
-    name: "Lake Badi Nature Enclave",
-    lat: 24.618,
-    lng: 73.62,
-    mapX: 22,
-    mapY: 26,
-  },
-];
+
 
 const STANDARD_HOUSE_RULES = [
   "No smoking indoors",
@@ -292,18 +263,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
     setIsModalOpen(true);
   };
 
-  const handleApplyPreset = (preset: (typeof UDAIPUR_LOCATION_PRESETS)[0]) => {
-    setFormData((prev) => ({
-      ...prev,
-      zone: preset.name,
-      location: `${preset.name}, Udaipur, Rajasthan`,
-      latitude: preset.lat,
-      longitude: preset.lng,
-      googleMapsUrl: `https://www.google.com/maps/search/?api=1&query=${preset.lat},${preset.lng}`,
-      mapX: preset.mapX,
-      mapY: preset.mapY,
-    }));
-  };
+
 
   const handleDeleteVilla = async (villa: SerializedVilla) => {
     if (!window.confirm(`Are you sure you want to permanently delete "${villa.name}"? This action cannot be undone.`)) {
@@ -930,28 +890,7 @@ export function VillaManagementClient({ initialVillas }: VillaManagementClientPr
                   </span>
                 </div>
 
-                {/* Quick Presets */}
-                <div className="space-y-1.5">
-                  <span className="text-[10px] uppercase font-semibold text-[#66635F] dark:text-[#BDB8B0]">
-                    Quick Location Presets:
-                  </span>
-                  <div className="flex flex-wrap gap-2">
-                    {UDAIPUR_LOCATION_PRESETS.map((preset, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={() => handleApplyPreset(preset)}
-                        className={`px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all cursor-pointer ${
-                          formData.zone === preset.name
-                            ? "bg-[#202020] text-white dark:bg-[#FCFBF8] dark:text-[#202020] shadow-xs"
-                            : "bg-white dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#333333] text-[#202020] dark:text-[#FCFBF8] hover:border-[#EFA1AA]"
-                        }`}
-                      >
-                        {preset.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+
 
                 <VillaLocationPicker
                   value={

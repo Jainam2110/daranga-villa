@@ -119,6 +119,7 @@ export function Navbar({
   const navLinks = [
     { label: "Villas", href: "/villas" },
     { label: "About Us", href: "/about" },
+    { label: "About Udaipur", href: "/about-udaipur" },
     { label: "Experiences", href: "/#experiences" },
   ];
 

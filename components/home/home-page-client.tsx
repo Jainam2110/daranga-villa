@@ -12,8 +12,8 @@ import { DarangaStandardSection } from "@/components/sections/daranga-standard-s
 import { PromotionalStrip } from "@/components/ui/promotional-strip";
 import { FeaturedVillasSection } from "@/components/sections/featured-villas-section";
 import { AboutUsSection } from "@/components/sections/about-us-section";
+import { AboutUdaipurHomeSection } from "@/components/sections/about-udaipur-home-section";
 import { ExperiencesSection } from "@/components/sections/experiences-section";
-import { BookingCtaSection } from "@/components/sections/booking-cta-section";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 import { Villa } from "@/types/villa";
 import { getPrimaryVillaImageUrl } from "@/lib/utils/image";
@@ -177,7 +177,6 @@ export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps
         <HeroSection
           heroImages={heroImages}
           customHeroSlides={customHeroSlides}
-          onExploreClick={handleScrollToVillas}
         />
 
         {/* 3. Search Bar (Overlapping bottom edge of hero) */}
@@ -230,16 +229,14 @@ export function HomePageClient({ villas, customHeroSlides }: HomePageClientProps
           <TrustedPartnerSection />
         </ScrollReveal>
 
-        {/* 10. About Us Section (Story & Values) */}
+        {/* 10. About Udaipur Destination Banner (Just before Our Philosophy) */}
         <ScrollReveal delay={100} direction="up">
-          <AboutUsSection />
+          <AboutUdaipurHomeSection />
         </ScrollReveal>
 
-        {/* 11. Final Reservation CTA Banner */}
+        {/* 11. About Us Section (OUR PHILOSOPHY) */}
         <ScrollReveal delay={100} direction="up">
-          <BookingCtaSection
-            onCheckAvailabilityClick={handleScrollToVillas}
-          />
+          <AboutUsSection />
         </ScrollReveal>
       </main>
 

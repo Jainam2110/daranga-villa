@@ -8,10 +8,11 @@ export interface HeroSlideItem {
   _id?: string;
   id?: string;
   url: string;
-  title: string;
+  title?: string;
   tagline?: string;
   subtitle?: string;
   caption?: string;
+  objectPosition?: string;
   order?: number;
   isActive?: boolean;
 }
@@ -20,15 +21,15 @@ interface HeroSectionProps {
   heroImageUrl?: string;
   heroImages?: string[];
   customHeroSlides?: HeroSlideItem[];
-  onExploreClick?: () => void;
 }
 
 interface HeroSlide {
   url: string;
-  tagline: string;
-  title: string;
-  subtitle: string;
-  caption: string;
+  tagline?: string;
+  title?: string;
+  subtitle?: string;
+  caption?: string;
+  objectPosition?: string;
 }
 
 const DEFAULT_HERO_SLIDES: HeroSlide[] = [
@@ -38,6 +39,7 @@ const DEFAULT_HERO_SLIDES: HeroSlide[] = [
     title: "Villas For\nLuxury Living",
     subtitle: "Where timeless heritage meets private modern luxury",
     caption: "The Grand Sanctuary Estate",
+    objectPosition: "center center",
   },
   {
     url: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=2070&q=85",
@@ -45,6 +47,7 @@ const DEFAULT_HERO_SLIDES: HeroSlide[] = [
     title: "Villas With\nPrivate Pools",
     subtitle: "Serene aquatic escapes enveloped by tranquil nature",
     caption: "Infinity Twilight Pools",
+    objectPosition: "center center",
   },
   {
     url: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=2074&q=85",
@@ -52,6 +55,7 @@ const DEFAULT_HERO_SLIDES: HeroSlide[] = [
     title: "Bespoke\nArchitecture",
     subtitle: "Handcrafted stone, soaring ceilings & sunlit spaces",
     caption: "Architectural Pavilions",
+    objectPosition: "center center",
   },
   {
     url: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=2070&q=85",
@@ -59,6 +63,7 @@ const DEFAULT_HERO_SLIDES: HeroSlide[] = [
     title: "Secluded\nNature Retreats",
     subtitle: "Bespoke privacy amidst Udaipur's peaceful valleys",
     caption: "Secluded Tropical Grounds",
+    objectPosition: "center center",
   },
   {
     url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2070&q=85",
@@ -66,6 +71,7 @@ const DEFAULT_HERO_SLIDES: HeroSlide[] = [
     title: "Sunset &\nStarlit Evenings",
     subtitle: "Unwind under the evening sky in absolute tranquility",
     caption: "Sunset Verandas & Lounges",
+    objectPosition: "center center",
   },
 ];
 
@@ -83,17 +89,17 @@ export function HeroSection({
   heroImageUrl,
   heroImages,
   customHeroSlides,
-  onExploreClick,
 }: HeroSectionProps) {
   // Consolidate slides: prioritize dynamic admin slides, then dynamic villa images if provided
   const slides: HeroSlide[] = React.useMemo(() => {
     if (customHeroSlides && customHeroSlides.length > 0) {
       return customHeroSlides.map((s) => ({
         url: s.url,
-        tagline: s.tagline || "DARANGA SANCTUARIES",
-        title: s.title || "Villas For\nLuxury Living",
-        subtitle: s.subtitle || "",
-        caption: s.caption || s.title || "Daranga Luxury Sanctuaries",
+        tagline: s.tagline ?? "",
+        title: s.title ?? "",
+        subtitle: s.subtitle ?? "",
+        caption: s.caption || s.title || "",
+        objectPosition: s.objectPosition || "center center",
       }));
     }
     if (heroImages && heroImages.length > 0) {
@@ -105,6 +111,7 @@ export function HeroSection({
           title: theme.title,
           subtitle: theme.subtitle,
           caption: theme.title,
+          objectPosition: "center center",
         };
       });
     }
@@ -116,6 +123,7 @@ export function HeroSection({
           title: "Grand Sanctuary Residence",
           subtitle: "Where timeless heritage meets private modern luxury",
           caption: "Grand Sanctuary Residence",
+          objectPosition: "center center",
         },
         ...DEFAULT_HERO_SLIDES.slice(1),
       ];
@@ -186,12 +194,13 @@ export function HeroSection({
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      className="relative h-[52vh] sm:h-[62vh] lg:h-[76vh] min-h-[400px] sm:min-h-[460px] lg:min-h-[540px] w-full flex items-center justify-center overflow-hidden rounded-b-[24px] sm:rounded-b-[32px] md:rounded-b-[36px] lg:rounded-b-[42px] bg-[#171717] text-white touch-pan-y shadow-[0_12px_32px_rgba(0,0,0,0.12)]"
+      className="relative w-full aspect-[16/9] min-h-[240px] max-h-[82vh] flex items-center justify-center overflow-hidden rounded-b-[24px] sm:rounded-b-[32px] md:rounded-b-[36px] lg:rounded-b-[42px] bg-[#171717] text-white touch-pan-y shadow-[0_12px_32px_rgba(0,0,0,0.12)]"
     >
-      {/* Background Slides with Ken Burns and Crossfade transitions */}
+      {/* Background Slides with Ken Burns, Focal Positioning and Crossfade transitions */}
       <div className="absolute inset-0 z-0 w-full h-full overflow-hidden rounded-b-[24px] sm:rounded-b-[32px] md:rounded-b-[36px] lg:rounded-b-[42px]">
         {slides.map((slide, idx) => {
           const isActive = idx === currentIndex;
+          const pos = slide.objectPosition || "center center";
           return (
             <div
               key={slide.url + idx}
@@ -199,6 +208,18 @@ export function HeroSection({
                 isActive ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
               }`}
             >
+              {/* Ambient Background Depth Layer */}
+              <div className="absolute inset-0 w-full h-full overflow-hidden scale-110 pointer-events-none">
+                <Image
+                  src={slide.url}
+                  alt=""
+                  fill
+                  aria-hidden="true"
+                  className="object-cover blur-2xl opacity-40"
+                />
+              </div>
+
+              {/* Primary Crisp Image */}
               <div
                 className={`relative w-full h-full ${
                   isActive ? "animate-ken-burns" : "scale-100"
@@ -206,11 +227,12 @@ export function HeroSection({
               >
                 <Image
                   src={slide.url}
-                  alt={slide.caption}
+                  alt={slide.caption || slide.title || "Daranga Sanctuary"}
                   fill
                   priority={idx === 0 || idx === 1}
                   sizes="100vw"
-                  className="object-cover object-center"
+                  className="object-cover"
+                  style={{ objectPosition: pos }}
                 />
               </div>
             </div>
@@ -222,41 +244,46 @@ export function HeroSection({
         <div className="absolute inset-0 z-20 bg-radial from-transparent via-black/15 to-black/45 pointer-events-none" />
       </div>
 
-      {/* Center Headline & Explore Villa Pill CTA */}
-      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 text-center space-y-3 sm:space-y-5 pt-8 sm:pt-10 pb-6 sm:pb-8">
-        <div
-          key={currentIndex}
-          className="transition-all duration-700 animate-in fade-in zoom-in-95 max-w-xl mx-auto space-y-2.5 sm:space-y-3.5"
-        >
-          {/* Eyebrow / Tagline */}
-          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-xs font-semibold uppercase tracking-[0.25em]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#EFA1AA] animate-pulse" />
-            {slides[currentIndex]?.tagline || "DARANGA SANCTUARIES • UDAIPUR"}
-          </span>
+      {/* Center Headline */}
+      <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-4 sm:px-6 text-center space-y-2 sm:space-y-4 pt-10 sm:pt-12 pb-5 sm:pb-8 pointer-events-none">
+        {(() => {
+          const currentSlide = slides[currentIndex];
+          const hasTagline = Boolean(currentSlide?.tagline?.trim());
+          const hasTitle = Boolean(currentSlide?.title?.trim());
+          const hasSubtitle = Boolean(currentSlide?.subtitle?.trim());
+          const hasAnyText = hasTagline || hasTitle || hasSubtitle;
 
-          {/* Primary Editorial Serif Headline */}
-          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)] tracking-tight leading-[1.15] select-none">
-            {slides[currentIndex]?.title?.includes("Living") || slides[currentIndex]?.title?.includes("Luxury")
-              ? "Escape to Daranga"
-              : slides[currentIndex]?.title || "Escape to Daranga"}
-          </h1>
+          if (!hasAnyText) return null;
 
-          {/* Subtitle */}
-          <p className="text-stone-200 text-xs sm:text-sm font-light max-w-md mx-auto drop-shadow-md leading-relaxed hidden sm:block">
-            {slides[currentIndex]?.subtitle || "Private pool villas & bespoke hospitality amidst Udaipur's serene valleys."}
-          </p>
-        </div>
+          return (
+            <div
+              key={currentIndex}
+              className="transition-all duration-700 animate-in fade-in zoom-in-95 max-w-xl mx-auto space-y-1.5 sm:space-y-3.5"
+            >
+              {/* Eyebrow / Tagline */}
+              {hasTagline && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-xs font-semibold uppercase tracking-[0.2em] sm:tracking-[0.25em]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#EFA1AA] animate-pulse" />
+                  {currentSlide?.tagline}
+                </span>
+              )}
 
-        {/* Explore Villa Pill Button */}
-        <div className="pt-1">
-          <button
-            onClick={onExploreClick}
-            type="button"
-            className="px-6 py-2 sm:px-8 sm:py-2.5 rounded-full border border-white/85 bg-white/15 hover:bg-white text-white hover:text-[#202020] text-xs sm:text-sm tracking-[0.14em] font-medium backdrop-blur-md transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.35)] hover:scale-105 active:scale-95 cursor-pointer"
-          >
-            Explore Villa
-          </button>
-        </div>
+              {/* Primary Editorial Serif Headline */}
+              {hasTitle && (
+                <h1 className="font-serif text-xl sm:text-3xl md:text-5xl lg:text-6xl font-normal text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.95)] tracking-tight leading-[1.15] select-none whitespace-pre-line">
+                  {currentSlide?.title}
+                </h1>
+              )}
+
+              {/* Subtitle */}
+              {hasSubtitle && (
+                <p className="text-stone-200 text-[11px] sm:text-sm font-light max-w-md mx-auto drop-shadow-md leading-relaxed hidden sm:block">
+                  {currentSlide?.subtitle}
+                </p>
+              )}
+            </div>
+          );
+        })()}
       </div>
 
       {/* Subtle Left & Right Arrow Navigation */}
@@ -265,28 +292,28 @@ export function HeroSection({
           type="button"
           onClick={prevSlide}
           aria-label="Previous slide"
-          className="pointer-events-auto w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-white/90 hover:text-white bg-black/25 hover:bg-black/60 border border-white/20 backdrop-blur-xs transition-all hover:scale-110 active:scale-90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] cursor-pointer"
+          className="pointer-events-auto w-8 h-8 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-white/90 hover:text-white bg-black/25 hover:bg-black/60 border border-white/20 backdrop-blur-xs transition-all hover:scale-110 active:scale-90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] cursor-pointer"
         >
-          <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.2]" />
+          <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6 stroke-[2.2]" />
         </button>
         <button
           type="button"
           onClick={nextSlide}
           aria-label="Next slide"
-          className="pointer-events-auto w-9 h-9 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-white/90 hover:text-white bg-black/25 hover:bg-black/60 border border-white/20 backdrop-blur-xs transition-all hover:scale-110 active:scale-90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] cursor-pointer"
+          className="pointer-events-auto w-8 h-8 sm:w-11 sm:h-11 rounded-full flex items-center justify-center text-white/90 hover:text-white bg-black/25 hover:bg-black/60 border border-white/20 backdrop-blur-xs transition-all hover:scale-110 active:scale-90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.85)] cursor-pointer"
         >
-          <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.2]" />
+          <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6 stroke-[2.2]" />
         </button>
       </div>
 
       {/* Slide Indicators & Caption Controller */}
-      <div className="absolute bottom-7 sm:bottom-9 lg:bottom-11 left-1/2 -translate-x-1/2 z-20 w-full max-w-md sm:max-w-xl px-6 flex flex-col items-center gap-2">
+      <div className="absolute bottom-3 sm:bottom-6 lg:bottom-9 left-1/2 -translate-x-1/2 z-20 w-full max-w-md sm:max-w-xl px-4 sm:px-6 flex flex-col items-center gap-1 sm:gap-2">
         {/* Slide Counter & Active Caption */}
-        <div className="flex items-center justify-between w-full text-[9px] sm:text-xs tracking-[0.18em] sm:tracking-[0.25em] text-white/80 uppercase font-medium">
+        <div className="flex items-center justify-between w-full text-[8px] sm:text-xs tracking-[0.15em] sm:tracking-[0.25em] text-white/80 uppercase font-medium">
           <span className="font-mono text-white font-semibold">
             {String(currentIndex + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
           </span>
-          <span className="truncate max-w-[200px] sm:max-w-[360px] text-stone-200 font-serif italic text-[11px] sm:text-xs normal-case tracking-normal">
+          <span className="truncate max-w-[160px] sm:max-w-[360px] text-stone-200 font-serif italic text-[10px] sm:text-xs normal-case tracking-normal">
             {slides[currentIndex]?.caption}
           </span>
           <span className="font-mono text-[9px] text-white/60 tracking-widest hidden sm:inline">
@@ -295,7 +322,7 @@ export function HeroSection({
         </div>
 
         {/* Clean Slide Indicator Dots */}
-        <div className="flex items-center justify-center gap-2 w-full pt-0.5">
+        <div className="flex items-center justify-center gap-1.5 sm:gap-2 w-full pt-0.5">
           {slides.map((_, idx) => {
             const isActive = idx === currentIndex;
             return (
@@ -306,8 +333,8 @@ export function HeroSection({
                 aria-label={`Jump to slide ${idx + 1}`}
                 className={`transition-all duration-300 rounded-full cursor-pointer ${
                   isActive
-                    ? "w-8 sm:w-10 h-1.5 bg-white shadow-xs"
-                    : "w-2 sm:w-2.5 h-1.5 bg-white/40 hover:bg-white/70"
+                    ? "w-6 sm:w-10 h-1 sm:h-1.5 bg-white shadow-xs"
+                    : "w-1.5 sm:w-2.5 h-1 sm:h-1.5 bg-white/40 hover:bg-white/70"
                 }`}
               />
             );

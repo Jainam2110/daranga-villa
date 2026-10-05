@@ -276,7 +276,7 @@ export function generateCustomerConfirmationEmailHtml(
           <tr>
             <td style="padding: 24px 40px 36px 40px; background-color:#F7F6F3; border-top:1px solid #E8E6E2; font-size:11px; color:#8A8782; line-height:1.6;">
               <strong style="color:#202020; font-weight:600; display:block; margin-bottom:4px;">Cancellation &amp; Concierge Policy:</strong>
-              Cancellations requested up to 14 days prior to check-in qualify for a full refund subject to concierge terms. For questions regarding your stay, contact our team at <a href="mailto:concierge@darangavilla.com" style="color:#202020; font-weight:600; text-decoration:none;">concierge@darangavilla.com</a>.
+              Cancellations requested up to 14 days prior to check-in qualify for a full refund subject to concierge terms. For questions regarding your stay, contact our team at <a href="mailto:darangavillas@gmail.com" style="color:#202020; font-weight:600; text-decoration:none;">darangavillas@gmail.com</a>.
               <br><br>
               © Daranga Villa Sanctuary. All rights reserved.
             </td>

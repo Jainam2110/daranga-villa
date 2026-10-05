@@ -35,11 +35,12 @@ export function AdminHeroManagementClient({
   const [editingSlide, setEditingSlide] = useState<HeroSlideData | null>(null);
   const [formData, setFormData] = useState({
     url: "",
-    title: "Villas For\nLuxury Living",
-    tagline: "DARANGA SANCTUARIES",
-    subtitle: "Where timeless heritage meets private modern luxury",
-    caption: "The Grand Sanctuary Estate",
+    title: "",
+    tagline: "",
+    subtitle: "",
+    caption: "",
     publicId: "",
+    objectPosition: "center 35%",
     isActive: true,
   });
 
@@ -55,11 +56,12 @@ export function AdminHeroManagementClient({
     setEditingSlide(null);
     setFormData({
       url: "",
-      title: "Villas For\nLuxury Living",
-      tagline: "DARANGA SANCTUARIES",
-      subtitle: "Where timeless heritage meets private modern luxury",
+      title: "",
+      tagline: "",
+      subtitle: "",
       caption: "",
       publicId: "",
+      objectPosition: "center 35%",
       isActive: true,
     });
     setIsModalOpen(true);
@@ -69,11 +71,12 @@ export function AdminHeroManagementClient({
     setEditingSlide(slide);
     setFormData({
       url: slide.url,
-      title: slide.title || "Villas For\nLuxury Living",
-      tagline: slide.tagline || "DARANGA SANCTUARIES",
-      subtitle: slide.subtitle || "",
-      caption: slide.caption || "",
-      publicId: slide.publicId || "",
+      title: slide.title ?? "",
+      tagline: slide.tagline ?? "",
+      subtitle: slide.subtitle ?? "",
+      caption: slide.caption ?? "",
+      publicId: slide.publicId ?? "",
+      objectPosition: slide.objectPosition || "center 35%",
       isActive: slide.isActive,
     });
     setIsModalOpen(true);
@@ -351,26 +354,33 @@ export function AdminHeroManagementClient({
                 <div className="relative w-28 sm:w-36 h-20 sm:h-24 rounded-xl overflow-hidden bg-[#202020] flex-shrink-0 border border-black/20 shadow-md">
                   <Image
                     src={slide.url}
-                    alt={slide.title}
+                    alt={slide.title || "Hero Slide Photograph"}
                     fill
                     sizes="160px"
                     className="object-cover"
+                    style={{ objectPosition: slide.objectPosition || "center 35%" }}
                   />
-                  <div className="absolute inset-0 bg-black/45 flex flex-col items-center justify-center p-1 text-center">
-                    <span className="text-[9px] font-mono uppercase tracking-[0.25em] text-[#EFA1AA] font-bold">
-                      {slide.tagline}
-                    </span>
-                    <h4 className="font-serif text-[10px] text-white font-medium leading-tight whitespace-pre-line line-clamp-2 drop-shadow-md">
-                      {slide.title}
-                    </h4>
-                  </div>
+                  {(slide.tagline || slide.title) && (
+                    <div className="absolute inset-0 bg-black/45 flex flex-col items-center justify-center p-1 text-center">
+                      {slide.tagline && (
+                        <span className="text-[9px] font-mono uppercase tracking-[0.25em] text-[#EFA1AA] font-bold">
+                          {slide.tagline}
+                        </span>
+                      )}
+                      {slide.title && (
+                        <h4 className="font-serif text-[10px] text-white font-medium leading-tight whitespace-pre-line line-clamp-2 drop-shadow-md">
+                          {slide.title}
+                        </h4>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Details */}
                 <div className="min-w-0 flex-1 space-y-1">
                   <div className="flex items-center gap-2">
                     <span className="px-2 py-0.5 rounded-full bg-[#F6D2B8]/30 text-[#202020] dark:text-[#FCFBF8] text-[9px] font-mono font-bold uppercase tracking-wider">
-                      {slide.tagline || "HERO SLIDE"}
+                      {slide.tagline || (slide.title ? "HERO SLIDE" : "IMAGE ONLY")}
                     </span>
                     {!slide.isActive && (
                       <span className="px-2 py-0.5 rounded-full bg-[#F7F6F3] dark:bg-[#171717] text-[#66635F] dark:text-[#BDB8B0] text-[9px] font-semibold uppercase">
@@ -380,7 +390,7 @@ export function AdminHeroManagementClient({
                   </div>
 
                   <h3 className="font-serif text-base font-bold text-[#202020] dark:text-[#FCFBF8] truncate whitespace-pre-line">
-                    {slide.title.replace("\n", " — ")}
+                    {slide.title ? slide.title.replace("\n", " — ") : "Untitled Slide (Image Only)"}
                   </h3>
 
                   {slide.subtitle && (
@@ -580,25 +590,24 @@ export function AdminHeroManagementClient({
               {/* Center Headline Title */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0]">
-                  Center Headline (2-Line Serif Title) *
+                  Center Headline (2-Line Serif Title) (Optional)
                 </label>
                 <textarea
                   rows={2}
                   value={formData.title}
                   onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
-                  placeholder="e.g. Villas For&#10;Luxury Living"
-                  required
+                  placeholder="e.g. Villas For&#10;Luxury Living (Leave blank for image only)"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs font-serif text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
                 />
                 <p className="text-[10px] text-[#8A8782]">
-                  Tip: Press Enter between words to create a 2-line title matching the mobile reference design.
+                  Tip: Text is optional. Leave blank to present pure full-screen photography without overlay text.
                 </p>
               </div>
 
               {/* Tagline / Eyebrow */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0]">
-                  Tagline Badge
+                  Tagline Badge (Optional)
                 </label>
                 <input
                   type="text"
@@ -612,7 +621,7 @@ export function AdminHeroManagementClient({
               {/* Subtitle / Description */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0]">
-                  Subtitle Description
+                  Subtitle Description (Optional)
                 </label>
                 <input
                   type="text"
@@ -621,6 +630,26 @@ export function AdminHeroManagementClient({
                   placeholder="e.g. Where timeless heritage meets private modern luxury"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] placeholder-[#8A8782] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
                 />
+              </div>
+
+              {/* Focal Alignment Position */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#66635F] dark:text-[#BDB8B0]">
+                  Photo Focal Framing & Alignment
+                </label>
+                <select
+                  value={formData.objectPosition}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, objectPosition: e.target.value }))}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[#F7F6F3] dark:bg-[#171717] border border-[#DAD7D1] dark:border-[#383633] text-xs text-[#202020] dark:text-[#FCFBF8] focus:outline-none focus:border-[#202020] dark:focus:border-[#EFA1AA]"
+                >
+                  <option value="center 35%">Upper 35% (Recommended for Villas/Roofs)</option>
+                  <option value="center">Center (50% 50%)</option>
+                  <option value="center top">Top Aligned (0%)</option>
+                  <option value="center bottom">Bottom Aligned (100%)</option>
+                </select>
+                <p className="text-[10px] text-[#8A8782]">
+                  Controls vertical alignment to prevent key architectural roofs or skylines from being cropped.
+                </p>
               </div>
 
               {/* Active Toggle */}
