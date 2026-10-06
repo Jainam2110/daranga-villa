@@ -367,7 +367,7 @@ export default function AboutUdaipurPage() {
               </span>
 
               <h2 className="font-serif text-3xl sm:text-5xl font-normal tracking-tight leading-tight">
-                Your Private Sanctuary in the City of Lakes
+                Your Private villas in the City of Lakes
               </h2>
 
               <p className="text-stone-300 text-xs sm:text-sm font-light leading-relaxed max-w-xl mx-auto">
