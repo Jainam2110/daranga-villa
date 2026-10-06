@@ -11,7 +11,7 @@ export default async function AdminPricingPage() {
   const admin = await getAuthenticatedAdmin();
 
   if (!admin) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   await connectToDatabase();

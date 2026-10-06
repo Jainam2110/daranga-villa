@@ -11,7 +11,7 @@ export default async function AdminPaymentsPage() {
   const admin = await getAuthenticatedAdmin();
 
   if (!admin) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   await connectToDatabase();

@@ -38,12 +38,12 @@ export function AdminSidebar({
     try {
       await fetch("/api/admin/auth/logout", { method: "POST" });
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      window.location.href = "/admin/login";
+      window.location.href = "/login";
     } catch (e) {
       console.error("Logout error", e);
       setLoggingOut(false);
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      window.location.href = "/admin/login";
+      window.location.href = "/login";
     }
   };
 
@@ -51,30 +51,30 @@ export function AdminSidebar({
     {
       title: "OVERVIEW",
       items: [
-        { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-        { name: "Live Bookings", href: "/admin/bookings", icon: BookOpenCheck },
+        { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+        { name: "Live Bookings", href: "/bookings", icon: BookOpenCheck },
       ],
     },
     {
       title: "PROPERTY MANAGEMENT",
       items: [
-        { name: "Villas & Suites", href: "/admin/villas", icon: Home },
-        { name: "Hero Slideshow", href: "/admin/hero-slides", icon: CalendarDays },
-        { name: "Availability", href: "/admin/availability", icon: CalendarDays },
-        { name: "Dynamic Pricing", href: "/admin/pricing", icon: Tag },
+        { name: "Villas & Suites", href: "/villas", icon: Home },
+        { name: "Hero Slideshow", href: "/hero-slides", icon: CalendarDays },
+        { name: "Availability", href: "/availability", icon: CalendarDays },
+        { name: "Dynamic Pricing", href: "/pricing", icon: Tag },
       ],
     },
     {
       title: "RELATIONSHIPS & FINANCE",
       items: [
-        { name: "Guests & Accounts", href: "/admin/customers", icon: Users },
-        { name: "Payments & Invoices", href: "/admin/payments", icon: CreditCard },
+        { name: "Guests & Accounts", href: "/customers", icon: Users },
+        { name: "Payments & Invoices", href: "/payments", icon: CreditCard },
       ],
     },
     {
       title: "SYSTEM",
       items: [
-        { name: "Settings", href: "/admin/settings", icon: Settings },
+        { name: "Settings", href: "/settings", icon: Settings },
       ],
     },
   ];
@@ -83,7 +83,7 @@ export function AdminSidebar({
     <div className="flex flex-col h-full bg-[#202020] dark:bg-[#171717] border-r border-[#383633] text-[#FFFFFF] select-none transition-colors duration-200">
       {/* Brand Header */}
       <div className="h-16 px-5 flex items-center justify-between border-b border-[#383633]">
-        <Link href="/admin/dashboard" className="flex items-center gap-3 group">
+        <Link href="/dashboard" className="flex items-center gap-3 group">
           <DarangaLogo variant="monogram" size="sm" />
           <div className="flex flex-col">
             <span className="font-serif text-sm sm:text-base font-normal tracking-[0.2em] text-[#FFFFFF] leading-tight">
@@ -115,7 +115,12 @@ export function AdminSidebar({
             </h3>
             <div className="space-y-0.5 mt-1">
               {section.items.map((item) => {
-                const isActive = pathname === item.href || (item.href !== "/admin/dashboard" && pathname.startsWith(item.href));
+                const isActive =
+                  pathname === item.href ||
+                  pathname === `/admin${item.href}` ||
+                  (item.href !== "/dashboard" &&
+                    item.href !== "/admin/dashboard" &&
+                    (pathname.startsWith(item.href) || pathname.startsWith(`/admin${item.href}`)));
                 const Icon = item.icon;
                 return (
                   <Link

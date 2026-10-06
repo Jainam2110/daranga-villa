@@ -11,7 +11,7 @@ export default async function AdminVillasPage() {
   const admin = await getAuthenticatedAdmin();
 
   if (!admin) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   await connectToDatabase();

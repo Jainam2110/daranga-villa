@@ -29,7 +29,7 @@ export function AdminHeader({
     try {
       await fetch("/api/admin/auth/logout", { method: "POST" });
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      window.location.href = "/admin/login";
+      window.location.href = "/login";
     } catch {
       setLoggingOut(false);
     }
@@ -37,13 +37,14 @@ export function AdminHeader({
 
   const getBreadcrumbTitle = () => {
     if (pageTitle) return pageTitle;
-    if (pathname.includes("/admin/villas")) return "Villas";
-    if (pathname.includes("/admin/availability")) return "Availability";
-    if (pathname.includes("/admin/pricing")) return "Pricing";
-    if (pathname.includes("/admin/bookings")) return "Bookings";
-    if (pathname.includes("/admin/customers")) return "Customers";
-    if (pathname.includes("/admin/payments")) return "Payments";
-    if (pathname.includes("/admin/settings")) return "Settings";
+    if (pathname.includes("villas")) return "Villas";
+    if (pathname.includes("availability")) return "Availability";
+    if (pathname.includes("pricing")) return "Pricing";
+    if (pathname.includes("bookings")) return "Bookings";
+    if (pathname.includes("customers")) return "Customers";
+    if (pathname.includes("payments")) return "Payments";
+    if (pathname.includes("settings")) return "Settings";
+    if (pathname.includes("hero-slides")) return "Hero Slides";
     return "Dashboard";
   };
 

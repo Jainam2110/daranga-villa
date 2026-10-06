@@ -30,7 +30,7 @@ export default function AdminLoginPage() {
 
       // Hard redirect to dashboard to ensure fresh document request with new session cookie
       // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      window.location.href = "/admin/dashboard";
+      window.location.href = "/dashboard";
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Invalid credentials";
       setError(msg);

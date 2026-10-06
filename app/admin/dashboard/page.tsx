@@ -13,7 +13,7 @@ export default async function AdminDashboardPage() {
   const admin = await getAuthenticatedAdmin();
 
   if (!admin) {
-    redirect("/admin/login");
+    redirect("/login");
   }
 
   await connectToDatabase();

@@ -5,8 +5,8 @@ export default async function AdminRootPage() {
   const admin = await getAuthenticatedAdmin();
 
   if (!admin) {
-    redirect("/admin/login");
+    redirect("/login");
   } else {
-    redirect("/admin/dashboard");
+    redirect("/dashboard");
   }
 }
