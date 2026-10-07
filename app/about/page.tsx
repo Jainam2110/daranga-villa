@@ -104,7 +104,7 @@ export default function AboutPage() {
               <div className="lg:col-span-7">
                 <div className="relative aspect-[16/10] w-full rounded-3xl overflow-hidden bg-[#202020] shadow-2xl border border-[#E8E8E8] dark:border-[#383838]">
                   <Image
-                    src="/images/hero/heroimg.webp"
+                    src="/images/villas/WhatsApp Image 2026-10-05 at 12.10.38 (1).jpeg"
                     alt="Daranga Villa Estate Udaipur"
                     fill
                     priority
@@ -114,7 +114,7 @@ export default function AboutPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute bottom-6 left-6 right-6 p-4 sm:p-5 rounded-2xl bg-black/60 backdrop-blur-md border border-white/20 text-white">
                     <p className="font-serif text-base sm:text-lg italic font-light">
-                      &ldquo;We created Daranga Villa as a sanctuary where time slows down and every moment feels like an intimate celebration.&rdquo;
+                      &ldquo;We created Daranga Villa as a sanctuary where time slows down.&rdquo;
                     </p>
                   </div>
                 </div>
