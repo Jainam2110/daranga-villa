@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { DarangaLogo } from "@/components/brand/daranga-logo";
 import { ContactConciergeModal } from "@/components/ui/contact-concierge-modal";
-import { PUBLIC_CONTACT_EMAIL, SOCIAL_LINKS } from "@/lib/constants";
+import { PUBLIC_CONTACT_EMAIL, PUBLIC_CONTACT_PHONE, SOCIAL_LINKS } from "@/lib/constants";
 
 function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
@@ -140,13 +140,12 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <button
-                  type="button"
-                  onClick={() => setIsConciergeOpen(true)}
+                <a
+                  href={`tel:${PUBLIC_CONTACT_PHONE}`}
                   className="hover:text-[#202020] dark:hover:text-white transition-colors cursor-pointer text-left"
                 >
-                  Concierge Desk
-                </button>
+                  Call Concierge ({PUBLIC_CONTACT_PHONE})
+                </a>
               </li>
             </ul>
           </div>
@@ -159,12 +158,20 @@ export function Footer() {
             <p className="text-xs text-[#555555] dark:text-[#BDBDBD] leading-relaxed font-normal">
               For direct reservation inquiries, private events, or estate buyouts:
             </p>
-            <a
-              href={`mailto:${PUBLIC_CONTACT_EMAIL}`}
-              className="inline-block text-sm text-[#202020] dark:text-[#FCFBF9] font-sans font-semibold tracking-wide hover:text-[#EFA1AA] transition-colors"
-            >
-              {PUBLIC_CONTACT_EMAIL}
-            </a>
+            <div className="flex flex-col space-y-1">
+              <a
+                href={`tel:${PUBLIC_CONTACT_PHONE}`}
+                className="inline-block text-sm text-[#202020] dark:text-[#FCFBF9] font-sans font-semibold tracking-wide hover:text-[#EFA1AA] transition-colors"
+              >
+                {PUBLIC_CONTACT_PHONE}
+              </a>
+              <a
+                href={`mailto:${PUBLIC_CONTACT_EMAIL}`}
+                className="inline-block text-xs text-[#555555] dark:text-[#BDBDBD] font-sans hover:text-[#EFA1AA] transition-colors"
+              >
+                {PUBLIC_CONTACT_EMAIL}
+              </a>
+            </div>
           </div>
         </div>
 

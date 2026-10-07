@@ -4,8 +4,8 @@ export const SAMPLE_VILLAS: Villa[] = [
   {
     id: "villa-celestial",
     name: "The Celestial Residence",
-    tagline: "Cliffside oceanfront sanctuary with infinity pool",
-    location: "Daranga Hills, South Estate",
+    tagline: "Aravalli hillside sanctuary with private infinity pool",
+    location: "Daranga Hills, Badi Lake Valley, Udaipur",
     maxGuests: 8,
     bedrooms: 4,
     bathrooms: 4.5,
@@ -16,13 +16,13 @@ export const SAMPLE_VILLAS: Villa[] = [
     imageUrl:
       "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80",
     featured: true,
-    highlights: ["Private Infinity Pool", "Ocean Sunset Views", "Personal Butler"],
+    highlights: ["Private Infinity Pool", "Aravalli Sunset Views", "Personal Butler"],
   },
   {
     id: "villa-royal-haven",
     name: "Royal Pavilion Villa",
     tagline: "Secluded garden retreat with outdoor spa & dining pavilion",
-    location: "Daranga Valley, Central Estate",
+    location: "Daranga Valley, Central Estate, Udaipur",
     maxGuests: 6,
     bedrooms: 3,
     bathrooms: 3,
@@ -37,9 +37,9 @@ export const SAMPLE_VILLAS: Villa[] = [
   },
   {
     id: "villa-serenity-manor",
-    name: "Serenity Bay Manor",
-    tagline: "Ultra-luxurious 5-bedroom estate with private beachfront access",
-    location: "Daranga Cove, North Estate",
+    name: "Serenity Valley Estate",
+    tagline: "Ultra-luxurious 5-bedroom private estate surrounded by nature",
+    location: "Daranga Sanctuary, North Estate, Udaipur",
     maxGuests: 12,
     bedrooms: 5,
     bathrooms: 6,
@@ -50,7 +50,7 @@ export const SAMPLE_VILLAS: Villa[] = [
     imageUrl:
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
     featured: true,
-    highlights: ["Private Beach Path", "Plunge Pool Suite", "24/7 Security & Concierge"],
+    highlights: ["Private Garden Lawn", "Plunge Pool Suite", "24/7 Security & Concierge"],
   },
 ];
 
@@ -101,7 +101,7 @@ export const SAMPLE_EXPERIENCES: Experience[] = [
     title: "Sunset Infinity Pool Lounge",
     subtitle: "Private Deck Refreshments",
     description:
-      "Unwind with hand-crafted signature cocktails and organic refreshers while floating overlooking ocean horizons.",
+      "Unwind with hand-crafted signature cocktails and organic refreshers while floating overlooking Aravalli valley horizons.",
     imageUrl:
       "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=800&q=80",
     badge: "Relaxation",
@@ -173,7 +173,7 @@ export const GALLERY_ITEMS: GalleryItem[] = [
   },
   {
     id: "gal-2",
-    title: "Master Suite Interior & Ocean View",
+    title: "Master Suite Interior & Mountain View",
     category: "Interior",
     imageUrl:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80",

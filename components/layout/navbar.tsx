@@ -8,6 +8,7 @@ import { useCustomerAuth } from "@/components/providers/customer-auth-provider";
 import { Menu, X, Sun, Moon, User, LogOut, Phone } from "lucide-react";
 import { DarangaLogo } from "@/components/brand/daranga-logo";
 import { ContactConciergeModal } from "@/components/ui/contact-concierge-modal";
+import { PUBLIC_CONTACT_PHONE } from "@/lib/constants";
 
 interface NavbarProps {
   checkIn?: string;
@@ -224,9 +225,8 @@ export function Navbar({
             </div>
 
             {/* Call Us Button */}
-            <button
-              type="button"
-              onClick={() => setIsContactModalOpen(true)}
+            <a
+              href={`tel:${PUBLIC_CONTACT_PHONE}`}
               className={`flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-200 cursor-pointer shadow-xs flex-shrink-0 ${
                 isOverlayOnHero
                   ? "bg-black/75 hover:bg-black text-white border border-white/20 hover:border-white/40"
@@ -236,7 +236,7 @@ export function Navbar({
             >
               <Phone className="w-3.5 h-3.5 text-white dark:text-[#202020]" />
               <span className="tracking-wide">Call Us</span>
-            </button>
+            </a>
 
             {/* Theme Toggle Button */}
             <button

@@ -28,8 +28,10 @@ export function GallerySection({ villas = [] }: GallerySectionProps) {
 
   const defaultGalleryImages = [
     "/images/hero/heroimg.webp",
-    "/images/hero/heroimg.webp",
-    "/images/hero/heroimg.webp",
+    "/images/villas/WhatsApp Image 2026-10-05 at 12.10.38.jpeg",
+    "/images/villas/WhatsApp Image 2026-10-05 at 12.10.39 (2).jpeg",
+    "/images/villas/WhatsApp Image 2026-10-05 at 12.10.39 (1).jpeg",
+    "/images/villas/WhatsApp Image 2026-10-05 at 12.10.39.jpeg",
   ];
 
   const galleryImages =

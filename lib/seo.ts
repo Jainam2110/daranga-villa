@@ -7,11 +7,23 @@ import { getPrimaryVillaImageUrl } from "@/lib/utils/image";
  * Defaults to "https://darangavillas.com" if NEXT_PUBLIC_SITE_URL is missing or local.
  */
 export function getSiteUrl(): string {
-  const envUrl = process.env.NEXT_PUBLIC_SITE_URL;
-  if (envUrl && envUrl.trim() && !envUrl.includes("localhost") && !envUrl.includes("127.0.0.1")) {
-    return envUrl.trim().replace(/\/+$/, "");
+  const defaultUrl = "https://darangavillas.com";
+  let envUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+
+  if (!envUrl) {
+    return defaultUrl;
   }
-  return "https://darangavillas.com";
+
+  if (!/^https?:\/\//i.test(envUrl)) {
+    envUrl = `https://${envUrl}`;
+  }
+
+  try {
+    const validUrl = new URL(envUrl);
+    return validUrl.origin;
+  } catch {
+    return defaultUrl;
+  }
 }
 
 /**

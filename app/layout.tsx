@@ -22,8 +22,16 @@ const inter = Inter({
 
 const siteUrl = getSiteUrl();
 
+const getMetadataBase = (): URL => {
+  try {
+    return new URL(siteUrl);
+  } catch {
+    return new URL("https://darangavillas.com");
+  }
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: getMetadataBase(),
   title: {
     default: "Daranga Villas | Luxury Private Villas in Udaipur",
     template: "%s | Daranga Villas",

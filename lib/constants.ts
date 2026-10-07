@@ -3,9 +3,15 @@ export const DEFAULT_VILLA_IMAGE =
 
 export const PUBLIC_CONTACT_EMAIL = "darangavillas@gmail.com";
 
+export const PUBLIC_CONTACT_PHONE =
+  process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ||
+  process.env.NEXT_PUBLIC_CONTACT_PHONE ||
+  "+919929822446";
+
 export const SOCIAL_LINKS = {
   instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL || "https://www.instagram.com/darangaboutiuqevillas/",
   youtube: process.env.NEXT_PUBLIC_YOUTUBE_URL || "https://www.youtube.com/@darangavillas",
   facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || "https://www.facebook.com/darangavillas",
 };
+
 

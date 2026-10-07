@@ -58,7 +58,7 @@ const DARANGA_STANDARD_SLIDES: StandardSlide[] = [
     id: "hospitality-standard",
     title: "The Daranga Standard",
     subtitle: "Enjoy our signature features that make every stay effortless and enjoyable.",
-    image: "https://i.pinimg.com/736x/fe/55/40/fe5540ececa2abd4b1e2594fed9399c4.jpg",
+    image: "/images/villas/WhatsApp Image 2026-10-05 at 12.10.38.jpeg",
     features: [
       { id: "pool", name: "Private Pool", icon: <PrivatePoolIcon /> },
       { id: "chef", name: "In-house Chef", icon: <InHouseChefIcon /> },
@@ -70,7 +70,7 @@ const DARANGA_STANDARD_SLIDES: StandardSlide[] = [
     id: "estate-wellness",
     title: "Serenity & Wellness",
     subtitle: "Unwind with bespoke culinary rituals and scenic poolside tranquility.",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUA6mMQZ9jQ9VXUjrqdp8vZBvS494lM1zymp-h0bJ0Aqce_pwK7yrOhLc&s=10",
+    image: "/images/villas/WhatsApp Image 2026-10-05 at 12.10.39 (2).jpeg",
     features: [
       { id: "pool", name: "Private Pool", icon: <PrivatePoolIcon /> },
       { id: "chef", name: "In-house Chef", icon: <InHouseChefIcon /> },
