@@ -351,7 +351,7 @@ export default function AboutUdaipurPage() {
         <section className="py-12 sm:py-16 bg-[#202020] text-white relative overflow-hidden rounded-3xl mx-4 sm:mx-8 mb-12 border border-white/10 shadow-2xl">
           <div className="absolute inset-0 z-0 opacity-25">
             <Image
-              src="/images/hero/heroimg.webp"
+              src="/images/villas/WhatsApp Image 2026-10-05 at 12.10.38 (1).jpeg"
               alt="Daranga Villa Udaipur Sanctuary"
               fill
               sizes="100vw"

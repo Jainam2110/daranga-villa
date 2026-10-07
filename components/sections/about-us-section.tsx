@@ -35,7 +35,7 @@ export function AboutUsSection() {
             {/* Main Luxury Image */}
             <div className="relative aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] w-full rounded-3xl overflow-hidden bg-[#202020] shadow-xl border border-[#E8E8E8] dark:border-[#383838] group">
               <Image
-                src="/images/hero/heroimg.webp"
+                src="/images/villas/WhatsApp Image 2026-10-05 at 12.10.39 (2).jpeg"
                 alt="Daranga Villa Luxury Estate"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

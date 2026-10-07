@@ -13,7 +13,7 @@ interface ContactConciergeModalProps {
 export function ContactConciergeModal({
   isOpen,
   onClose,
-  phoneNumber = "+91 88900 12345",
+  phoneNumber = "+91 9929822446",
   whatsappNumber,
 }: ContactConciergeModalProps) {
   if (!isOpen) return null;

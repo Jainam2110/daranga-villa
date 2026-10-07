@@ -23,7 +23,7 @@ const EXPERIENCES: CuratedExperience[] = [
     category: "Aquatic Escape",
     description:
       "Enjoy tranquil evenings beside your private illuminated swimming pool and verdant garden lawn, complete with poolside dining, starlit gazebos, and ambient villa lighting.",
-    image: "/images/experiences/poolside-night.jpg",
+    image: "/images/villas/WhatsApp Image 2026-10-05 at 12.10.38.jpeg",
     highlight: "Temperature Controlled • Ambient Mood Lighting",
   },
   {
@@ -33,7 +33,7 @@ const EXPERIENCES: CuratedExperience[] = [
     category: "Aravalli Panorama",
     description:
       "Begin your morning with artisanal tea from plush private terrace seating, breathing in pure mountain air with uninterrupted panoramic vistas of Udaipur's golden valleys.",
-    image: "/images/experiences/balcony-view.jpg",
+    image: "/images/villas/WhatsApp Image 2026-10-05 at 12.10.39 (1).jpeg",
     highlight: "Sunrise Vistas • Plush Daybed Seating",
   },
   {
@@ -43,7 +43,7 @@ const EXPERIENCES: CuratedExperience[] = [
     category: "Sanctuary Suites",
     description:
       "Unwind in expansive, soaring-ceiling master suites crafted with handcrafted king-sized bedding, comfortable lounge seating, climate control, and artisanal stone finishes.",
-    image: "/images/experiences/bedroom-suite.jpg",
+    image: "/images/villas/WhatsApp Image 2026-10-05 at 12.10.39.jpeg",
     highlight: "King Bedding • En-Suite Dressing & Spa Bath",
   },
   {
@@ -53,7 +53,7 @@ const EXPERIENCES: CuratedExperience[] = [
     category: "Culinary Haven",
     description:
       "Savor multi-course gourmet delicacies and poolside candlelight dinners prepared live by our private culinary team using fresh local Rajasthani ingredients.",
-    image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=1200&q=80",
+    image: "https://i.pinimg.com/1200x/d9/fe/b0/d9feb0ad5321483c93d2311b27e6bb88.jpg",
     highlight: "Personal Butler • Tailored Royal Menus",
   },
 ];
