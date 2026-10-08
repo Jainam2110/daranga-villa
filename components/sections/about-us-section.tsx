@@ -1,24 +1,30 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Sparkles, ArrowRight, ShieldCheck, HeartHandshake, UtensilsCrossed } from "lucide-react";
+import { PrivateDiningModal } from "@/components/ui/private-dining-modal";
 
 export function AboutUsSection() {
+  const [isDiningModalOpen, setIsDiningModalOpen] = useState(false);
+
   const pillars = [
     {
+      id: "privacy",
       icon: ShieldCheck,
       title: "Secluded Privacy",
       description: "Gated estate perimeters ensuring uninterrupted tranquility for families and couples.",
     },
     {
+      id: "butler",
       icon: HeartHandshake,
       title: "Personal Butler & Concierge",
       description: "Intuitive, discrete 24/7 hospitality tailored to every nuance of your holiday.",
     },
     {
+      id: "dining",
       icon: UtensilsCrossed,
       title: "Private In-Villa Dining",
       description: "Fresh artisanal breakfast, live barbecue, and customized royal Rajasthani spreads.",
@@ -108,18 +114,31 @@ export function AboutUsSection() {
             <div className="space-y-3 pt-2">
               {pillars.map((item, idx) => {
                 const Icon = item.icon;
+                const isDining = item.id === "dining";
                 return (
                   <div
                     key={idx}
-                    className="flex items-start gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-[#FCFBF9] dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383838] shadow-xs hover:border-[#202020] dark:hover:border-white transition-colors"
+                    onClick={() => {
+                      if (isDining) setIsDiningModalOpen(true);
+                    }}
+                    className={`flex items-start gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-[#FCFBF9] dark:bg-[#202020] border border-[#E8E8E8] dark:border-[#383838] shadow-xs hover:border-[#202020] dark:hover:border-white transition-colors ${
+                      isDining ? "cursor-pointer group hover:bg-white dark:hover:bg-[#262626]" : ""
+                    }`}
                   >
                     <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#DDEEFF] dark:bg-[#2A2A2A] flex items-center justify-center text-[#202020] dark:text-white flex-shrink-0">
                       <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
                     <div className="space-y-0.5">
-                      <h3 className="font-sans font-semibold text-xs sm:text-sm text-[#202020] dark:text-white">
-                        {item.title}
-                      </h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-sans font-semibold text-xs sm:text-sm text-[#202020] dark:text-white">
+                          {item.title}
+                        </h3>
+                        {isDining && (
+                          <span className="text-[9px] font-bold uppercase tracking-wider bg-[#EFA1AA]/20 text-[#202020] dark:text-white px-2 py-0.5 rounded-full border border-[#EFA1AA]/30">
+                            Explore Menu &rarr;
+                          </span>
+                        )}
+                      </div>
                       <p className="text-[#555555] dark:text-[#BDBDBD] text-[11px] sm:text-xs font-light leading-snug">
                         {item.description}
                       </p>
@@ -143,6 +162,12 @@ export function AboutUsSection() {
 
         </div>
       </Container>
+
+      {/* Private In-Villa Dining & Chef Modal */}
+      <PrivateDiningModal
+        isOpen={isDiningModalOpen}
+        onClose={() => setIsDiningModalOpen(false)}
+      />
     </section>
   );
 }

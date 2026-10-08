@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { DarangaLogo } from "@/components/brand/daranga-logo";
 import { ContactConciergeModal } from "@/components/ui/contact-concierge-modal";
+import { PrivateDiningModal } from "@/components/ui/private-dining-modal";
+import { ConnectUsModal } from "@/components/ui/connect-us-modal";
 import { PUBLIC_CONTACT_EMAIL, PUBLIC_CONTACT_PHONE, SOCIAL_LINKS } from "@/lib/constants";
 
 function InstagramIcon({ className = "w-5 h-5" }: { className?: string }) {
@@ -36,6 +38,8 @@ function FacebookIcon({ className = "w-5 h-5" }: { className?: string }) {
 
 export function Footer() {
   const [isConciergeOpen, setIsConciergeOpen] = useState(false);
+  const [isDiningModalOpen, setIsDiningModalOpen] = useState(false);
+  const [isConnectUsOpen, setIsConnectUsOpen] = useState(false);
 
   const socialItems = [
     {
@@ -135,42 +139,81 @@ export function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs text-[#555555] dark:text-[#BDBDBD] uppercase tracking-wider font-medium">
               <li>
-                <Link href="/#experiences" className="hover:text-[#202020] dark:hover:text-white transition-colors">
+                <button
+                  type="button"
+                  onClick={() => setIsDiningModalOpen(true)}
+                  className="hover:text-[#202020] dark:hover:text-white transition-colors cursor-pointer text-left"
+                >
                   Private Dining
-                </Link>
+                </button>
               </li>
-              <li>
+              {/* <li>
+                <button
+                  type="button"
+                  onClick={() => setIsConnectUsOpen(true)}
+                  className="hover:text-[#202020] dark:hover:text-white transition-colors cursor-pointer text-left"
+                >
+                  Send Inquiry
+                </button>
+              </li> */}
+              {/* <li>
                 <a
                   href={`tel:${PUBLIC_CONTACT_PHONE}`}
                   className="hover:text-[#202020] dark:hover:text-white transition-colors cursor-pointer text-left"
                 >
                   Call Concierge ({PUBLIC_CONTACT_PHONE})
                 </a>
-              </li>
+              </li> */}
             </ul>
           </div>
 
           {/* Concierge & Inquiries */}
-          <div className="space-y-3 md:col-span-3">
-            <h4 className="text-[11px] uppercase tracking-[0.25em] text-[#202020] dark:text-[#FCFBF9] font-semibold">
-              Private Concierge
-            </h4>
-            <p className="text-xs text-[#555555] dark:text-[#BDBDBD] leading-relaxed font-normal">
-              For direct reservation inquiries, private events, or estate buyouts:
-            </p>
-            <div className="flex flex-col space-y-1">
-              <a
-                href={`tel:${PUBLIC_CONTACT_PHONE}`}
-                className="inline-block text-sm text-[#202020] dark:text-[#FCFBF9] font-sans font-semibold tracking-wide hover:text-[#EFA1AA] transition-colors"
-              >
-                {PUBLIC_CONTACT_PHONE}
-              </a>
-              <a
-                href={`mailto:${PUBLIC_CONTACT_EMAIL}`}
-                className="inline-block text-xs text-[#555555] dark:text-[#BDBDBD] font-sans hover:text-[#EFA1AA] transition-colors"
-              >
-                {PUBLIC_CONTACT_EMAIL}
-              </a>
+          <div className="md:col-span-3">
+            <div className="p-5 rounded-2xl bg-white/70 dark:bg-[#1f1f1f] border border-[#E8E8E8] dark:border-[#333333] shadow-xs hover:border-[#EFA1AA]/40 transition-all duration-300 space-y-3">
+              <div className="flex items-center justify-between">
+                <h4 className="text-[11px] uppercase tracking-[0.25em] text-[#202020] dark:text-[#FCFBF9] font-semibold">
+                  Private Concierge
+                </h4>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#EFA1AA]" />
+              </div>
+              
+              <p className="text-xs text-[#555555] dark:text-[#BDBDBD] leading-relaxed font-normal">
+                For direct reservation inquiries, private events, or estate buyouts:
+              </p>
+
+              <div className="flex flex-col space-y-1.5 pt-2 border-t border-[#E8E8E8]/70 dark:border-[#333333]/70">
+                <a
+                  href={`tel:${PUBLIC_CONTACT_PHONE}`}
+                  className="inline-block text-sm text-[#202020] dark:text-[#FCFBF9] font-sans font-semibold tracking-wide hover:text-[#EFA1AA] transition-colors"
+                >
+                  {PUBLIC_CONTACT_PHONE}
+                </a>
+                <a
+                  href={`mailto:${PUBLIC_CONTACT_EMAIL}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.open(`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(PUBLIC_CONTACT_EMAIL)}`, "_blank", "noopener,noreferrer");
+                    setTimeout(() => {
+                      window.location.href = `mailto:${PUBLIC_CONTACT_EMAIL}`;
+                    }, 100);
+                  }}
+                  className="inline-block text-xs text-[#555555] dark:text-[#BDBDBD] font-sans hover:text-[#EFA1AA] transition-colors cursor-pointer leading-relaxed"
+                  title="Send email via Gmail or Mail client"
+                >
+                  Click here to mail us at :- <span className="font-semibold text-[#202020] dark:text-[#FCFBF9] underline underline-offset-2 decoration-[#EFA1AA]/40">{PUBLIC_CONTACT_EMAIL}</span>
+                </a>
+              </div>
+
+              <div className="pt-1">
+                <button
+                  type="button"
+                  onClick={() => setIsConnectUsOpen(true)}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-full bg-[#202020] dark:bg-[#FCFBF9] text-white dark:text-[#202020] hover:bg-[#171717] dark:hover:bg-white text-[11px] font-semibold uppercase tracking-[0.16em] transition-all duration-200 cursor-pointer shadow-xs hover:shadow-md active:scale-[0.99]"
+                >
+                  <span>Send Inquiry</span>
+                  <span>&rarr;</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -188,6 +231,18 @@ export function Footer() {
       <ContactConciergeModal
         isOpen={isConciergeOpen}
         onClose={() => setIsConciergeOpen(false)}
+      />
+
+      {/* Private In-Villa Dining & Chef Modal */}
+      <PrivateDiningModal
+        isOpen={isDiningModalOpen}
+        onClose={() => setIsDiningModalOpen(false)}
+      />
+
+      {/* Connect With Us Modal */}
+      <ConnectUsModal
+        isOpen={isConnectUsOpen}
+        onClose={() => setIsConnectUsOpen(false)}
       />
     </footer>
   );

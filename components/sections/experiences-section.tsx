@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Sparkles, Compass } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { PrivateDiningModal } from "@/components/ui/private-dining-modal";
 
 interface CuratedExperience {
   id: string;
@@ -64,8 +65,22 @@ export function ExperiencesSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [containerWidth, setContainerWidth] = useState(800);
+  const [isDiningModalOpen, setIsDiningModalOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-detect hash in URL for direct Private Dining navigation
+  useEffect(() => {
+    const handleHashCheck = () => {
+      const hash = window.location.hash.toLowerCase();
+      if (hash.includes("dining") || hash.includes("chef")) {
+        setCurrentIndex(3); // Slide 3: Private Chef & Dining
+      }
+    };
+    handleHashCheck();
+    window.addEventListener("hashchange", handleHashCheck);
+    return () => window.removeEventListener("hashchange", handleHashCheck);
+  }, []);
 
   // Measure container width dynamically for pixel-perfect 3D radius calculation (radius = width / 2)
   useEffect(() => {
@@ -133,10 +148,7 @@ export function ExperiencesSection() {
   const cubeRotationAngle = currentIndex * -90;
 
   const handleInquireExperience = () => {
-    const el = document.getElementById("villas");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    setIsDiningModalOpen(true);
   };
 
   return (
@@ -304,6 +316,12 @@ export function ExperiencesSection() {
           })}
         </div>
       </Container>
+
+      {/* Private In-Villa Dining & Chef Modal */}
+      <PrivateDiningModal
+        isOpen={isDiningModalOpen}
+        onClose={() => setIsDiningModalOpen(false)}
+      />
     </section>
   );
 }
