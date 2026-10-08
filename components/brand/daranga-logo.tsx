@@ -68,16 +68,16 @@ export function DarangaLogo({
 
     switch (size) {
       case "xs":
-        return "h-8 w-16 sm:h-9 sm:w-18";
+        return "h-7 w-15 sm:h-8 sm:w-17";
       case "sm":
-        return "h-10 w-20 sm:h-12 sm:w-24";
+        return "h-9 w-20 sm:h-11 sm:w-24";
       case "lg":
-        return "h-16 w-32 sm:h-20 sm:w-40 lg:h-24 lg:w-48";
+        return "h-16 w-35 sm:h-20 sm:w-44 lg:h-24 lg:w-52";
       case "xl":
-        return "h-24 w-48 sm:h-32 sm:w-64 lg:h-40 lg:w-80";
+        return "h-24 w-52 sm:h-32 sm:w-70 lg:h-40 lg:w-88";
       case "md":
       default:
-        return "h-12 w-24 sm:h-14 sm:w-28 xl:h-16 xl:w-32";
+        return "h-11 w-24 sm:h-13 sm:w-28 xl:h-15 xl:w-33";
     }
   };
 

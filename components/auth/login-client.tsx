@@ -241,7 +241,8 @@ export function LoginClient() {
             <div className="relative z-20">
               <DarangaLogo
                 variant="horizontal"
-                size="md"
+                size="lg"
+                theme="white"
                 withTagline={true}
                 asLink={true}
               />
@@ -561,16 +562,20 @@ export function LoginClient() {
                     <button
                       type="button"
                       onClick={() => {
-                        setErrorMessage("");
                         setSuccessMessage("");
-                        setAuthMode("phone");
+                        setErrorMessage("Phone login is currently disabled & coming soon. Please sign in with Email & Password or Google.");
                       }}
-                      className="w-full py-3 px-4 rounded-xl bg-white dark:bg-[#202020] hover:bg-[#F7F7F6] dark:hover:bg-[#171717] border border-[#DCDCDC] dark:border-[#383838] text-xs font-semibold text-[#202020] dark:text-[#FCFBF9] transition-colors flex items-center justify-center gap-2 shadow-xs"
+                      className="w-full py-3 px-4 rounded-xl bg-stone-100 dark:bg-[#171717] border border-stone-200 dark:border-stone-800 text-xs font-semibold text-stone-600 dark:text-stone-300 transition-colors flex items-center justify-between shadow-xs cursor-pointer group hover:border-stone-300"
                     >
-                      <svg className="w-4 h-4 text-[#202020] dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
-                      </svg>
-                      <span>Continue with Phone</span>
+                      <div className="flex items-center gap-2.5">
+                        <svg className="w-4 h-4 text-stone-500 dark:text-stone-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+                        </svg>
+                        <span>Continue with Phone</span>
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 px-2.5 py-0.5 rounded-full">
+                        Coming Soon
+                      </span>
                     </button>
                   ) : (
                     <button

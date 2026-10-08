@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AdminThemeEnforcer } from "@/components/admin/admin-theme-enforcer";
 
 export const metadata: Metadata = {
   title: "Admin Portal | Daranga Villas",
@@ -17,5 +18,5 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <AdminThemeEnforcer>{children}</AdminThemeEnforcer>;
 }

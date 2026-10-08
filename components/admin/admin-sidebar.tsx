@@ -127,11 +127,10 @@ export function AdminSidebar({
                     key={item.href}
                     href={item.href}
                     onClick={onClose}
-                    className={`flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg transition-all ${
-                      isActive
+                    className={`flex items-center gap-3 px-3 py-2 text-xs font-medium rounded-lg transition-all ${isActive
                         ? "bg-white/10 text-white font-semibold border-l-2 border-[#EFA1AA]"
                         : "text-[#DAD7D1] hover:text-white hover:bg-white/5"
-                    }`}
+                      }`}
                   >
                     <Icon className={`w-4 h-4 flex-shrink-0 ${isActive ? "text-[#EFA1AA]" : "text-[#8A8782]"}`} />
                     <span>{item.name}</span>

@@ -238,11 +238,11 @@ export function Navbar({
               <span className="tracking-wide">Call Us</span>
             </a>
 
-            {/* Theme Toggle Button */}
+            {/* Theme Toggle Button (Desktop Only: hidden on mobile, placed inside Menu popover on mobile) */}
             <button
               type="button"
               onClick={toggleTheme}
-              className={`p-1.5 xl:p-2 rounded-[6px] transition-all flex-shrink-0 cursor-pointer ${
+              className={`hidden lg:flex p-1.5 xl:p-2 rounded-[6px] transition-all flex-shrink-0 cursor-pointer ${
                 isOverlayOnHero
                   ? "border border-white/30 bg-black/40 hover:bg-white/20 text-white"
                   : "border border-[#E8E8E8] dark:border-[#383838] bg-white dark:bg-[#202020] hover:bg-[#F7F7F6] dark:hover:bg-[#2A2825] text-[#202020] dark:text-white"
@@ -325,6 +325,25 @@ export function Navbar({
                       </Link>
                     ))}
                   </div>
+
+                  {/* Mobile Theme Mode Switcher */}
+                  <button
+                    type="button"
+                    onClick={toggleTheme}
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-[8px] text-xs font-medium uppercase tracking-[0.14em] text-[#555555] dark:text-[#BDBDBD] hover:text-[#202020] dark:hover:text-white bg-[#F7F7F6] dark:bg-[#171717] hover:bg-[#E8E8E8] dark:hover:bg-[#2A2825] transition-colors cursor-pointer border border-[#E8E8E8] dark:border-[#383838]"
+                  >
+                    <span className="flex items-center gap-2">
+                      {theme === "dark" ? (
+                        <Sun className="w-4 h-4 text-amber-400" />
+                      ) : (
+                        <Moon className="w-4 h-4 text-indigo-500" />
+                      )}
+                      <span>{theme === "dark" ? "Light Mode" : "Dark Mode"}</span>
+                    </span>
+                    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-black/10 dark:bg-white/10 text-[#202020] dark:text-white">
+                      {theme === "dark" ? "Dark" : "Light"}
+                    </span>
+                  </button>
 
                   {/* Divider */}
                   <div className="border-t border-[#E8E8E8] dark:border-[#383838]" />
