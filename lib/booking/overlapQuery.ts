@@ -17,8 +17,10 @@ export function buildOverlapBookingQuery(
     checkOut: { $gt: checkInDate },
     $or: [
       { status: { $in: ["CONFIRMED", "COMPLETED"] } },
+      { paymentStatus: "PAID" },
       {
         status: "PENDING",
+        paymentStatus: { $ne: "PAID" },
         $or: [
           { paymentHoldExpiresAt: { $exists: false } },
           { paymentHoldExpiresAt: null },

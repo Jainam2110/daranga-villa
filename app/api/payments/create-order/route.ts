@@ -2,9 +2,9 @@ import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
-import User, { IUser } from "@/models/User";
+import { verifyCustomerFromHeader, isBookingOwnedByCustomer } from "@/lib/auth/customer";
+import { checkVillaAvailability } from "@/lib/booking/availability";
 import { getRazorpayInstance, getRazorpayKeyId } from "@/lib/razorpay";
-import { getAdminAuth } from "@/lib/firebase/admin";
 
 /**
  * Diagnostic & Health Check Endpoint
@@ -28,7 +28,19 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    // 1. Parse & validate request body
+    // 1. Require Authenticated Customer
+    const customerAuth = await verifyCustomerFromHeader(request);
+    if (!customerAuth) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Authentication required. Please sign in to initiate payment.",
+        },
+        { status: 401 }
+      );
+    }
+
+    // 2. Parse & validate request body
     let body;
     try {
       body = await request.json();
@@ -48,7 +60,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Connect to Database & Load Booking
+    // 3. Connect to Database & Load Booking from MongoDB
     await connectToDatabase();
     const booking = await Booking.findById(bookingId);
 
@@ -59,7 +71,21 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3. Validate Booking State
+    // 4. Validate Customer Ownership of Booking
+    if (!isBookingOwnedByCustomer(booking, customerAuth.customer)) {
+      return NextResponse.json(
+        { success: false, error: "You are not authorized to access this booking." },
+        { status: 403 }
+      );
+    }
+
+    // Bind customer ID if not already bound
+    if (!booking.customerId && customerAuth.customer._id) {
+      booking.customerId = customerAuth.customer._id as mongoose.Types.ObjectId;
+      await booking.save();
+    }
+
+    // 5. Validate Booking Lifecycle State
     if (booking.status === "CANCELLED") {
       return NextResponse.json(
         { success: false, error: "Booking is cancelled. Orders cannot be created for cancelled bookings." },
@@ -81,7 +107,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check if Payment Hold Expiry Window has elapsed for PENDING unpaid booking
+    // 6. Validate Temporary Hold Expiry
     if (
       booking.status === "PENDING" &&
       booking.paymentHoldExpiresAt &&
@@ -96,72 +122,37 @@ export async function POST(request: Request) {
       );
     }
 
-    // 4. Customer Ownership Verification (if Auth header is provided)
-    const authHeader = request.headers.get("authorization");
-    if (authHeader) {
-      const idToken = authHeader.startsWith("Bearer ") ? authHeader.substring(7) : null;
-      if (idToken) {
-        let decodedToken;
-        try {
-          decodedToken = await getAdminAuth().verifyIdToken(idToken);
-        } catch {
-          // Dev fallback decoding
-          if (process.env.NODE_ENV !== "production") {
-            try {
-              const parts = idToken.split(".");
-              if (parts.length === 3) {
-                const payload = JSON.parse(Buffer.from(parts[1], "base64").toString("utf-8"));
-                if (payload && payload.sub) {
-                  decodedToken = { uid: payload.sub, email: payload.email };
-                }
-              }
-            } catch {
-              // Ignore dev fallback error
-            }
-          }
-        }
+    // 7. Validate Booking Dates, Villa Active Status, and Availability
+    const availability = await checkVillaAvailability({
+      villaId: booking.villaId.toString(),
+      checkIn: booking.checkIn,
+      checkOut: booking.checkOut,
+      guests: booking.guests,
+      excludeBookingId: booking._id.toString(),
+    });
 
-        if (!decodedToken || !decodedToken.uid) {
-          return NextResponse.json(
-            { success: false, error: "Invalid authentication token provided." },
-            { status: 401 }
-          );
-        }
-
-        // Fetch customer profile
-        let customer = (await User.findOne({ firebaseUid: decodedToken.uid })) as IUser | null;
-        if (!customer && decodedToken.email) {
-          customer = (await User.findOne({ email: decodedToken.email.toLowerCase() })) as IUser | null;
-        }
-
-        // Verify booking belongs to customer
-        if (booking.customerId) {
-          if (!customer || booking.customerId.toString() !== customer._id.toString()) {
-            return NextResponse.json(
-              { success: false, error: "You are not authorized to access this booking." },
-              { status: 403 }
-            );
-          }
-        } else if (customer && customer.email && booking.guestEmail.toLowerCase() !== customer.email.toLowerCase()) {
-          return NextResponse.json(
-            { success: false, error: "You are not authorized to access this booking." },
-            { status: 403 }
-          );
-        }
-      }
-    }
-
-    // 5. Server-side Amount Validation & Conversion
-    // booking.totalAmount is in INR. Convert to paise using integer arithmetic.
-    const totalAmountInInr = booking.totalAmount;
-    if (typeof totalAmountInInr !== "number" || isNaN(totalAmountInInr) || totalAmountInInr <= 0) {
+    if (!availability.available) {
       return NextResponse.json(
-        { success: false, error: "Invalid booking total amount." },
-        { status: 400 }
+        {
+          success: false,
+          error: availability.error || "The selected dates are no longer available.",
+          code: availability.errorCode,
+        },
+        { status: 409 }
       );
     }
 
-    const amountInPaise = Math.round(totalAmountInInr * 100);
+    // 8. Calculate Payable Amount Using Trusted Server-Side Pricing
+    const trustedTotalAmount = availability.totalAmount;
+    if (booking.totalAmount !== trustedTotalAmount) {
+      console.log(
+        `[Pricing Authority] Updating booking ${booking._id} totalAmount from ${booking.totalAmount} to trusted server price ${trustedTotalAmount}`
+      );
+      booking.totalAmount = trustedTotalAmount;
+      await booking.save();
+    }
+
+    const amountInPaise = Math.round(trustedTotalAmount * 100);
     if (!Number.isInteger(amountInPaise) || amountInPaise <= 0) {
       return NextResponse.json(
         { success: false, error: "Calculated payment amount is invalid." },
@@ -169,7 +160,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 6. Validate Razorpay Server Setup & Credentials
+    // 9. Load Razorpay SDK and Public Key
     let razorpay;
     let keyId;
     try {
@@ -181,20 +172,20 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           success: false,
-          error: "Payment service is currently unconfigured or unavailable on the server.",
-          details: process.env.NODE_ENV !== "production" ? msg : undefined,
+          error: "Payment service is currently unavailable on the server.",
         },
         { status: 500 }
       );
     }
 
-    // 7. Idempotency Check: Reuse existing active Razorpay order if present
+    // 10. Idempotency Check: Reuse existing active Razorpay order if present and valid
     if (booking.razorpayOrderId) {
       try {
         const existingOrder = await razorpay.orders.fetch(booking.razorpayOrderId);
         if (existingOrder) {
           if (existingOrder.status === "paid") {
             booking.paymentStatus = "PAID";
+            booking.status = "CONFIRMED";
             await booking.save();
             return NextResponse.json(
               { success: false, error: "Booking has already been paid for." },
@@ -202,7 +193,12 @@ export async function POST(request: Request) {
             );
           }
 
-          if (existingOrder.status === "created" || existingOrder.status === "attempted") {
+          if (
+            (existingOrder.status === "created" || existingOrder.status === "attempted") &&
+            Number(existingOrder.amount) === amountInPaise &&
+            existingOrder.currency === "INR"
+          ) {
+            console.log(`[Razorpay Order Reused] Order ${existingOrder.id} reused for booking ${booking._id}`);
             return NextResponse.json(
               {
                 success: true,
@@ -223,20 +219,18 @@ export async function POST(request: Request) {
       }
     }
 
-    // 8. Create Razorpay Order
-    // Format receipt safely: daranga_<bookingId> (max 40 chars)
+    // 11. Create Razorpay Order in INR
     const receipt = `daranga_${booking._id.toString()}`.slice(0, 40);
     const notes = {
       bookingId: booking._id.toString(),
       villaId: booking.villaId ? booking.villaId.toString() : "",
+      customerId: customerAuth.customer._id ? customerAuth.customer._id.toString() : "",
     };
 
     console.log("[Razorpay Order Create Attempt]", {
       bookingId: booking._id.toString(),
-      amount: amountInPaise,
+      amountInPaise,
       currency: "INR",
-      hasKeyId: Boolean(process.env.RAZORPAY_KEY_ID?.trim()),
-      hasKeySecret: Boolean(process.env.RAZORPAY_KEY_SECRET?.trim()),
     });
 
     let razorpayOrder;
@@ -248,7 +242,6 @@ export async function POST(request: Request) {
         notes,
       });
     } catch (orderCreateErr: unknown) {
-      // Extract safe diagnostic details without exposing secrets
       const errObj = orderCreateErr as {
         statusCode?: number;
         error?: {
@@ -275,7 +268,6 @@ export async function POST(request: Request) {
           success: false,
           error: "Failed to initiate payment gateway order.",
           code: errorCode,
-          details: process.env.NODE_ENV !== "production" ? errorDescription : undefined,
         },
         { status: statusCode >= 400 && statusCode < 600 ? statusCode : 500 }
       );
@@ -288,7 +280,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 9. Save Razorpay Order ID on Booking (Keep booking status PENDING, paymentStatus UNPAID)
+    // 12. Store Razorpay Order ID and state on Booking
     booking.razorpayOrderId = razorpayOrder.id;
     if (booking.paymentStatus !== "PAID") {
       booking.paymentStatus = "UNPAID";
@@ -298,7 +290,14 @@ export async function POST(request: Request) {
     }
     await booking.save();
 
-    // 10. Return public payload for client
+    console.log("[Razorpay Order Created]", {
+      orderId: razorpayOrder.id,
+      bookingId: booking._id.toString(),
+      amount: razorpayOrder.amount,
+      currency: razorpayOrder.currency,
+    });
+
+    // 13. Return only public Key ID, order ID, amount, and currency
     return NextResponse.json(
       {
         success: true,
@@ -319,7 +318,6 @@ export async function POST(request: Request) {
       {
         success: false,
         error: "Failed to process payment order creation.",
-        details: process.env.NODE_ENV !== "production" ? errMessage : undefined,
       },
       { status: 500 }
     );

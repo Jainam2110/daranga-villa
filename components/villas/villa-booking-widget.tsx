@@ -368,6 +368,11 @@ export function VillaBookingProvider({
       return;
     }
 
+    if (!idToken) {
+      setBookingError("Please sign in to your account to complete payment.");
+      return;
+    }
+
     setBookingError(null);
     setIsProcessingPayment(true);
 
@@ -531,6 +536,11 @@ export function VillaBookingProvider({
 
     if (!guestName.trim() || !guestEmail.trim() || !guestPhone.trim()) {
       setBookingError("Please fill out all contact information fields.");
+      return;
+    }
+
+    if (!customer || !idToken) {
+      setBookingError("Please sign in or create an account to secure your reservation and proceed to payment.");
       return;
     }
 
@@ -1026,6 +1036,8 @@ export function VillaBookingCard() {
     totalPrice,
   } = useVillaBooking();
 
+  const { customer } = useCustomerAuth();
+
   const [nowMs, setNowMs] = useState<number>(() => Date.now());
 
   useEffect(() => {
@@ -1470,6 +1482,20 @@ export function VillaBookingCard() {
 
           {/* GUEST DETAILS Inputs */}
           <div className="space-y-3 pt-1">
+            {!customer && (
+              <div className="p-3 bg-[#FCFBF8] dark:bg-[#171717] border border-[#E8E6E2] dark:border-[#383633] rounded-[8px] text-xs flex items-center justify-between">
+                <span className="text-[#66635F] dark:text-[#BDB8B0]">
+                  Already have an account?
+                </span>
+                <Link
+                  href="/login"
+                  className="font-bold underline text-[#202020] dark:text-[#FCFBF8] uppercase tracking-wider text-[10px]"
+                >
+                  Sign In &rarr;
+                </Link>
+              </div>
+            )}
+
             <span className="text-[10px] uppercase font-bold tracking-widest text-[#202020] dark:text-[#FCFBF8] block">
               GUEST DETAILS
             </span>

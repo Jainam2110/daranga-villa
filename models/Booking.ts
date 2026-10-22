@@ -137,6 +137,7 @@ const BookingSchema = new Schema<IBooking>(
       type: String,
       default: "",
       trim: true,
+      index: true,
     },
     paymentHoldExpiresAt: {
       type: Date,

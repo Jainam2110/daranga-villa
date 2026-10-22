@@ -2,17 +2,28 @@ import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { connectToDatabase } from "@/lib/mongodb";
 import Booking from "@/models/Booking";
-import User, { IUser } from "@/models/User";
+import { verifyCustomerFromHeader, isBookingOwnedByCustomer } from "@/lib/auth/customer";
 import {
   getRazorpayInstance,
   verifyRazorpayPaymentSignature,
 } from "@/lib/razorpay";
-import { getAdminAuth } from "@/lib/firebase/admin";
 import { triggerBookingConfirmationEmails } from "@/lib/email";
 
 export async function POST(request: Request) {
   try {
-    // 1. Parse & validate request body
+    // 1. Require Authenticated Customer
+    const customerAuth = await verifyCustomerFromHeader(request);
+    if (!customerAuth) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Authentication required to verify payment.",
+        },
+        { status: 401 }
+      );
+    }
+
+    // 2. Parse & validate request body
     let body;
     try {
       body = await request.json();
@@ -54,7 +65,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Connect to Database & Load Booking
+    // 3. Connect to Database & Load Booking from MongoDB
     await connectToDatabase();
     const booking = await Booking.findById(bookingId);
 
@@ -65,7 +76,15 @@ export async function POST(request: Request) {
       );
     }
 
-    // Reject Cancelled Bookings
+    // 4. Validate Customer Ownership
+    if (!isBookingOwnedByCustomer(booking, customerAuth.customer)) {
+      return NextResponse.json(
+        { success: false, error: "You are not authorized to verify this booking." },
+        { status: 403 }
+      );
+    }
+
+    // 5. Reject Cancelled Bookings
     if (booking.status === "CANCELLED") {
       return NextResponse.json(
         { success: false, error: "Booking is cancelled. Cannot verify payment for cancelled bookings." },
@@ -73,7 +92,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Verify order ID match against booking's saved razorpayOrderId
+    // 6. Retrieve Expected Razorpay Order ID from Database Record (Never trust client alone)
     if (!booking.razorpayOrderId) {
       return NextResponse.json(
         { success: false, error: "Booking does not have an active Razorpay order reference." },
@@ -82,67 +101,36 @@ export async function POST(request: Request) {
     }
 
     if (booking.razorpayOrderId.trim() !== razorpay_order_id.trim()) {
+      console.warn(`[Payment Verify Mismatch] Client order ${razorpay_order_id} does not match DB order ${booking.razorpayOrderId} for booking ${booking._id}`);
       return NextResponse.json(
         { success: false, error: "Razorpay Order ID mismatch for this booking." },
         { status: 400 }
       );
     }
 
-    // 3. Customer Authorization Verification (if Auth token header provided)
-    const authHeader = request.headers.get("authorization");
-    if (authHeader) {
-      const idToken = authHeader.startsWith("Bearer ") ? authHeader.substring(7) : null;
-      if (idToken) {
-        let decodedToken;
-        try {
-          decodedToken = await getAdminAuth().verifyIdToken(idToken);
-        } catch {
-          if (process.env.NODE_ENV !== "production") {
-            try {
-              const parts = idToken.split(".");
-              if (parts.length === 3) {
-                const payload = JSON.parse(Buffer.from(parts[1], "base64").toString("utf-8"));
-                if (payload && payload.sub) {
-                  decodedToken = { uid: payload.sub, email: payload.email };
-                }
-              }
-            } catch {
-              // Ignore dev fallback error
-            }
-          }
-        }
+    // 7. Prevent Applying Same Payment to Another Booking
+    const conflictingBooking = await Booking.findOne({
+      razorpayPaymentId: razorpay_payment_id.trim(),
+      _id: { $ne: booking._id },
+    });
 
-        if (!decodedToken || !decodedToken.uid) {
-          return NextResponse.json(
-            { success: false, error: "Invalid authentication token provided." },
-            { status: 401 }
-          );
-        }
-
-        let customer = (await User.findOne({ firebaseUid: decodedToken.uid })) as IUser | null;
-        if (!customer && decodedToken.email) {
-          customer = (await User.findOne({ email: decodedToken.email.toLowerCase() })) as IUser | null;
-        }
-
-        if (booking.customerId) {
-          if (!customer || booking.customerId.toString() !== customer._id.toString()) {
-            return NextResponse.json(
-              { success: false, error: "You are not authorized to verify this booking." },
-              { status: 403 }
-            );
-          }
-        } else if (customer && customer.email && booking.guestEmail.toLowerCase() !== customer.email.toLowerCase()) {
-          return NextResponse.json(
-            { success: false, error: "You are not authorized to verify this booking." },
-            { status: 403 }
-          );
-        }
-      }
+    if (conflictingBooking) {
+      console.warn(`[Payment Collision] Payment ID ${razorpay_payment_id} was already used on booking ${conflictingBooking._id}`);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "This payment reference has already been applied to another booking.",
+        },
+        { status: 409 }
+      );
     }
 
-    // 4. Idempotency Check: Safely handle repeated verification requests
+    // 8. Idempotency Check: Safely handle repeated verification requests for current booking
     if (booking.paymentStatus === "PAID" && booking.status === "CONFIRMED") {
-      if (booking.razorpayPaymentId === razorpay_payment_id || booking.razorpayOrderId === razorpay_order_id) {
+      if (
+        booking.razorpayPaymentId === razorpay_payment_id.trim() ||
+        booking.razorpayOrderId === razorpay_order_id.trim()
+      ) {
         return NextResponse.json(
           {
             success: true,
@@ -162,33 +150,44 @@ export async function POST(request: Request) {
       }
     }
 
-    // 5. Server-Side HMAC SHA256 Cryptographic Signature Verification
+    // 9. Server-Side HMAC SHA256 Cryptographic Signature Verification
+    // Uses trusted DB order ID and API secret with constant-time comparison
     const isSignatureValid = verifyRazorpayPaymentSignature({
-      orderId: razorpay_order_id.trim(),
+      orderId: booking.razorpayOrderId,
       paymentId: razorpay_payment_id.trim(),
       signature: razorpay_signature.trim(),
     });
 
     if (!isSignatureValid) {
-      console.warn(`Payment signature verification failed for Booking '${bookingId}'.`);
+      console.warn(`[Payment Signature Failed] Invalid signature for Booking '${bookingId}'.`);
       return NextResponse.json(
         { success: false, error: "Invalid payment signature. Payment verification failed." },
         { status: 400 }
       );
     }
 
-    // 6. Verify Payment / Order Details with Razorpay Gateway SDK
+    // 10. Verify Payment Details with Razorpay Gateway SDK
     let razorpay;
     try {
       razorpay = getRazorpayInstance();
     } catch {
       return NextResponse.json(
-        { success: false, error: "Razorpay service unconfigured on server." },
+        { success: false, error: "Payment service is currently unconfigured on the server." },
         { status: 500 }
       );
     }
 
-    const fetchedPayment = await razorpay.payments.fetch(razorpay_payment_id.trim());
+    let fetchedPayment;
+    try {
+      fetchedPayment = await razorpay.payments.fetch(razorpay_payment_id.trim());
+    } catch (fetchErr: unknown) {
+      const errMsg = fetchErr instanceof Error ? fetchErr.message : "Razorpay payment fetch failed";
+      console.error(`[Razorpay Payment Fetch Error] Payment ${razorpay_payment_id}:`, errMsg);
+      return NextResponse.json(
+        { success: false, error: "Payment reference not found on Razorpay gateway." },
+        { status: 400 }
+      );
+    }
 
     if (!fetchedPayment) {
       return NextResponse.json(
@@ -197,7 +196,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate gateway order ID match, currency, amount, and status
+    // Validate gateway order ID match, currency, amount, and payment capture state
     const expectedAmountPaise = Math.round(booking.totalAmount * 100);
 
     if (
@@ -206,11 +205,12 @@ export async function POST(request: Request) {
       Number(fetchedPayment.amount) !== expectedAmountPaise ||
       (fetchedPayment.status !== "captured" && fetchedPayment.status !== "authorized")
     ) {
-      console.error(`Payment gateway mismatch for Booking ${bookingId}:`, {
+      console.error(`[Payment Gateway Verification Mismatch] Booking ${bookingId}:`, {
         fetchedOrder: fetchedPayment.order_id,
         expectedOrder: booking.razorpayOrderId,
         fetchedAmount: fetchedPayment.amount,
         expectedAmount: expectedAmountPaise,
+        currency: fetchedPayment.currency,
         fetchedStatus: fetchedPayment.status,
       });
 
@@ -223,7 +223,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 7. Atomic MongoDB Update (Race condition safety)
+    // 11. Atomic MongoDB Update (Race condition safety)
     const updatedBooking = await Booking.findOneAndUpdate(
       {
         _id: booking._id,
@@ -246,7 +246,15 @@ export async function POST(request: Request) {
       );
     }
 
-    // 8. Idempotently Dispatch Booking Confirmation Emails
+    console.log("[Payment Verified & Booking Confirmed]", {
+      bookingId: updatedBooking._id.toString(),
+      orderId: updatedBooking.razorpayOrderId,
+      paymentId: updatedBooking.razorpayPaymentId,
+      status: updatedBooking.status,
+      paymentStatus: updatedBooking.paymentStatus,
+    });
+
+    // 12. Idempotently Dispatch Booking Confirmation Emails
     void triggerBookingConfirmationEmails(updatedBooking._id.toString());
 
     return NextResponse.json(

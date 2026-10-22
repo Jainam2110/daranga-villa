@@ -62,10 +62,12 @@ export function verifyRazorpayPaymentSignature({
     .digest("hex");
 
   try {
-    return crypto.timingSafeEqual(
-      Buffer.from(signature, "utf-8"),
-      Buffer.from(expectedSignature, "utf-8")
-    );
+    const sigBuf = Buffer.from(signature, "utf-8");
+    const expBuf = Buffer.from(expectedSignature, "utf-8");
+    if (sigBuf.length !== expBuf.length) {
+      return false;
+    }
+    return crypto.timingSafeEqual(sigBuf, expBuf);
   } catch {
     return false;
   }
@@ -98,10 +100,12 @@ export function verifyRazorpayWebhookSignature({
     .digest("hex");
 
   try {
-    return crypto.timingSafeEqual(
-      Buffer.from(signature, "utf-8"),
-      Buffer.from(expectedSignature, "utf-8")
-    );
+    const sigBuf = Buffer.from(signature, "utf-8");
+    const expBuf = Buffer.from(expectedSignature, "utf-8");
+    if (sigBuf.length !== expBuf.length) {
+      return false;
+    }
+    return crypto.timingSafeEqual(sigBuf, expBuf);
   } catch {
     return false;
   }
