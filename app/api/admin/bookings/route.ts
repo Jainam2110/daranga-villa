@@ -9,6 +9,7 @@ import {
   normalizeDateToUTCMidnight,
   calculatePaymentHoldExpiry,
 } from "@/lib/booking/availability";
+import { getVillaAddress } from "@/lib/utils/villa-location";
 
 export async function GET(request: Request) {
   try {
@@ -62,8 +63,55 @@ export async function GET(request: Request) {
       .sort({ createdAt: -1 })
       .lean();
 
+    const serializedBookings = bookings.map((b) => {
+      const rawVilla = b.villaId as unknown;
+      const villaObj =
+        typeof rawVilla === "object" && rawVilla !== null
+          ? (rawVilla as Record<string, unknown>)
+          : {};
+
+      const heroImg = typeof villaObj.heroImage === "string" ? villaObj.heroImage : "";
+      const firstImg =
+        Array.isArray(villaObj.images) && villaObj.images.length > 0 && typeof villaObj.images[0] === "string"
+          ? villaObj.images[0]
+          : "";
+      const villaImage = heroImg || firstImg || "";
+
+      const rawVillaId = b.villaId;
+      const villaIdString =
+        typeof rawVillaId === "object" && rawVillaId !== null && "_id" in rawVillaId
+          ? String((rawVillaId as { _id: unknown })._id)
+          : String(rawVillaId || "");
+
+      return {
+        _id: String(b._id),
+        villaId: villaIdString,
+        villaName: String(villaObj.title || villaObj.name || "Unknown Villa"),
+        villaSlug: String(villaObj.slug || ""),
+        villaLocation: getVillaAddress(villaObj.location, typeof villaObj.city === "string" ? villaObj.city : "Udaipur, Rajasthan"),
+        villaImage,
+        pricePerNight: typeof villaObj.pricePerNight === "number" ? villaObj.pricePerNight : 0,
+        guestName: b.guestName,
+        guestEmail: b.guestEmail,
+        guestPhone: b.guestPhone,
+        checkIn: b.checkIn ? new Date(b.checkIn).toISOString() : "",
+        checkOut: b.checkOut ? new Date(b.checkOut).toISOString() : "",
+        guests: b.guests,
+        totalAmount: b.totalAmount,
+        source: b.source,
+        status: b.status,
+        paymentStatus: b.paymentStatus,
+        razorpayOrderId: b.razorpayOrderId || "",
+        razorpayPaymentId: b.razorpayPaymentId || "",
+        paymentHoldExpiresAt: b.paymentHoldExpiresAt ? new Date(b.paymentHoldExpiresAt).toISOString() : "",
+        externalBookingId: b.externalBookingId || "",
+        notes: b.notes || "",
+        createdAt: b.createdAt ? new Date(b.createdAt).toISOString() : new Date().toISOString(),
+      };
+    });
+
     return NextResponse.json(
-      { success: true, count: bookings.length, data: bookings },
+      { success: true, count: serializedBookings.length, data: serializedBookings },
       { status: 200 }
     );
   } catch (error: unknown) {

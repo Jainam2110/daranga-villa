@@ -12,13 +12,14 @@ import {
   AlertTriangle,
   MapPin,
 } from "lucide-react";
+import { getVillaAddress } from "@/lib/utils/villa-location";
 
 export interface SerializedBooking {
   _id: string;
   villaId: string;
   villaName: string;
   villaSlug: string;
-  villaLocation?: string;
+  villaLocation?: string | unknown;
   villaImage?: string;
   pricePerNight?: number;
   guestName: string;
@@ -103,11 +104,11 @@ export function AdminBookingsManagementClient({
 
   const filteredBookings = bookings.filter((booking) => {
     const matchesSearch =
-      booking.guestName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      booking.guestEmail.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      booking.guestPhone.includes(searchQuery) ||
-      booking.villaName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      booking._id.toLowerCase().includes(searchQuery.toLowerCase());
+      (booking.guestName || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (booking.guestEmail || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (booking.guestPhone || "").includes(searchQuery) ||
+      (booking.villaName || "").toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (booking._id || "").toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesStatus =
       statusFilter === "ALL" || booking.status === statusFilter;
@@ -116,7 +117,7 @@ export function AdminBookingsManagementClient({
       paymentFilter === "ALL" || booking.paymentStatus === paymentFilter;
 
     const matchesVilla =
-      villaFilter === "ALL" || booking.villaName === villaFilter;
+      villaFilter === "ALL" || (booking.villaName || "") === villaFilter;
 
     return matchesSearch && matchesStatus && matchesPayment && matchesVilla;
   });
@@ -818,7 +819,7 @@ export function AdminBookingsManagementClient({
                     </span>
                     <span className="text-[11px] text-[#66635F] dark:text-[#BDB8B0] flex items-center gap-1">
                       <MapPin className="w-3 h-3 text-[#EFA1AA]" />
-                      <span>{selectedBooking.villaLocation || "Udaipur, Rajasthan"}</span>
+                      <span>{getVillaAddress(selectedBooking.villaLocation, "Udaipur, Rajasthan")}</span>
                     </span>
                   </div>
                 </div>

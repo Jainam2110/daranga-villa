@@ -75,7 +75,7 @@ export default async function AdminBookingsPage() {
       villaId: villaIdString,
       villaName: villaObj.title || villaObj.name || "Unknown Villa",
       villaSlug: villaObj.slug || "",
-      villaLocation: villaObj.location || villaObj.city || "Kutch",
+      villaLocation: getVillaAddress(villaObj.location, villaObj.city || "Udaipur, Rajasthan"),
       villaImage,
       pricePerNight: villaObj.pricePerNight || 0,
       guestName: b.guestName,
