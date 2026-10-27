@@ -398,8 +398,9 @@ export async function triggerBookingConfirmationEmails(bookingId: string): Promi
     });
 
     // 3. Dispatch Admin / Team Booking Notification Email
-    // Uses BOOKING_NOTIFICATION_EMAIL exclusively (ADMIN_EMAIL is reserved for admin login auth only)
-    const bookingNotificationEmail = process.env.BOOKING_NOTIFICATION_EMAIL?.trim();
+    // Uses BOOKING_NOTIFICATION_EMAIL (defaults to Darangavillas@gmail.com)
+    const bookingNotificationEmail =
+      process.env.BOOKING_NOTIFICATION_EMAIL?.trim() || "Darangavillas@gmail.com";
     if (bookingNotificationEmail) {
       const villaObj =
         booking.villaId && typeof booking.villaId === "object"
@@ -414,10 +415,6 @@ export async function triggerBookingConfirmationEmails(bookingId: string): Promi
         subject: adminSubject,
         html: adminHtml,
       });
-    } else {
-      console.log(
-        "[EMAIL] BOOKING_NOTIFICATION_EMAIL is not set. Admin booking notification email skipped."
-      );
     }
 
     if (!customerResult.success) {
