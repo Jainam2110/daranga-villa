@@ -85,7 +85,7 @@ export function verifyRazorpayWebhookSignature({
   rawBody: string;
   signature: string;
 }): boolean {
-  const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET?.trim();
+  const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET?.trim().replace(/^["']|["']$/g, "");
   if (!webhookSecret) {
     throw new Error("Razorpay webhook configuration error: RAZORPAY_WEBHOOK_SECRET is missing.");
   }
