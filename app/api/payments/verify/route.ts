@@ -255,7 +255,12 @@ export async function POST(request: Request) {
     });
 
     // 12. Idempotently Dispatch Booking Confirmation Emails
-    void triggerBookingConfirmationEmails(updatedBooking._id.toString());
+    try {
+      const emailResult = await triggerBookingConfirmationEmails(updatedBooking._id.toString());
+      console.log(`[Payment Verify] Email dispatch for booking ${updatedBooking._id}:`, emailResult);
+    } catch (emailErr) {
+      console.error(`[Payment Verify] Email dispatch error for booking ${updatedBooking._id}:`, emailErr);
+    }
 
     return NextResponse.json(
       {

@@ -38,6 +38,7 @@ export interface IBooking extends Document {
   paymentStatus: PaymentStatus;
   confirmationEmailStatus: EmailStatus;
   confirmationEmailSentAt?: Date;
+  confirmationEmailError?: string;
   externalBookingId?: string;
   razorpayOrderId?: string;
   razorpayPaymentId?: string;
@@ -121,6 +122,11 @@ const BookingSchema = new Schema<IBooking>(
     confirmationEmailSentAt: {
       type: Date,
       required: false,
+    },
+    confirmationEmailError: {
+      type: String,
+      default: "",
+      trim: true,
     },
     externalBookingId: {
       type: String,

@@ -43,13 +43,15 @@ export async function sendEmail(
     return { success: false, error: "Invalid recipient email address." };
   }
 
-  const apiKey = process.env.RESEND_API_KEY || process.env.EMAIL_API_KEY;
-  const fromAddress =
-    process.env.EMAIL_FROM || "Daranga Villas <reservations@darangavillas.com>";
+  const apiKey = (process.env.RESEND_API_KEY || process.env.EMAIL_API_KEY || "").trim();
+  const rawFrom = process.env.EMAIL_FROM || "Daranga Villas <reservations@darangavillas.com>";
+  const fromAddress = rawFrom.replace(/^["']|["']$/g, "").trim();
 
   // Stub/Mock mode for automated test suites or missing server API keys
   if (!apiKey || process.env.NODE_ENV === "test" || process.env.MOCK_EMAIL === "true") {
-    console.log(`[EMAIL STUB] Sent "${subject}" to <${recipients.join(", ")}> from <${fromAddress}>`);
+    console.log(
+      `[EMAIL STUB] RESEND_API_KEY not configured or test mode active. Logged "${subject}" to <${recipients.join(", ")}> from <${fromAddress}>`
+    );
     return { success: true, mocked: true, messageId: `stub_${Date.now()}` };
   }
 
@@ -58,7 +60,7 @@ export async function sendEmail(
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey.trim()}`,
+        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -69,11 +71,14 @@ export async function sendEmail(
       }),
     });
 
-    const data = await response.json();
+    const data = await response.json().catch(() => null);
 
     if (!response.ok) {
-      const errorMsg = data?.message || data?.error || `HTTP ${response.status}`;
-      console.error(`Email API error for <${recipients.join(", ")}>:`, errorMsg);
+      const errorMsg =
+        data?.message ||
+        data?.error ||
+        (data ? JSON.stringify(data) : `HTTP ${response.status}`);
+      console.error(`[Resend Error] Failed to send to <${recipients.join(", ")}> from <${fromAddress}>:`, errorMsg);
       return { success: false, error: errorMsg };
     }
 
@@ -83,7 +88,7 @@ export async function sendEmail(
     };
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Network error sending email";
-    console.error(`Email dispatch network error for <${recipients.join(", ")}>:`, msg);
+    console.error(`[Resend Network Error] Failed for <${recipients.join(", ")}>:`, msg);
     return { success: false, error: msg };
   }
 }
@@ -362,27 +367,27 @@ export async function triggerBookingConfirmationEmails(bookingId: string): Promi
   try {
     await connectToDatabase();
 
-    // 1. Atomic Idempotent Claim: Set confirmationEmailStatus to SENT only if it is NOT_SENT or FAILED
-    const booking = await Booking.findOneAndUpdate(
-      {
-        _id: bookingId,
-        status: "CONFIRMED",
-        paymentStatus: "PAID",
-        confirmationEmailStatus: { $ne: "SENT" },
-      },
-      {
-        $set: {
-          confirmationEmailStatus: "SENT",
-          confirmationEmailSentAt: new Date(),
-        },
-      },
-      { new: true }
-    ).populate("villaId");
+    // 1. Fetch booking document
+    const booking = await Booking.findById(bookingId).populate("villaId");
 
     if (!booking) {
       return {
         sent: false,
-        reason: "ALREADY_SENT_OR_NOT_CONFIRMED",
+        reason: "BOOKING_NOT_FOUND",
+      };
+    }
+
+    if (booking.status !== "CONFIRMED" || booking.paymentStatus !== "PAID") {
+      return {
+        sent: false,
+        reason: "BOOKING_NOT_CONFIRMED_OR_PAID",
+      };
+    }
+
+    if (booking.confirmationEmailStatus === "SENT") {
+      return {
+        sent: false,
+        reason: "ALREADY_SENT",
       };
     }
 
@@ -401,6 +406,8 @@ export async function triggerBookingConfirmationEmails(bookingId: string): Promi
     // Uses BOOKING_NOTIFICATION_EMAIL (defaults to Darangavillas@gmail.com)
     const bookingNotificationEmail =
       process.env.BOOKING_NOTIFICATION_EMAIL?.trim() || "Darangavillas@gmail.com";
+    
+    let adminResult: SendEmailResult = { success: true };
     if (bookingNotificationEmail) {
       const villaObj =
         booking.villaId && typeof booking.villaId === "object"
@@ -410,26 +417,53 @@ export async function triggerBookingConfirmationEmails(bookingId: string): Promi
       const adminSubject = `[New Booking Confirmed] ${villaName} — ${booking.guestName} | #${(booking._id || booking.id || "").toString().slice(-8).toUpperCase()}`;
       const adminHtml = generateAdminNotificationEmailHtml(booking, baseUrl);
 
-      await sendEmail({
+      adminResult = await sendEmail({
         to: bookingNotificationEmail,
         subject: adminSubject,
         html: adminHtml,
       });
     }
 
-    if (!customerResult.success) {
-      // Record failure state in MongoDB without modifying confirmed/paid payment status!
+    // 4. Record Final State in MongoDB
+    if (customerResult.success && adminResult.success) {
       await Booking.updateOne(
         { _id: bookingId },
-        { $set: { confirmationEmailStatus: "FAILED" } }
+        {
+          $set: {
+            confirmationEmailStatus: "SENT",
+            confirmationEmailSentAt: new Date(),
+            confirmationEmailError: "",
+          },
+        }
       );
+      console.log(`[Email Dispatch Success] Both customer and admin emails sent for booking ${bookingId}`);
+      return { sent: true };
+    } else {
+      const errorDetails: string[] = [];
+      if (!customerResult.success) {
+        errorDetails.push(`Customer (${booking.guestEmail}): ${customerResult.error || "Delivery failed"}`);
+      }
+      if (!adminResult.success) {
+        errorDetails.push(`Admin (${bookingNotificationEmail}): ${adminResult.error || "Delivery failed"}`);
+      }
+      const combinedError = errorDetails.join(" | ");
+
+      await Booking.updateOne(
+        { _id: bookingId },
+        {
+          $set: {
+            confirmationEmailStatus: "FAILED",
+            confirmationEmailError: combinedError,
+          },
+        }
+      );
+      console.error(`[Email Dispatch Failed] Booking ${bookingId}:`, combinedError);
+
       return {
         sent: false,
-        error: customerResult.error || "Email delivery failed",
+        error: combinedError,
       };
     }
-
-    return { sent: true };
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : "Error sending emails";
     console.error(`Failed to trigger confirmation emails for ${bookingId}:`, errorMsg);
@@ -437,7 +471,12 @@ export async function triggerBookingConfirmationEmails(bookingId: string): Promi
     try {
       await Booking.updateOne(
         { _id: bookingId },
-        { $set: { confirmationEmailStatus: "FAILED" } }
+        {
+          $set: {
+            confirmationEmailStatus: "FAILED",
+            confirmationEmailError: errorMsg,
+          },
+        }
       );
     } catch {
       // Ignore DB update error during emergency catch
